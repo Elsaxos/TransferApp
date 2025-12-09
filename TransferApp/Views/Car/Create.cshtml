@@ -1,0 +1,47 @@
+﻿@model TransferApp.Models.Car
+
+@{
+    ViewData["Title"] = "Добави нова кола";
+}
+
+<h2>Добави нова кола</h2>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="All"></div>
+
+    <div>
+        <label asp-for="Make"></label><br />
+        <input asp-for="Make" />
+        <span asp-validation-for="Make"></span>
+    </div>
+
+    <div>
+        <label asp-for="Model"></label><br />
+        <input asp-for="Model" />
+        <span asp-validation-for="Model"></span>
+    </div>
+
+    <div>
+        <label asp-for="Registration"></label><br />
+        <input asp-for="Registration" />
+        <span asp-validation-for="Registration"></span>
+    </div>
+
+    <div>
+        <label asp-for="Seats"></label><br />
+        <input asp-for="Seats" type="number" />
+        <span asp-validation-for="Seats"></span>
+    </div>
+
+    <div>
+        <label asp-for="ImageUrl"></label><br />
+        <input asp-for="ImageUrl" />
+        <span asp-validation-for="ImageUrl"></span>
+    </div>
+
+    <button type="submit">Добави</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

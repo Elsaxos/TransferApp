@@ -1,0 +1,41 @@
+﻿@model IEnumerable<TransferApp.Models.TransferRequest>
+
+<h2>Всички заявки за трансфер</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <p>Все още няма заявки.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Име</th>
+                <th>Телефон</th>
+                <th>От</th>
+                <th>До</th>
+                <th>Дата и час</th>
+                <th>Пътници</th>
+                <th>Цена</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in Model)
+            {
+                <tr>
+                    <td>@t.Id</td>
+                    <td>@t.CustomerName</td>
+                    <td>@t.Phone</td>
+                    <td>@t.PickupAddress</td>
+                    <td>@t.DropoffAddress</td>
+                    <td>@t.PickupDateTime</td>
+                    <td>@t.Passengers</td>
+                    <td>@t.Price</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

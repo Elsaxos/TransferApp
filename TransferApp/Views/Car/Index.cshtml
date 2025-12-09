@@ -1,0 +1,28 @@
+﻿@model IEnumerable<TransferApp.Models.Car>
+
+<h2>Списък с коли</h2>
+
+<a href="/Car/Create">Добави нова кола</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Марка</th>
+            <th>Модел</th>
+            <th>Рег. номер</th>
+            <th>Места</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.Make</td>
+                <td>@c.Model</td>
+                <td>@c.Registration</td>
+                <td>@c.Seats</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

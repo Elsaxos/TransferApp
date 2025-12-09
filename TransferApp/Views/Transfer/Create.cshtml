@@ -1,0 +1,56 @@
+﻿@model TransferApp.Models.TransferRequest
+
+@{
+    ViewData["Title"] = "Резервирай трансфер";
+}
+
+<h2>Резервирай трансфер</h2>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="All"></div>
+
+    <div>
+        <label asp-for="CustomerName"></label><br />
+        <input asp-for="CustomerName" />
+        <span asp-validation-for="CustomerName"></span>
+    </div>
+
+    <div>
+        <label asp-for="Phone"></label><br />
+        <input asp-for="Phone" />
+        <span asp-validation-for="Phone"></span>
+    </div>
+
+    <div>
+        <label asp-for="PickupAddress"></label><br />
+        <input asp-for="PickupAddress" />
+        <span asp-validation-for="PickupAddress"></span>
+    </div>
+
+    <div>
+        <label asp-for="DropoffAddress"></label><br />
+        <input asp-for="DropoffAddress" />
+        <span asp-validation-for="DropoffAddress"></span>
+    </div>
+
+    <div>
+        <label asp-for="PickupDateTime"></label><br />
+        <input asp-for="PickupDateTime"
+               type="datetime-local"
+               value="@Model.PickupDateTime.ToString("yyyy-MM-ddTHH:mm")" />
+        <span asp-validation-for="PickupDateTime"></span>
+    </div>
+
+    <div>
+        <label asp-for="Passengers"></label><br />
+        <input asp-for="Passengers" type="number" min="1" />
+        <span asp-validation-for="Passengers"></span>
+    </div>
+
+    <button type="submit">Изпрати</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
