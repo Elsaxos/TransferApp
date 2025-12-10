@@ -4,53 +4,58 @@
     ViewData["Title"] = "Резервирай трансфер";
 }
 
-<h2>Резервирай трансфер</h2>
+<h2 class="mb-4">Резервирай трансфер</h2>
 
-<form asp-action="Create" method="post">
-    <div asp-validation-summary="All"></div>
+<form asp-action="Create" method="post" class="row g-3">
+    <div asp-validation-summary="All" class="text-danger"></div>
 
-    <div>
-        <label asp-for="CustomerName"></label><br />
-        <input asp-for="CustomerName" />
-        <span asp-validation-for="CustomerName"></span>
+    <div class="col-md-6">
+        <label asp-for="CustomerName" class="form-label">Име</label>
+        <input asp-for="CustomerName" class="form-control" />
+        <span asp-validation-for="CustomerName" class="text-danger"></span>
     </div>
 
-    <div>
-        <label asp-for="Phone"></label><br />
-        <input asp-for="Phone" />
-        <span asp-validation-for="Phone"></span>
+    <div class="col-md-6">
+        <label asp-for="Phone" class="form-label">Телефон</label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
     </div>
 
-    <div>
-        <label asp-for="PickupAddress"></label><br />
-        <input asp-for="PickupAddress" />
-        <span asp-validation-for="PickupAddress"></span>
+    <div class="col-md-6">
+        <label asp-for="PickupAddress" class="form-label">От</label>
+        <input asp-for="PickupAddress" class="form-control" />
+        <span asp-validation-for="PickupAddress" class="text-danger"></span>
     </div>
 
-    <div>
-        <label asp-for="DropoffAddress"></label><br />
-        <input asp-for="DropoffAddress" />
-        <span asp-validation-for="DropoffAddress"></span>
+    <div class="col-md-6">
+        <label asp-for="DropoffAddress" class="form-label">До</label>
+        <input asp-for="DropoffAddress" class="form-control" />
+        <span asp-validation-for="DropoffAddress" class="text-danger"></span>
     </div>
 
-    <div>
-        <label asp-for="PickupDateTime"></label><br />
+    <div class="col-md-6">
+        <label asp-for="PickupDateTime" class="form-label">Дата и час</label>
         <input asp-for="PickupDateTime"
                type="datetime-local"
-               value="@Model.PickupDateTime.ToString("yyyy-MM-ddTHH:mm")" />
-        <span asp-validation-for="PickupDateTime"></span>
+               value="@Model.PickupDateTime.ToString("yyyy-MM-ddTHH:mm")"
+               class="form-control" />
+        <span asp-validation-for="PickupDateTime" class="text-danger"></span>
     </div>
 
-    <div>
-        <label asp-for="Passengers"></label><br />
-        <input asp-for="Passengers" type="number" min="1" />
-        <span asp-validation-for="Passengers"></span>
+    <div class="col-md-3">
+        <label asp-for="Passengers" class="form-label">Пътници</label>
+        <input asp-for="Passengers" type="number" min="1" class="form-control" />
+        <span asp-validation-for="Passengers" class="text-danger"></span>
     </div>
 
-    <button type="submit">Изпрати</button>
+    <div class="col-12 mt-3">
+        <button type="submit" class="btn btn-primary">Изпрати заявка</button>
+        <a href="/" class="btn btn-outline-secondary ms-2">Отказ</a>
+    </div>
 </form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
 

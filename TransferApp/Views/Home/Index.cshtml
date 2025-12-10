@@ -2,13 +2,31 @@
     ViewData["Title"] = "Начало";
 }
 
-<h2>Сайт за автомобилни трансфери</h2>
+<div class="row align-items-center">
+    <div class="col-md-7">
+        <h1 class="display-4 mb-3">Сайт за автомобилни трансфери</h1>
+        <p class="lead">
+            Бързи и удобни трансфери между градове, летища и хотели.
+            Управлявай автопарка и заявките от едно място.
+        </p>
 
-<p>Добре дошъл в админ панела.</p>
+        <div class="mt-4 d-flex flex-wrap gap-2">
+            <a class="btn btn-primary btn-lg" href="/Transfer/Create">🚕 Резервирай трансфер</a>
+            <a class="btn btn-outline-light btn-lg border-dark" href="/Car/Index">🚗 Виж автопарка</a>
+            <a class="btn btn-outline-secondary btn-lg" href="/Admin/Index">🛠 Админ панел</a>
+        </div>
+    </div>
 
-<ul>
-    <li><a href="/Car/Index">Автопарк – списък с коли</a></li>
-    <li><a href="/Car/Create">Добави нова кола</a></li>
-    <li><a href="/Transfer/Create">Резервирай трансфер</a></li>
-    <li><a href="/Admin/Index">Всички заявки за трансфер</a></li>
-</ul>
+    <div class="col-md-5 mt-4 mt-md-0">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Бърз достъп</h5>
+                <ul class="list-unstyled mb-0">
+                    <li>✔ Създаване на заявки за трансфер</li>
+                    <li>✔ Управление на коли и шофьори</li>
+                    <li>✔ Преглед на всички резервации</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
