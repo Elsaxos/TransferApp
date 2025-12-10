@@ -1,8 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResources> L
+
+<!DOCTYPE html>
 <html lang="bg">
 <head>
     <meta charset="utf-8" />
-    <title>@ViewData["Title"] - TransferApp</title>
+    <title>@L["Site_Title"]</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
@@ -11,45 +14,56 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="/">TransferApp</a>
+
+                <!-- BRAND -->
+                <a class="navbar-brand" href="/">@L["Site_Title"]</a>
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="collapse navbar-collapse" id="mainNavbar">
+
+                    <!-- LEFT MENU -->
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link" href="/">Начало</a>
+                            <a class="nav-link" href="/">@L["Menu_Home"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/Transfer/Create">Резервирай трансфер</a>
+                            <a class="nav-link" href="/Car/Index">@L["Menu_Cars"]</a> @* Цени на трансфери *@
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/Car/Index">Автопарк</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Car/Create">Добави кола</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Admin/Index">Админ панел</a>
+                            <a class="nav-link" href="/Transfer/Create">@L["Menu_BookTransfer"]</a> @* Поръчай сега *@
                         </li>
                     </ul>
-                    <span class="navbar-text text-light">
-                        Автомобилни трансфери
-                    </span>
+
+                    <!-- RIGHT: LANGUAGE BUTTON -->
+                    <div class="ms-auto">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                @System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName.ToUpper()
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="/?culture=bg&ui-culture=bg">Български</a></li>
+                                <li><a class="dropdown-item" href="/?culture=en&ui-culture=en">English</a></li>
+                                <li><a class="dropdown-item" href="/?culture=ru&ui-culture=ru">Русский</a></li>
+                                <li><a class="dropdown-item" href="/?culture=fr&ui-culture=fr">Français</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </nav>
     </header>
 
     <main role="main" class="pb-4">
-        <div class="container mt-4">
-            @RenderBody()
-        </div>
+        @RenderBody()
     </main>
 
     <footer class="border-top footer text-muted mt-5">
         <div class="container py-3 text-center">
-            <small>&copy; @DateTime.Now.Year - TransferApp</small>
+            <small>&copy; @DateTime.Now.Year - @L["Site_Title"]</small>
         </div>
     </footer>
 
@@ -57,3 +71,5 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
+
