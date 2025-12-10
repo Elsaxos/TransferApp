@@ -7,7 +7,7 @@ Built as a portfolio project and training ground for QA automation (unit, integr
 
 ## 🚗 Features
 
-- Manage a **fleet of cars** (автопарк)
+- Manage a **fleet of cars** 
 - Create **transfer reservations** (pickup, dropoff, datetime, passengers)
 - Simple **pricing logic** (base example: fixed price)
 - **Admin panel** with a list of all transfer requests
