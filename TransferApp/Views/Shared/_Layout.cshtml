@@ -8,11 +8,14 @@
     <title>@L["Site_Title"]</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
 </head>
 <body class="bg-light">
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-protransfer">
+
+
             <div class="container">
 
                 <!-- BRAND -->
@@ -25,15 +28,21 @@
                 <div class="collapse navbar-collapse" id="mainNavbar">
 
                     <!-- LEFT MENU -->
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <<ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link" href="/">@L["Menu_Home"]</a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link" href="/Car/Index">@L["Menu_Cars"]</a> @* Цени на трансфери *@
+                            <a class="nav-link" href="/Pages/Prices">Цени</a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link" href="/Transfer/Create">@L["Menu_BookTransfer"]</a> @* Поръчай сега *@
+                            <a class="nav-link" href="/Transfer/Create">@L["Menu_BookTransfer"]</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Pages/Contacts">Контакти</a>
                         </li>
                     </ul>
 

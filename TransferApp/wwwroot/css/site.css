@@ -20,3 +20,192 @@ html {
 body {
   margin-bottom: 60px;
 }
+/* === HERO SECTION === */
+
+.hero-section {
+    position: relative;
+    min-height: 100vh;
+    background: url("/img/hero-bg.jpg") center/cover no-repeat;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.35) 60%, rgba(0,0,0,0.20) 100%);
+}
+
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+
+.hero-text .hero-title {
+    font-weight: 800;
+    font-size: 3rem;
+    line-height: 1.2;
+}
+
+.hero-text .hero-subtitle {
+    font-size: 1.1rem;
+    margin-top: 1rem;
+    max-width: 480px;
+}
+
+.hero-bullets {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 1rem;
+}
+
+    .hero-bullets li {
+        font-size: 0.95rem;
+    }
+
+/* ПАНЕЛ ЗА РЕЗЕРВАЦИЯ */
+
+.booking-panel {
+    background: #f8f9fa;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.booking-title {
+    background: #ffc107;
+    color: #222;
+    margin: 0;
+    padding: 16px 20px;
+    font-weight: 700;
+}
+
+.booking-form {
+    padding: 16px 20px 20px;
+}
+
+    .booking-form .form-label {
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+/* Mobile adjustments */
+
+@media (max-width: 767.98px) {
+    .hero-section {
+        min-height: auto;
+    }
+
+    .hero-text .hero-title {
+        font-size: 2.2rem;
+    }
+}
+
+/* ===== BOOKING PANEL (PREMIUM STYLE) ===== */
+
+.booking-panel {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+.booking-title {
+    background: #ffc107;
+    color: #111;
+    margin: 0;
+    padding: 18px 22px;
+    font-weight: 800;
+    font-size: 1.25rem;
+}
+
+.booking-form {
+    padding: 18px 22px 22px;
+}
+
+    .booking-form .form-label {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 6px;
+    }
+
+    .booking-form .form-control {
+        border-radius: 10px;
+        padding: 10px 12px;
+    }
+
+        .booking-form .form-control:focus {
+            border-color: rgba(0,0,0,0.25);
+            box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+        }
+
+    .booking-form .btn {
+        border-radius: 10px;
+        padding: 12px 14px;
+        font-weight: 800;
+    }
+
+/* === NAVBAR (overlay върху hero) === */
+.navbar-protransfer {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+    .navbar-protransfer .navbar-brand {
+        font-weight: 800;
+        letter-spacing: .2px;
+    }
+
+    .navbar-protransfer .nav-link {
+        font-weight: 600;
+        opacity: 0.9;
+    }
+
+        .navbar-protransfer .nav-link:hover {
+            opacity: 1;
+        }
+
+/* === PROTRANSFER NAVBAR === */
+
+.navbar-protransfer {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(25, 28, 31, 0.85);
+    backdrop-filter: blur(6px);
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+    .navbar-protransfer .nav-link {
+        color: #eaeaea;
+        font-weight: 500;
+    }
+
+        .navbar-protransfer .nav-link:hover {
+            color: #ffc107;
+        }
+
+    .navbar-protransfer .navbar-brand {
+        font-weight: 700;
+        color: #ffffff;
+    }
+
+    /* Navbar: не чупи линковете на 2 реда */
+    .navbar-protransfer .navbar-nav .nav-link {
+        white-space: nowrap;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+

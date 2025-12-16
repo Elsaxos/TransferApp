@@ -13,7 +13,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Регистрираме имейл услугата (можем и да не я ползваме още)
 builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
 
-// Локализация – казваме къде са ресурсните файлове
+
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
 // MVC + локализация за View-та и DataAnnotations
