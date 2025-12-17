@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Админ вход";
+}
+
+<div class="container py-5" style="max-width:420px;">
+    <h1 class="fw-bold mb-3">Админ вход</h1>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    <form method="post">
+        <div class="mb-3">
+            <label class="form-label">Потребител</label>
+            <input class="form-control" name="username" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Парола</label>
+            <input class="form-control" name="password" type="password" />
+        </div>
+
+        <button class="btn btn-warning w-100 fw-bold" type="submit">
+            Вход
+        </button>
+    </form>
+</div>
+

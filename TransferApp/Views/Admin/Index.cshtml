@@ -1,41 +1,109 @@
-﻿@model IEnumerable<TransferApp.Models.TransferRequest>
+﻿@model TransferApp.Models.AdminDashboardViewModel
 
-<h2>Всички заявки за трансфер</h2>
-
-@if (Model == null || !Model.Any())
-{
-    <p>Все още няма заявки.</p>
+@{
+    ViewData["Title"] = "Админ панел";
 }
-else
-{
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Име</th>
-                <th>Телефон</th>
-                <th>От</th>
-                <th>До</th>
-                <th>Дата и час</th>
-                <th>Пътници</th>
-                <th>Цена</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var t in Model)
+
+<div class="container py-4">
+    <h1 class="fw-bold mb-3">Админ панел</h1>
+
+    <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#pane-inq" type="button" role="tab">
+                Запитвания (@Model.Inquiries.Count)
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#pane-res" type="button" role="tab">
+                Резервации (@Model.Reservations.Count)
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content border border-top-0 rounded-bottom p-3 bg-white">
+
+        <!-- INQUIRIES -->
+        <div class="tab-pane fade show active" id="pane-inq" role="tabpanel">
+            @if (!Model.Inquiries.Any())
             {
-                <tr>
-                    <td>@t.Id</td>
-                    <td>@t.CustomerName</td>
-                    <td>@t.Phone</td>
-                    <td>@t.PickupAddress</td>
-                    <td>@t.DropoffAddress</td>
-                    <td>@t.PickupDateTime</td>
-                    <td>@t.Passengers</td>
-                    <td>@t.Price</td>
-                </tr>
+                <p class="text-muted m-0">Няма запитвания.</p>
             }
-        </tbody>
-    </table>
-}
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Име</th>
+                                <th>Телефон</th>
+                                <th>Съобщение</th>
+                                <th>Дата</th>
+                                <th>Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var r in Model.Inquiries)
+                            {
+                                <tr>
+                                    <td>@r.Id</td>
+                                    <td>@r.CustomerName</td>
+                                    <td>@r.Phone</td>
+                                    <td style="max-width:520px; white-space:normal;">@r.Notes</td>
+                                    <td>@r.PickupDateTime.ToString("dd.MM.yyyy HH:mm")</td>
+                                    <td>@r.Status</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+
+        <!-- RESERVATIONS -->
+        <div class="tab-pane fade" id="pane-res" role="tabpanel">
+            @if (!Model.Reservations.Any())
+            {
+                <p class="text-muted m-0">Няма резервации.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Клиент</th>
+                                <th>Телефон</th>
+                                <th>От</th>
+                                <th>До</th>
+                                <th>Дата/час</th>
+                                <th class="text-center">Пътници</th>
+                                <th class="text-end">Цена</th>
+                                <th>Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var r in Model.Reservations)
+                            {
+                                <tr>
+                                    <td>@r.Id</td>
+                                    <td>@r.CustomerName</td>
+                                    <td>@r.Phone</td>
+                                    <td>@r.PickupAddress</td>
+                                    <td>@r.DropoffAddress</td>
+                                    <td>@r.PickupDateTime.ToString("dd.MM.yyyy HH:mm")</td>
+                                    <td class="text-center">@r.Passengers</td>
+                                    <td class="text-end">@r.Price</td>
+                                    <td>@r.Status</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>
 

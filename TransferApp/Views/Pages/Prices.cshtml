@@ -1,9 +1,107 @@
-﻿@{
-    ViewData["Title"] = "Цени";
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<TransferApp.SharedResources> L
+
+@{
+    ViewData["Title"] = L["Prices_Title"];
 }
 
-<div class="container py-5">
-    <h1 class="mb-3">Цени на трансфери</h1>
-    <p class="text-muted">Тук ще добавим таблица с примерни цени и калкулатор.</p>
+<div class="prices-hero">
+    <div class="container py-5">
+        <h1 class="prices-title">@L["Prices_Hero_Title"]</h1>
+        <p class="prices-subtitle">
+            @L["Prices_Hero_Subtitle"]
+        </p>
+
+        <div class="prices-badges">
+            <span class="badge bg-warning text-dark">✅ @L["Prices_Badge_1"]</span>
+            <span class="badge bg-dark">✅ @L["Prices_Badge_2"]</span>
+            <span class="badge bg-dark">✅ @L["Prices_Badge_3"]</span>
+        </div>
+    </div>
 </div>
+
+<div class="container py-5">
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="price-card">
+                <div class="price-card-title">@L["Prices_Card_1_Title"]</div>
+                <div class="price-card-value">@L["Prices_Card_1_Value"]</div>
+                <div class="price-card-note">@L["Prices_Card_1_Note"]</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="price-card">
+                <div class="price-card-title">@L["Prices_Card_2_Title"]</div>
+                <div class="price-card-value">@L["Prices_Card_2_Value"]</div>
+                <div class="price-card-note">@L["Prices_Card_2_Note"]</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="price-card">
+                <div class="price-card-title">@L["Prices_Card_3_Title"]</div>
+                <div class="price-card-value">@L["Prices_Card_3_Value"]</div>
+                <div class="price-card-note">@L["Prices_Card_3_Note"]</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle prices-table">
+            <thead>
+                <tr>
+                    <th>@L["Prices_Table_Col_Route"]</th>
+                    <th class="text-center">@L["Prices_Table_Col_OneWay"]</th>
+                    <th class="text-center">@L["Prices_Table_Col_RoundTrip"]</th>
+                    <th class="text-end">@L["Prices_Table_Col_Request"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@L["Prices_Route_1"]</td>
+                    <td class="text-center">@L["Prices_Route_1_OneWay"]</td>
+                    <td class="text-center">@L["Prices_Route_1_RoundTrip"]</td>
+                    <td class="text-end">
+                        <a class="btn btn-warning btn-sm" href="/Transfer/Create">@L["Prices_Order_Button"]</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>@L["Prices_Route_2"]</td>
+                    <td class="text-center">@L["Prices_Route_2_OneWay"]</td>
+                    <td class="text-center">@L["Prices_Route_2_RoundTrip"]</td>
+                    <td class="text-end">
+                        <a class="btn btn-warning btn-sm" href="/Transfer/Create">@L["Prices_Order_Button"]</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>@L["Prices_Route_3"]</td>
+                    <td class="text-center">@L["Prices_Route_3_OneWay"]</td>
+                    <td class="text-center">@L["Prices_Route_3_RoundTrip"]</td>
+                    <td class="text-end">
+                        <a class="btn btn-warning btn-sm" href="/Transfer/Create">@L["Prices_Order_Button"]</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>@L["Prices_Route_4"]</td>
+                    <td class="text-center">@L["Prices_Route_4_OneWay"]</td>
+                    <td class="text-center">@L["Prices_Route_4_RoundTrip"]</td>
+                    <td class="text-end">
+                        <a class="btn btn-warning btn-sm" href="/Transfer/Create">@L["Prices_Order_Button"]</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="prices-note mt-4">
+        <div class="prices-note-title">@L["Prices_Important_Title"]</div>
+        <div class="prices-note-text">
+            @L["Prices_Important_Text"]
+        </div>
+    </div>
+
+</div>
+
 

@@ -1,5 +1,17 @@
 ﻿@using Microsoft.Extensions.Localization
-@inject IStringLocalizer<SharedResources> L
+@inject IStringLocalizer<TransferApp.SharedResources> L
+
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+
+    bool isHome = controller == "Home" && action == "Index";
+    bool isTransfer = controller == "Transfer" && action == "Create";
+    bool isPrices = controller == "Pages" && action == "Prices";
+    bool isContacts = controller == "Pages" && action == "Contacts";
+
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+}
 
 <!DOCTYPE html>
 <html lang="bg">
@@ -7,19 +19,28 @@
     <meta charset="utf-8" />
     <title>@L["Site_Title"]</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
+    @if (isHome)
+    {
+        <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+    }
 </head>
+
 <body class="bg-light">
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark navbar-protransfer">
-
-
+        <nav class="navbar navbar-expand-lg navbar-dark pro-navbar">
             <div class="container">
 
-                <!-- BRAND -->
-                <a class="navbar-brand" href="/">@L["Site_Title"]</a>
+                <a class="navbar-brand pro-brand" href="/">
+                    <span class="pro-brand-icon">🚖</span>
+                    <span class="pro-brand-text">
+                        <span class="pro-brand-title">PROTRANSFER</span>
+                        <span class="pro-brand-subtitle">@L["Site_Slogan"]</span>
+                    </span>
+                </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
                     <span class="navbar-toggler-icon"></span>
@@ -27,38 +48,51 @@
 
                 <div class="collapse navbar-collapse" id="mainNavbar">
 
-                    <!-- LEFT MENU -->
-                    <<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul class="navbar-nav mx-auto pro-menu">
                         <li class="nav-item">
-                            <a class="nav-link" href="/">@L["Menu_Home"]</a>
+                            <a class="nav-link @(isHome ? "active" : "")" href="/">@L["Menu_Home"]</a>
                         </li>
-
                         <li class="nav-item">
-                            <a class="nav-link" href="/Pages/Prices">Цени</a>
+                            <a class="nav-link @(isPrices ? "active" : "")" href="/Pages/Prices">@L["Menu_Prices"]</a>
                         </li>
-
                         <li class="nav-item">
-                            <a class="nav-link" href="/Transfer/Create">@L["Menu_BookTransfer"]</a>
+                            <a class="nav-link @(isTransfer ? "active" : "")" href="/Transfer/Create">@L["Menu_BookTransfer"]</a>
                         </li>
-
                         <li class="nav-item">
-                            <a class="nav-link" href="/Pages/Contacts">Контакти</a>
+                            <a class="nav-link @(isContacts ? "active" : "")" href="/Pages/Contacts">@L["Menu_Contacts"]</a>
                         </li>
                     </ul>
 
-                    <!-- RIGHT: LANGUAGE BUTTON -->
-                    <div class="ms-auto">
-                        <div class="dropdown">
-                            <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                @System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName.ToUpper()
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="/?culture=bg&ui-culture=bg">Български</a></li>
-                                <li><a class="dropdown-item" href="/?culture=en&ui-culture=en">English</a></li>
-                                <li><a class="dropdown-item" href="/?culture=ru&ui-culture=ru">Русский</a></li>
-                                <li><a class="dropdown-item" href="/?culture=fr&ui-culture=fr">Français</a></li>
-                            </ul>
-                        </div>
+                    <div class="pro-lang dropdown">
+                        <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            @System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName.ToUpper()
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item"
+                                   asp-controller="Localization" asp-action="SetLanguage"
+                                   asp-route-culture="bg"
+                                   asp-route-returnUrl="@returnUrl">Български</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   asp-controller="Localization" asp-action="SetLanguage"
+                                   asp-route-culture="en"
+                                   asp-route-returnUrl="@returnUrl">English</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   asp-controller="Localization" asp-action="SetLanguage"
+                                   asp-route-culture="ru"
+                                   asp-route-returnUrl="@returnUrl">Русский</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   asp-controller="Localization" asp-action="SetLanguage"
+                                   asp-route-culture="fr"
+                                   asp-route-returnUrl="@returnUrl">Français</a>
+                            </li>
+                        </ul>
                     </div>
 
                 </div>
@@ -66,19 +100,34 @@
         </nav>
     </header>
 
-    <main role="main" class="pb-4">
+    <main role="main">
         @RenderBody()
     </main>
 
-    <footer class="border-top footer text-muted mt-5">
+    <section class="pro-cta-strip">
+        <div class="container text-center">
+            <p class="pro-cta-text">@L["Footer_CTA_Text"]</p>
+
+            <div class="pro-cta-phones">
+                <a href="tel:+359878989847">+359 878 989 847</a>
+                <span>|</span>
+                <a href="tel:+359898212070">+359 898 212 070</a>
+                <span>|</span>
+                <a href="tel:+359878676251">+359 878 676 251</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-top footer text-muted">
         <div class="container py-3 text-center">
             <small>&copy; @DateTime.Now.Year - @L["Site_Title"]</small>
         </div>
     </footer>
 
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
 
 

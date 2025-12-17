@@ -1,8 +1,113 @@
-﻿@{
-    ViewData["Title"] = "Контакти";
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<TransferApp.SharedResources> L
+
+@{
+    ViewData["Title"] = L["Contacts_Title"];
 }
 
+<div class="contacts-hero">
+    <div class="container py-5">
+        <h1 class="contacts-title">@L["Contacts_Title"]</h1>
+        <p class="contacts-subtitle">
+            @L["Contacts_Subtitle"]
+        </p>
+    </div>
+</div>
+
 <div class="container py-5">
-    <h1 class="mb-3">Контакти</h1>
-    <p class="text-muted">Тук ще добавим телефон, имейл, работно време и форма за запитване.</p>
+
+    <!-- TOP CARDS -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="contact-card">
+                <div class="contact-card-title">@L["Contacts_Phone_Title"]</div>
+
+                <div class="contact-card-value">
+                    <a href="tel:+359878989847" class="text-white text-decoration-none">
+                        +359 878 989 847
+                    </a>
+                </div>
+
+                <div class="contact-card-value mt-1">
+                    <a href="tel:+359898212070" class="text-white text-decoration-none">
+                        +359 898 212 070
+                    </a>
+                </div>
+
+                <div class="contact-card-value mt-1">
+                    <a href="tel:+359878676251" class="text-white text-decoration-none">
+                        +359 878 676 251
+                    </a>
+                </div>
+
+                <div class="contact-card-note">@L["Contacts_Phone_Note"]</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="contact-card">
+                <div class="contact-card-title">@L["Contacts_Email_Title"]</div>
+                <div class="contact-card-value">info@protransfer.bg</div>
+                <div class="contact-card-note">@L["Contacts_Email_Note"]</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="contact-card">
+                <div class="contact-card-title">@L["Contacts_City_Title"]</div>
+                <div class="contact-card-value">София</div>
+                <div class="contact-card-note">@L["Contacts_City_Note"]</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FORM + MAP -->
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="contact-form-card">
+                <h2 class="contact-form-title">@L["Contacts_Form_Title"]</h2>
+
+                <!-- POST към QuickRequest -->
+                <form method="post" action="/Transfer/QuickRequest">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">@L["Contacts_Form_Name"]</label>
+                            <input class="form-control" name="customerName" required />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">@L["Contacts_Form_Phone"]</label>
+                            <input class="form-control" name="phone" required />
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">@L["Contacts_Form_Message_Label"]</label>
+                            <textarea class="form-control" name="notes" rows="4"
+                                      placeholder="@L["Contacts_Form_Message_Placeholder"]"></textarea>
+                        </div>
+
+                        <div class="col-12">
+                            <button class="btn btn-warning w-100 fw-bold" type="submit">
+                                @L["Contacts_Form_Submit"]
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="contact-form-hint mt-3">
+                    @L["Contacts_Form_Hint"]
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="contact-map-card">
+                <div class="contact-map-title">@L["Contacts_Map_Title"]</div>
+                <div class="contact-map-placeholder">
+                    @L["Contacts_Map_Placeholder"]
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

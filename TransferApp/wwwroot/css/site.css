@@ -1,127 +1,169 @@
+/* ================= BASE ================= */
 html {
-  font-size: 14px;
+    font-size: 14px;
+    height: 100%;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
-  margin-bottom: 60px;
+    min-height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
 }
-/* === HERO SECTION === */
 
-.hero-section {
+/* Focus стил */
+.btn:focus, .btn:active:focus,
+.form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem #fff, 0 0 0 0.25rem rgba(255,193,7,.35);
+}
+
+/* main да бута footer-a надолу */
+main {
+    flex: 1;
+}
+
+/* ================= NAVBAR ================= */
+.pro-navbar {
+    background: #0f1012 !important;
+    padding: 16px 0;
+}
+
+    .pro-navbar .navbar-brand {
+        font-weight: 900;
+        color: #fff !important;
+    }
+
+    .pro-navbar .nav-link {
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        font-weight: 900;
+        font-size: 12px;
+        color: rgba(255,255,255,.85) !important;
+        padding: 0 16px;
+        white-space: nowrap;
+    }
+
+        .pro-navbar .nav-link:hover,
+        .pro-navbar .nav-link.active {
+            color: #ffc107 !important;
+        }
+
+/* ================= HERO (HOME) ================= */
+.pro-hero {
     position: relative;
     min-height: 100vh;
-    background: url("/img/hero-bg.jpg") center/cover no-repeat;
-    color: #fff;
     display: flex;
     align-items: center;
+    overflow: hidden;
+    color: #fff;
 }
 
-
-.hero-overlay {
+/* фон */
+.pro-hero-bg {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.35) 60%, rgba(0,0,0,0.20) 100%);
+    background: url("/img/hero-bg.jpg") center / cover no-repeat;
+    transform: scale(1.03);
 }
 
+/* overlay */
+.pro-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient( 90deg, rgba(0,0,0,.75) 0%, rgba(0,0,0,.45) 55%, rgba(0,0,0,.25) 100% );
+}
 
-.hero-content {
+/* съдържание */
+.pro-hero-inner {
     position: relative;
-    z-index: 1;
-    padding-top: 40px;
-    padding-bottom: 40px;
+    z-index: 2;
+    width: 100%;
+    padding: 80px 0;
 }
 
-
-.hero-text .hero-title {
-    font-weight: 800;
-    font-size: 3rem;
-    line-height: 1.2;
+.pro-hero-left {
+    max-width: 520px;
 }
 
-.hero-text .hero-subtitle {
-    font-size: 1.1rem;
-    margin-top: 1rem;
-    max-width: 480px;
+.pro-hero-title {
+    font-weight: 900;
+    font-size: 64px;
+    line-height: 1.05;
+    margin-bottom: 24px;
 }
 
-.hero-bullets {
-    list-style: none;
-    padding-left: 0;
-    margin-top: 1rem;
-}
-
-    .hero-bullets li {
-        font-size: 0.95rem;
-    }
-
-/* ПАНЕЛ ЗА РЕЗЕРВАЦИЯ */
-
-.booking-panel {
-    background: #f8f9fa;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.booking-title {
+/* CTA */
+.pro-hero-cta {
+    display: inline-block;
     background: #ffc107;
-    color: #222;
-    margin: 0;
-    padding: 16px 20px;
-    font-weight: 700;
+    color: #111;
+    font-weight: 900;
+    padding: 14px 22px;
+    border-radius: 8px;
+    text-decoration: none;
 }
 
-.booking-form {
-    padding: 16px 20px 20px;
-}
-
-    .booking-form .form-label {
-        font-size: 0.9rem;
-        font-weight: 600;
+    .pro-hero-cta:hover {
+        background: #ffcd39;
+        color: #111;
     }
 
-/* Mobile adjustments */
-
-@media (max-width: 767.98px) {
-    .hero-section {
-        min-height: auto;
+/* responsive hero */
+@media (max-width: 991.98px) {
+    .pro-hero-title {
+        font-size: 44px;
     }
 
-    .hero-text .hero-title {
-        font-size: 2.2rem;
+    .pro-hero {
+        min-height: 70vh;
     }
 }
 
-/* ===== BOOKING PANEL (PREMIUM STYLE) ===== */
+/* ================= FEATURES ================= */
+.features-section {
+    background: #f8f9fa;
+}
 
+.feature-card {
+    background: #fff;
+    padding: 30px 24px;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.06);
+    transition: transform .25s ease, box-shadow .25s ease;
+    height: 100%;
+}
+
+    .feature-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px rgba(0,0,0,.10);
+    }
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+
+/* ================= BOOKING PANEL ================= */
 .booking-panel {
-    background: #ffffff;
+    background: #fff;
     border-radius: 12px;
+    border: 1px solid rgba(0,0,0,.08);
     overflow: hidden;
-    border: 1px solid rgba(0,0,0,0.08);
 }
 
 .booking-title {
     background: #ffc107;
     color: #111;
-    margin: 0;
     padding: 18px 22px;
-    font-weight: 800;
+    font-weight: 900;
     font-size: 1.25rem;
+    margin: 0;
 }
 
 .booking-form {
@@ -129,9 +171,8 @@ body {
 }
 
     .booking-form .form-label {
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: #333;
+        font-size: .85rem;
+        font-weight: 800;
         margin-bottom: 6px;
     }
 
@@ -140,72 +181,90 @@ body {
         padding: 10px 12px;
     }
 
-        .booking-form .form-control:focus {
-            border-color: rgba(0,0,0,0.25);
-            box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
-        }
-
     .booking-form .btn {
         border-radius: 10px;
-        padding: 12px 14px;
-        font-weight: 800;
+        padding: 12px;
+        font-weight: 900;
     }
 
-/* === NAVBAR (overlay върху hero) === */
-.navbar-protransfer {
-    position: sticky;
-    top: 0;
-    z-index: 9999;
-    background: rgba(0,0,0,0.35);
-    backdrop-filter: blur(6px);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+/* ================= PRICES ================= */
+.prices-hero,
+.contacts-hero {
+    background: rgba(0,0,0,.55);
+    color: #fff;
 }
 
-    .navbar-protransfer .navbar-brand {
-        font-weight: 800;
-        letter-spacing: .2px;
-    }
-
-    .navbar-protransfer .nav-link {
-        font-weight: 600;
-        opacity: 0.9;
-    }
-
-        .navbar-protransfer .nav-link:hover {
-            opacity: 1;
-        }
-
-/* === PROTRANSFER NAVBAR === */
-
-.navbar-protransfer {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background: rgba(25, 28, 31, 0.85);
-    backdrop-filter: blur(6px);
-    padding-top: 12px;
-    padding-bottom: 12px;
+.prices-title,
+.contacts-title {
+    font-weight: 900;
 }
 
-    .navbar-protransfer .nav-link {
-        color: #eaeaea;
-        font-weight: 500;
+/* ================= CONTACTS ================= */
+.contact-card,
+.contact-map-card {
+    background: #111;
+    color: #fff;
+    border-radius: 14px;
+    padding: 18px;
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+.contact-form-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid rgba(0,0,0,.08);
+}
+
+/* ================= FOOTER ================= */
+.footer {
+    background: #f8f9fa;
+    padding: 14px 0;
+    text-align: center;
+    font-size: 13px;
+}
+/* ===== FOOTER CALL STRIP ===== */
+
+.pro-cta-strip {
+    background: #ffc107;
+    padding: 48px 16px;
+}
+
+.pro-cta-text {
+    font-weight: 900;
+    font-size: 1.4rem;
+    margin-bottom: 14px;
+    color: #111;
+}
+
+.pro-cta-phones {
+    font-size: 2.2rem;
+    font-weight: 900;
+}
+
+    .pro-cta-phones a {
+        color: #111;
+        text-decoration: none;
     }
 
-        .navbar-protransfer .nav-link:hover {
-            color: #ffc107;
+    .pro-cta-phones span {
+        margin: 0 12px;
+        color: #111;
+    }
+
+/* Mobile */
+@media (max-width: 768px) {
+    .pro-cta-phones {
+        font-size: 1.6rem;
+        line-height: 1.4;
+    }
+
+        .pro-cta-phones span {
+            display: none;
         }
 
-    .navbar-protransfer .navbar-brand {
-        font-weight: 700;
-        color: #ffffff;
-    }
-
-    /* Navbar: не чупи линковете на 2 реда */
-    .navbar-protransfer .navbar-nav .nav-link {
-        white-space: nowrap;
-        padding-left: 12px;
-        padding-right: 12px;
-    }
-
+        .pro-cta-phones a {
+            display: block;
+        }
+}
 

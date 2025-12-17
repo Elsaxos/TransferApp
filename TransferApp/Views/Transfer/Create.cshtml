@@ -1,62 +1,73 @@
 ﻿@model TransferApp.Models.TransferRequest
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<TransferApp.SharedResources> L
 
 @{
-    ViewData["Title"] = "Резервирай трансфер";
+    ViewData["Title"] = L["Transfer_Create_Title"];
 }
 
-<h2 class="mb-4">Резервирай трансфер</h2>
+<h2 class="mb-4">@L["Transfer_Create_Heading"]</h2>
 
 <form asp-action="Create" method="post" class="row g-3">
+    @Html.AntiForgeryToken()
+
     <div asp-validation-summary="All" class="text-danger"></div>
 
     <div class="col-md-6">
-        <label asp-for="CustomerName" class="form-label">Име</label>
+        <label asp-for="CustomerName" class="form-label">@L["Transfer_Label_Name"]</label>
         <input asp-for="CustomerName" class="form-control" />
         <span asp-validation-for="CustomerName" class="text-danger"></span>
     </div>
 
     <div class="col-md-6">
-        <label asp-for="Phone" class="form-label">Телефон</label>
+        <label asp-for="Phone" class="form-label">@L["Transfer_Label_Phone"]</label>
         <input asp-for="Phone" class="form-control" />
         <span asp-validation-for="Phone" class="text-danger"></span>
     </div>
-  
 
     <div class="col-md-6">
-        <label asp-for="PickupAddress" class="form-label">От</label>
+        <label asp-for="PickupAddress" class="form-label">@L["Transfer_Label_From"]</label>
         <input asp-for="PickupAddress" class="form-control" />
         <span asp-validation-for="PickupAddress" class="text-danger"></span>
     </div>
 
     <div class="col-md-6">
-        <label asp-for="DropoffAddress" class="form-label">До</label>
+        <label asp-for="DropoffAddress" class="form-label">@L["Transfer_Label_To"]</label>
         <input asp-for="DropoffAddress" class="form-control" />
         <span asp-validation-for="DropoffAddress" class="text-danger"></span>
     </div>
 
     <div class="col-md-6">
-        <label asp-for="PickupDateTime" class="form-label">Дата и час</label>
+        <label asp-for="PickupDateTime" class="form-label">@L["Transfer_Label_DateTime"]</label>
         <input asp-for="PickupDateTime"
                type="datetime-local"
-               value="@Model.PickupDateTime.ToString("yyyy-MM-ddTHH:mm")"
-               class="form-control" />
+               class="form-control"
+               value="@(Model?.PickupDateTime.ToString("yyyy-MM-ddTHH:mm"))" />
         <span asp-validation-for="PickupDateTime" class="text-danger"></span>
     </div>
 
     <div class="col-md-3">
-        <label asp-for="Passengers" class="form-label">Пътници</label>
+        <label asp-for="Passengers" class="form-label">@L["Transfer_Label_Passengers"]</label>
         <input asp-for="Passengers" type="number" min="1" class="form-control" />
         <span asp-validation-for="Passengers" class="text-danger"></span>
     </div>
 
+    <div class="col-12">
+        <label asp-for="Notes" class="form-label">@L["Transfer_Label_Notes"]</label>
+        <textarea asp-for="Notes" class="form-control" rows="3"
+                  placeholder="@L["Transfer_Notes_Placeholder"]"></textarea>
+        <span asp-validation-for="Notes" class="text-danger"></span>
+    </div>
+
+    <input type="hidden" asp-for="Status" value="Запитване" />
+
     <div class="col-12 mt-3">
-        <button type="submit" class="btn btn-primary">Изпрати заявка</button>
-        <a href="/" class="btn btn-outline-secondary ms-2">Отказ</a>
+        <button type="submit" class="btn btn-primary">@L["Transfer_Submit_Button"]</button>
+        <a href="/" class="btn btn-outline-secondary ms-2">@L["Transfer_Cancel_Button"]</a>
     </div>
 </form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-
 

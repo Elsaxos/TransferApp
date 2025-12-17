@@ -1,4 +1,6 @@
+п»їusing Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using TransferApp.Data;
@@ -6,25 +8,35 @@ using TransferApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Регистрираме EF Core с нашия ApplicationDbContext
+// EF Core
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Регистрираме имейл услугата (можем и да не я ползваме още)
+// Email service
 builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
 
-
+// Localization
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
-// MVC + локализация за View-та и DataAnnotations
+// MVC + localization
 builder.Services
     .AddControllersWithViews()
-    .AddViewLocalization()
+    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
     .AddDataAnnotationsLocalization();
+
+// Auth
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/Denied";
+    });
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Настройки за поддържаните езици
+// Cultures
 var supportedCultures = new[]
 {
     new CultureInfo("bg"),
@@ -40,7 +52,7 @@ var localizationOptions = new RequestLocalizationOptions
     SupportedUICultures = supportedCultures
 };
 
-// позволяваме смяна на езика чрез query string и cookie
+// РџСЉСЂРІРѕ query string (Р°РєРѕ РёРјР°), РїРѕСЃР»Рµ cookie (Р°РєРѕ РЅСЏРјР° query)
 localizationOptions.RequestCultureProviders.Insert(0, new QueryStringRequestCultureProvider());
 localizationOptions.RequestCultureProviders.Insert(1, new CookieRequestCultureProvider());
 
@@ -57,6 +69,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
@@ -64,3 +77,4 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+

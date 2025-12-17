@@ -4,19 +4,17 @@ namespace TransferApp.Controllers
 {
     public class PagesController : Controller
     {
+        [HttpGet]
         public IActionResult Prices()
         {
             return View();
         }
 
-        public IActionResult About()
-        {
-            return View();
-        }
-
+        [HttpGet]
         public IActionResult Contacts()
         {
             return View();
         }
     }
 }
+

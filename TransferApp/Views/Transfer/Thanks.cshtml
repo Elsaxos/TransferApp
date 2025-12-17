@@ -1,3 +1,14 @@
-﻿<h2>Благодарим!</h2>
-<p>Заявката е изпратена успешно.</p>
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<TransferApp.SharedResources> L
+
+@{
+    ViewData["Title"] = L["Thanks_Title"];
+}
+
+<div class="container py-5">
+    <h2 class="fw-bold mb-2">@L["Thanks_Heading"]</h2>
+    <p class="text-muted mb-4">@L["Thanks_Text"]</p>
+
+    <a class="btn btn-warning fw-bold" href="/">@L["Thanks_BackHome"]</a>
+</div>
 

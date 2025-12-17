@@ -1,96 +1,72 @@
 ﻿@using Microsoft.Extensions.Localization
-@inject IStringLocalizer<SharedResources> L
-
+@inject IStringLocalizer<TransferApp.SharedResources> L
 
 @{
-    ViewData["Title"] = "ProTransfer";
+    ViewData["Title"] = L["Home_Title"];
 }
 
-<div class="hero-section">
-    <div class="hero-overlay"></div>
+<section class="pro-hero">
+    <div class="pro-hero-bg"></div>
+    <div class="pro-hero-overlay"></div>
 
-    <div class="container hero-content">
-        <div class="row align-items-center">
+    <div class="container pro-hero-inner">
+        <div class="pro-hero-left">
+            <h1 class="pro-hero-title">
+                @L["Hero_Title_Line1"]<br />
+                @L["Hero_Title_Line2"]<br />
+                @L["Hero_Title_Line3"]<br />
+                @L["Hero_Title_Line4"]
+            </h1>
 
-            <!-- ЛЯВА ЧАСТ – ТЕКСТ -->
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <div class="hero-text">
-                    <h1 class="hero-title">
-                        Такси трансфери<br />
-                        в страната<br />
-                        и чужбина!
-                    </h1>
-                    <p class="hero-subtitle">
-                        ProTransfer – надеждни частни трансфери до летища, хотели и всяка точка в страната и чужбина.
-                    </p>
+            <p class="pro-hero-subtitle">@L["Hero_Subtitle"]</p>
 
-                    <ul class="hero-bullets">
-                        <li>✅ Летищни трансфери</li>
-                        <li>✅ Междуградски пътувания</li>
-                        <li>✅ Фирмени и VIP трансфери</li>
-                    </ul>
+            <ul class="hero-bullets">
+                <li>✅ @L["Hero_Bullet_1"]</li>
+                <li>✅ @L["Hero_Bullet_2"]</li>
+                <li>✅ @L["Hero_Bullet_3"]</li>
+            </ul>
 
-                    <a href="/Transfer/Create" class="btn btn-warning btn-lg mt-3">
-                        Резервирай трансфер
-                    </a>
-                </div>
-            </div>
-
-            <!-- ДЯСНА ЧАСТ – ПАНЕЛ „РЕЗЕРВИРАЙ СЕГА“ -->
-            <div class="col-lg-5 offset-lg-1">
-                <div class="booking-panel shadow-lg">
-                    <h2 class="booking-title">Резервирай сега</h2>
-
-                    <form asp-controller="Transfer" asp-action="Create" method="get" class="booking-form">
-                        <div class="row g-2">
-                            <div class="col-12 col-md-6">
-                                <label class="form-label">Име</label>
-                                <input class="form-control" name="customerName" />
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <label class="form-label">Телефон</label>
-                                <input class="form-control" name="phone" />
-                            </div>
-
-                            <div class="col-12 col-md-6">
-                                <label class="form-label">От</label>
-                                <input class="form-control" name="from" />
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <label class="form-label">До</label>
-                                <input class="form-control" name="to" />
-                            </div>
-
-                            <div class="col-12 col-md-6">
-                                <label class="form-label">Дата</label>
-                                <input class="form-control" type="date" name="date" />
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <label class="form-label">Час</label>
-                                <input class="form-control" type="time" name="time" />
-                            </div>
-
-                            <div class="col-12">
-                                <label class="form-label">Пътници</label>
-                                <input class="form-control" type="number" name="passengers" min="1" value="1" />
-                            </div>
-                        </div>
-
-                        <div class="form-check mt-3">
-                            <input class="form-check-input" type="checkbox" id="termsCheck">
-                            <label class="form-check-label" for="termsCheck">
-                                Съгласен съм личните ми данни да бъдат обработвани за целите на резервацията.
-                            </label>
-                        </div>
-
-                        <button type="submit" class="btn btn-dark w-100 mt-3">
-                            Изпрати заявка
-                        </button>
-                    </form>
-                </div>
-            </div>
-
+            <a class="btn pro-hero-cta" href="/Transfer/Create">
+                @L["Hero_CTA"]
+            </a>
         </div>
     </div>
-</div>
+</section>
+
+<section class="features-section py-5">
+    <div class="container">
+        <div class="row text-center mb-4">
+            <div class="col">
+                <h2 class="fw-bold">@L["Services_Title"]</h2>
+                <p class="text-muted">@L["Services_Subtitle"]</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">✈️</div>
+                    <h5>@L["Service_1_Title"]</h5>
+                    <p>@L["Service_1_Text"]</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">🚗</div>
+                    <h5>@L["Service_2_Title"]</h5>
+                    <p>@L["Service_2_Text"]</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <h5>@L["Service_3_Title"]</h5>
+                    <p>@L["Service_3_Text"]</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 

@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TransferApp.Data;
+using TransferApp.Models;
 
 namespace TransferApp.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -13,15 +16,31 @@ namespace TransferApp.Controllers
             _db = db;
         }
 
-        // GET: /Admin/Index
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var requests = await _db.TransferRequests
+            // нормализираме Status: null -> "", trim
+            var inquiries = await _db.TransferRequests
+                .Where(r => ((r.Status ?? "").Trim()) == "Запитване")
                 .OrderByDescending(r => r.Id)
                 .ToListAsync();
 
-            return View(requests);
+            var reservations = await _db.TransferRequests
+                .Where(r => ((r.Status ?? "").Trim()) != "Запитване")
+                .OrderByDescending(r => r.Id)
+                .ToListAsync();
+
+            var viewModel = new AdminDashboardViewModel
+            {
+                Inquiries = inquiries,
+                Reservations = reservations
+            };
+
+            return View(viewModel);
         }
     }
 }
+
+
+
 
