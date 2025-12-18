@@ -5,6 +5,12 @@ namespace TransferApp.Controllers
     public class PagesController : Controller
     {
         [HttpGet]
+        public IActionResult About()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult Prices()
         {
             return View();
@@ -17,4 +23,5 @@ namespace TransferApp.Controllers
         }
     }
 }
+
 

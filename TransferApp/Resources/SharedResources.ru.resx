@@ -217,5 +217,46 @@
 	<data name="Prices_Important_Text">
 		<value>Цены ориентировочные и могут изменяться в зависимости от времени, багажа, остановок и типа автомобиля.</value>
 	</data>
+	<data name="Services_Title" xml:space="preserve"><value>Наши услуги</value></data>
+	<data name="Services_Subtitle" xml:space="preserve"><value>Профессиональные трансферы для любых нужд</value></data>
+
+	<data name="Service_1_Title" xml:space="preserve"><value>Трансферы в аэропорт</value></data>
+	<data name="Service_1_Text" xml:space="preserve"><value>Пунктуальные и комфортные трансферы во все аэропорты.</value></data>
+
+	<data name="Service_2_Title" xml:space="preserve"><value>Междугородние поездки</value></data>
+	<data name="Service_2_Text" xml:space="preserve"><value>Быстро и безопасно по Болгарии и за рубежом.</value></data>
+
+	<data name="Service_3_Title" xml:space="preserve"><value>VIP обслуживание</value></data>
+	<data name="Service_3_Text" xml:space="preserve"><value>Премиум авто и конфиденциальность.</value></data>
+	<data name="About_Title" xml:space="preserve"><value>О нас</value></data>
+	<data name="About_Hero_Title" xml:space="preserve"><value>О нас</value></data>
+	<data name="About_Hero_Subtitle" xml:space="preserve"><value>Профессиональные трансферы с акцентом на безопасность, пунктуальность и спокойную поездку — каждый день, в любое время.</value></data>
+
+	<data name="About_Why_Title" xml:space="preserve"><value>Почему выбирают нас</value></data>
+	<data name="About_Why_P1" xml:space="preserve"><value>Надёжные междугородние и аэропортовые трансферы с понятными и конкурентными ценами. Качество и безопасность — на первом месте.</value></data>
+	<data name="About_Why_P2" xml:space="preserve"><value>Не важно, по работе вы или в отпуске — вы можете рассчитывать на корректность, конфиденциальность и быструю реакцию на изменения.</value></data>
+
+	<data name="About_WhatWeDo_Title" xml:space="preserve"><value>Что мы делаем</value></data>
+	<data name="About_WhatWeDo_P1" xml:space="preserve"><value>Встречи, проводы и трансферы до ключевых локаций в Болгарии и за рубежом:</value></data>
+
+	<data name="About_List_1" xml:space="preserve"><value>Аэропорты, отели и адреса</value></data>
+	<data name="About_List_2" xml:space="preserve"><value>Ж/д и автовокзалы</value></data>
+	<data name="About_List_3" xml:space="preserve"><value>Бизнес-центры и мероприятия</value></data>
+	<data name="About_List_4" xml:space="preserve"><value>Междугородние маршруты и дальние поездки</value></data>
+
+	<data name="About_Experience_P1" xml:space="preserve"><value>Наша команда — профессиональные водители с отличными навыками и более чем 15-летним опытом в такси и трансферных услугах.</value></data>
+	<data name="About_Coverage_P1" xml:space="preserve"><value>Перевозки по всей Болгарии, а также международные трансферы по запросу.</value></data>
+
+	<data name="About_Comfort_Title" xml:space="preserve"><value>Комфорт в дороге</value></data>
+	<data name="About_Comfort_1" xml:space="preserve"><value>Кондиционер в каждом автомобиле</value></data>
+	<data name="About_Comfort_2" xml:space="preserve"><value>Автомобили без запаха табака</value></data>
+	<data name="About_Comfort_3" xml:space="preserve"><value>Музыка по вашему вкусу</value></data>
+
+	<data name="About_Easy_Title" xml:space="preserve"><value>Простое бронирование</value></data>
+	<data name="About_Easy_Text" xml:space="preserve"><value>Бронирование быстрое и удобное — свяжитесь с нами в любое время, и мы организуем вашу поездку.</value></data>
+	<data name="Menu_About" xml:space="preserve">
+  <value>О нас</value>
+</data>
+
 
 </root>

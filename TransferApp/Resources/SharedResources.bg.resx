@@ -183,4 +183,60 @@
 	<data name="Prices_Important_Title" xml:space="preserve"><value>Важно</value></data>
 	<data name="Prices_Important_Text" xml:space="preserve"><value>Цените са ориентировъчни и могат да се променят според час, багаж, междинни спирки и тип автомобил.</value></data>
 
+	<data name="Services_Title" xml:space="preserve"><value>Нашите услуги</value></data>
+	<data name="Services_Subtitle" xml:space="preserve"><value>Професионални трансфери за всяка нужда</value></data>
+
+	<data name="Service_1_Title" xml:space="preserve"><value>Летищни трансфери</value></data>
+	<data name="Service_1_Text" xml:space="preserve"><value>Навременни и комфортни трансфери до всички летища.</value></data>
+
+	<data name="Service_2_Title" xml:space="preserve"><value>Междуградски пътувания</value></data>
+	<data name="Service_2_Text" xml:space="preserve"><value>Бързо и сигурно пътуване в страната и чужбина.</value></data>
+
+	<data name="Service_3_Title" xml:space="preserve"><value>VIP обслужване</value></data>
+	<data name="Service_3_Text" xml:space="preserve"><value>Премиум автомобили и дискретност.</value></data>
+
+	<data name="Footer_CTA_Text" xml:space="preserve">
+    <value>Благодарим Ви, че избрахте нас. За Вас сме на разположение 24/7!</value>
+  </data>
+	<data name="Menu_Prices" xml:space="preserve">
+    <value>Цени</value>
+  </data>
+
+	<data name="Menu_Contacts" xml:space="preserve">
+    <value>Контакти</value>
+  </data>
+	<data name="About_Title" xml:space="preserve"><value>За нас</value></data>
+	<data name="About_Hero_Title" xml:space="preserve"><value>За нас</value></data>
+	<data name="About_Hero_Subtitle" xml:space="preserve"><value>Професионални трансфери с фокус върху сигурността, точността и спокойното пътуване – всеки ден, по всяко време.</value></data>
+
+	<data name="About_Why_Title" xml:space="preserve"><value>Защо да изберете нас</value></data>
+	<data name="About_Why_P1" xml:space="preserve"><value>Предлагаме надеждни междуградски и летищни трансфери на ясни и конкурентни цени. За нас качественото обслужване и безопасността са приоритет.</value></data>
+	<data name="About_Why_P2" xml:space="preserve"><value>Независимо дали пътувате по работа или за почивка, можете да разчитате на коректност, дискретност и навременни реакции при промени.</value></data>
+
+	<data name="About_WhatWeDo_Title" xml:space="preserve"><value>Какво правим</value></data>
+	<data name="About_WhatWeDo_P1" xml:space="preserve"><value>Осигуряваме посрещания и изпращания, трансфери и превоз до ключови локации в страната и чужбина:</value></data>
+
+	<data name="About_List_1" xml:space="preserve"><value>Летища, хотели и адреси</value></data>
+	<data name="About_List_2" xml:space="preserve"><value>Гари и автогари</value></data>
+	<data name="About_List_3" xml:space="preserve"><value>Бизнес сгради и събития</value></data>
+	<data name="About_List_4" xml:space="preserve"><value>Междуградски маршрути и дълги пътувания</value></data>
+
+	<data name="About_Experience_P1" xml:space="preserve"><value>Екипът ни е от професионални шофьори с отлични умения и над 15 години опит в таксиметрови и трансферни услуги.</value></data>
+	<data name="About_Coverage_P1" xml:space="preserve"><value>Предлагаме транспорт до всяка точка в България, както и международни трансфери според нуждите на клиента.</value></data>
+
+	<data name="About_Comfort_Title" xml:space="preserve"><value>Комфорт по време на път</value></data>
+	<data name="About_Comfort_1" xml:space="preserve"><value>Климатик във всяка кола</value></data>
+	<data name="About_Comfort_2" xml:space="preserve"><value>Автомобили без цигарен дим</value></data>
+	<data name="About_Comfort_3" xml:space="preserve"><value>Музика съобразена с вашите предпочитания</value></data>
+
+	<data name="About_Easy_Title" xml:space="preserve"><value>Лесна резервация</value></data>
+	<data name="About_Easy_Text" xml:space="preserve"><value>Резервацията е бърза и удобна – свържете се с нас по всяко време и ние ще организираме пътуването ви.</value></data>
+	<data name="Menu_About" xml:space="preserve">
+  <value>За нас</value>
+</data>
+
+
+
+
+
 </root>

@@ -1,8 +1,58 @@
-﻿@{
-    ViewData["Title"] = "За нас";
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<TransferApp.SharedResources> L
+
+@{
+    ViewData["Title"] = L["About_Title"];
 }
 
-<div class="container py-5">
-    <h1 class="mb-3">За нас</h1>
-    <p class="text-muted">Тук ще добавим информация за услугата, автопарка и гаранциите.</p>
-</div>
+<section class="about-hero">
+    <div class="container py-5 text-center">
+        <h1 class="about-title">@L["About_Hero_Title"]</h1>
+        <p class="about-subtitle">@L["About_Hero_Subtitle"]</p>
+    </div>
+</section>
+
+<section class="about-section">
+    <div class="container py-5">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+
+                <h2 class="about-h2">@L["About_Why_Title"]</h2>
+                <p class="about-p">@L["About_Why_P1"]</p>
+                <p class="about-p">@L["About_Why_P2"]</p>
+
+                <hr class="about-hr" />
+
+                <h2 class="about-h2">@L["About_WhatWeDo_Title"]</h2>
+                <p class="about-p">@L["About_WhatWeDo_P1"]</p>
+
+                <ul class="about-list">
+                    <li>@L["About_List_1"]</li>
+                    <li>@L["About_List_2"]</li>
+                    <li>@L["About_List_3"]</li>
+                    <li>@L["About_List_4"]</li>
+                </ul>
+
+                <p class="about-p">@L["About_Experience_P1"]</p>
+                <p class="about-p">@L["About_Coverage_P1"]</p>
+
+                <div class="about-box mt-4">
+                    <h3 class="about-h3">@L["About_Comfort_Title"]</h3>
+                    <ul class="about-list">
+                        <li>@L["About_Comfort_1"]</li>
+                        <li>@L["About_Comfort_2"]</li>
+                        <li>@L["About_Comfort_3"]</li>
+                    </ul>
+                </div>
+
+                <div class="about-box mt-4">
+                    <h3 class="about-h3">@L["About_Easy_Title"]</h3>
+                    <p class="about-p mb-0">@L["About_Easy_Text"]</p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>

@@ -217,5 +217,46 @@
 	<data name="Prices_Important_Text">
 		<value>Les prix sont indicatifs et peuvent varier selon l’heure, les bagages, les arrêts et le type de véhicule.</value>
 	</data>
+	<data name="Services_Title" xml:space="preserve"><value>Nos services</value></data>
+	<data name="Services_Subtitle" xml:space="preserve"><value>Des transferts professionnels pour chaque besoin</value></data>
+
+	<data name="Service_1_Title" xml:space="preserve"><value>Transferts aéroport</value></data>
+	<data name="Service_1_Text" xml:space="preserve"><value>Transferts ponctuels et confortables vers tous les aéroports.</value></data>
+
+	<data name="Service_2_Title" xml:space="preserve"><value>Trajets interurbains</value></data>
+	<data name="Service_2_Text" xml:space="preserve"><value>Voyage rapide et sûr en Bulgarie et à l’étranger.</value></data>
+
+	<data name="Service_3_Title" xml:space="preserve"><value>Service VIP</value></data>
+	<data name="Service_3_Text" xml:space="preserve"><value>Véhicules premium et discrétion.</value></data>
+	<data name="About_Title" xml:space="preserve"><value>À propos</value></data>
+	<data name="About_Hero_Title" xml:space="preserve"><value>À propos de nous</value></data>
+	<data name="About_Hero_Subtitle" xml:space="preserve"><value>Des transferts professionnels axés sur la sécurité, la ponctualité et un trajet serein — tous les jours, à tout moment.</value></data>
+
+	<data name="About_Why_Title" xml:space="preserve"><value>Pourquoi nous choisir</value></data>
+	<data name="About_Why_P1" xml:space="preserve"><value>Transferts interurbains et aéroportuaires fiables, avec des tarifs clairs et compétitifs. La qualité et la sécurité passent avant tout.</value></data>
+	<data name="About_Why_P2" xml:space="preserve"><value>Que ce soit pour le travail ou les loisirs, vous pouvez compter sur notre discrétion, notre sérieux et notre réactivité.</value></data>
+
+	<data name="About_WhatWeDo_Title" xml:space="preserve"><value>Ce que nous faisons</value></data>
+	<data name="About_WhatWeDo_P1" xml:space="preserve"><value>Accueil, dépose et transferts vers des lieux clés en Bulgarie et à l’étranger :</value></data>
+
+	<data name="About_List_1" xml:space="preserve"><value>Aéroports, hôtels et adresses</value></data>
+	<data name="About_List_2" xml:space="preserve"><value>Gares et gares routières</value></data>
+	<data name="About_List_3" xml:space="preserve"><value>Bâtiments d’affaires et événements</value></data>
+	<data name="About_List_4" xml:space="preserve"><value>Trajets interurbains et longues distances</value></data>
+
+	<data name="About_Experience_P1" xml:space="preserve"><value>Notre équipe est composée de chauffeurs professionnels avec d’excellentes compétences et plus de 15 ans d’expérience en taxi et transferts.</value></data>
+	<data name="About_Coverage_P1" xml:space="preserve"><value>Nous assurons des trajets partout en Bulgarie ainsi que des transferts internationaux selon vos besoins.</value></data>
+
+	<data name="About_Comfort_Title" xml:space="preserve"><value>Confort pendant le trajet</value></data>
+	<data name="About_Comfort_1" xml:space="preserve"><value>Climatisation dans chaque véhicule</value></data>
+	<data name="About_Comfort_2" xml:space="preserve"><value>Véhicules non-fumeurs</value></data>
+	<data name="About_Comfort_3" xml:space="preserve"><value>Musique selon vos préférences</value></data>
+
+	<data name="About_Easy_Title" xml:space="preserve"><value>Réservation facile</value></data>
+	<data name="About_Easy_Text" xml:space="preserve"><value>La réservation est rapide et pratique — contactez-nous à tout moment et nous organiserons votre trajet.</value></data>
+	<data name="Menu_About" xml:space="preserve">
+  <value>À propos</value>
+</data>
+
 
 </root>

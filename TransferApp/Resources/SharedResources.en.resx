@@ -234,6 +234,47 @@
 	<data name="Prices_Important_Text">
 		<value>Prices are indicative and may vary depending on time, luggage, stops and vehicle type.</value>
 	</data>
+	<data name="Services_Title" xml:space="preserve"><value>Our services</value></data>
+	<data name="Services_Subtitle" xml:space="preserve"><value>Professional transfers for every need</value></data>
+
+	<data name="Service_1_Title" xml:space="preserve"><value>Airport transfers</value></data>
+	<data name="Service_1_Text" xml:space="preserve"><value>On-time and comfortable transfers to all airports.</value></data>
+
+	<data name="Service_2_Title" xml:space="preserve"><value>Intercity trips</value></data>
+	<data name="Service_2_Text" xml:space="preserve"><value>Fast and safe travel in Bulgaria and abroad.</value></data>
+
+	<data name="Service_3_Title" xml:space="preserve"><value>VIP service</value></data>
+	<data name="Service_3_Text" xml:space="preserve"><value>Premium cars and discretion.</value></data>
+	<data name="About_Title" xml:space="preserve"><value>About</value></data>
+	<data name="About_Hero_Title" xml:space="preserve"><value>About us</value></data>
+	<data name="About_Hero_Subtitle" xml:space="preserve"><value>Professional transfers focused on safety, punctuality and a calm ride – every day, anytime.</value></data>
+
+	<data name="About_Why_Title" xml:space="preserve"><value>Why choose us</value></data>
+	<data name="About_Why_P1" xml:space="preserve"><value>We provide reliable intercity and airport transfers with clear, competitive pricing. Quality service and safety come first.</value></data>
+	<data name="About_Why_P2" xml:space="preserve"><value>Whether you travel for business or leisure, you can count on discretion, correctness and quick response to changes.</value></data>
+
+	<data name="About_WhatWeDo_Title" xml:space="preserve"><value>What we do</value></data>
+	<data name="About_WhatWeDo_P1" xml:space="preserve"><value>We handle pickups, drop-offs and transfers to key locations in Bulgaria and abroad:</value></data>
+
+	<data name="About_List_1" xml:space="preserve"><value>Airports, hotels and addresses</value></data>
+	<data name="About_List_2" xml:space="preserve"><value>Train and bus stations</value></data>
+	<data name="About_List_3" xml:space="preserve"><value>Business buildings and events</value></data>
+	<data name="About_List_4" xml:space="preserve"><value>Intercity routes and long-distance trips</value></data>
+
+	<data name="About_Experience_P1" xml:space="preserve"><value>Our team consists of professional drivers with excellent skills and over 15 years of experience in taxi and transfer services.</value></data>
+	<data name="About_Coverage_P1" xml:space="preserve"><value>We offer transport to any point in Bulgaria, as well as international transfers based on your needs.</value></data>
+
+	<data name="About_Comfort_Title" xml:space="preserve"><value>Comfort on the road</value></data>
+	<data name="About_Comfort_1" xml:space="preserve"><value>Air conditioning in every car</value></data>
+	<data name="About_Comfort_2" xml:space="preserve"><value>Smoke-free vehicles</value></data>
+	<data name="About_Comfort_3" xml:space="preserve"><value>Music tailored to your preference</value></data>
+
+	<data name="About_Easy_Title" xml:space="preserve"><value>Easy booking</value></data>
+	<data name="About_Easy_Text" xml:space="preserve"><value>Booking is quick and convenient—contact us anytime and we will arrange your trip.</value></data>
+	<data name="Menu_About" xml:space="preserve">
+  <value>About</value>
+</data>
+
 
 </root>
 
