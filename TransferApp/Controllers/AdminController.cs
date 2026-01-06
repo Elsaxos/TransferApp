@@ -38,6 +38,18 @@ namespace TransferApp.Controllers
 
             return View(viewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Prices()
+        {
+            var items = await _db.PriceItems
+                .OrderBy(p => p.SortOrder)
+                .ThenBy(p => p.Id)
+                .ToListAsync();
+
+            return View(items); // <-- ще търси Views/Admin/Prices.cshtml
+        }
+
     }
 }
 

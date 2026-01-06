@@ -1,0 +1,44 @@
+﻿@using Microsoft.Extensions.Localization
+@using TransferApp.Models
+@inject IStringLocalizer<TransferApp.SharedResources> L
+
+@model List<PriceItem>
+
+<div class="container py-4">
+    <h1 class="mb-4">Цени (Админ)</h1>
+
+    @if (Model == null || Model.Count == 0)
+    {
+        <div class="alert alert-secondary">
+            @L["Prices_Empty"]
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-dark table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Маршрут (BG)</th>
+                        <th>Еднопосочно (€)</th>
+                        <th>Отиване/връщане (€)</th>
+                        <th>Активна</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var x in Model)
+                    {
+                        <tr>
+                            <td>@x.SortOrder</td>
+                            <td>@x.RouteBg</td>
+                            <td>@x.OneWayPrice</td>
+                            <td>@x.RoundTripPrice</td>
+                            <td>@(x.IsActive ? "Да" : "Не")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

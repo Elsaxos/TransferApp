@@ -1,0 +1,63 @@
+﻿@model TransferApp.Models.PriceItem
+
+@{
+    ViewData["Title"] = "Редакция цена";
+}
+
+<div class="container py-4" style="max-width: 900px;">
+    <h2 class="mb-3">Редакция цена #@Model.Id</h2>
+
+    <form method="post" asp-action="PricesEdit">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row g-3">
+            <div class="col-12">
+                <label class="form-label">Ключ на маршрута (RouteKey)</label>
+                <input class="form-control" asp-for="RouteKey" />
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Маршрут (BG)</label>
+                <input class="form-control" asp-for="RouteBg" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Маршрут (EN)</label>
+                <input class="form-control" asp-for="RouteEn" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Маршрут (RU)</label>
+                <input class="form-control" asp-for="RouteRu" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Маршрут (FR)</label>
+                <input class="form-control" asp-for="RouteFr" />
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Еднопосочно (€)</label>
+                <input class="form-control" asp-for="OneWayPrice" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Двупосочно (€)</label>
+                <input class="form-control" asp-for="RoundTripPrice" />
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Подредба (SortOrder)</label>
+                <input class="form-control" asp-for="SortOrder" />
+            </div>
+            <div class="col-md-6 d-flex align-items-end">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" asp-for="IsActive" />
+                    <label class="form-check-label">Активна</label>
+                </div>
+            </div>
+
+            <div class="col-12 mt-2">
+                <button class="btn btn-warning fw-bold" type="submit">Запази</button>
+                <a class="btn btn-outline-secondary ms-2" href="/Admin/Prices">Назад</a>
+            </div>
+        </div>
+    </form>
+</div>
