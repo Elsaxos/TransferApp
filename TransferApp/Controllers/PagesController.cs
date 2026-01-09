@@ -1,27 +1,73 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using TransferApp.Data;
+using TransferApp.Services;
+using TransferApp.ViewModels;
 
 namespace TransferApp.Controllers
 {
     public class PagesController : Controller
     {
-        [HttpGet]
-        public IActionResult About()
+        private readonly ApplicationDbContext _db;
+        private readonly IEmailSender _email;
+
+        public PagesController(ApplicationDbContext db, IEmailSender email)
         {
-            return View();
+            _db = db;
+            _email = email;
         }
 
         [HttpGet]
-        public IActionResult Prices()
+        public async Task<IActionResult> Prices()
         {
-            return View();
+            var items = await _db.PriceItems
+                .Where(x => x.IsActive)
+                .OrderBy(x => x.SortOrder)
+                .ToListAsync();
+
+            return View(new PricesPublicViewModel { Items = items });
         }
 
         [HttpGet]
         public IActionResult Contacts()
         {
+            return View(new ContactFormViewModel());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Contacts(ContactFormViewModel vm)
+        {
+            if (!ModelState.IsValid)
+                return View(vm);
+
+            var subject = "Contact form – ProTransfer";
+
+            var body = $@"
+                <h3>Нов контакт</h3>
+                <p><strong>Име:</strong> {vm.Name}</p>
+                <p><strong>Телефон:</strong> {vm.Phone}</p>
+                <p><strong>Съобщение:</strong><br/>{vm.Message}</p>
+            ";
+
+            await _email.SendEmailAsync(
+                "Konstantin_stfnv@yahoo.com",
+                subject,
+                body
+            );
+
+            TempData["Success"] = "OK";
+            return RedirectToAction(nameof(Contacts));
+        }
+
+        [HttpGet]
+        public IActionResult About()
+        {
             return View();
         }
     }
 }
+
+
 
 

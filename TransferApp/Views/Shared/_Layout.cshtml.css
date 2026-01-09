@@ -1,48 +1,171 @@
-﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+﻿@using System.Globalization @using Microsoft.Extensions.Localization @inject IStringLocalizer<TransferApp.SharedResources> L @ {
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+    bool isHome = controller == "Home" && action == "Index";
+    bool isAbout = controller == "Pages" && action == "About";
+    bool isPrices = controller == "Pages" && action == "Prices";
+    bool isContacts = controller == "Pages" && action == "Contacts";
+    bool isTransfer = controller == "Transfer" && action == "Create";
+    // ВАЖНО: само когато сме в /Admin bool isAdminArea = Context.Request.Path.StartsWithSegments("/Admin");
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
 }
 
-a {
-  color: #0077cc;
+<!DOCTYPE html >
+<html lang="bg" >
+<head >
+<meta charset="utf-8" / >
+<meta name="viewport" content="width=device-width, initial-scale=1.0" / >
+
+<title > @L["Site_Title"]</title >
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" / >
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" / >
+<!-- Bootstrap Icons -->
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" / >
+
+@if (isHome) {
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+@if (isContacts) {
+    <link rel="stylesheet" href="~/css/contacts.css" asp-append-version="true" />
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+</head >
+
+<body class="bg-light" >
+<header >
+<nav class="navbar navbar-expand-lg navbar-dark pro-navbar @(isHome ? "pro-navbar-overlay" : "")" >
+<div class="container" >
+<!-- LOGO -->
+<a class="navbar-brand pro-brand" href="/" >
+<span class="pro-brand-icon" >
+<i class="bi bi-car-front-fill" > </i >
+</span >
+<span class="pro-brand-text" >
+<span class="pro-brand-title" > PROTRANSFER</span >
+<span class="pro-brand-subtitle" > @L["Site_Slogan"]</span >
+</span >
+</a >
+
+<button class="navbar-toggler"
+type="button"
+data-bs-toggle="collapse"
+data-bs-target="#mainNavbar"
+aria-controls="mainNavbar"
+aria-expanded="false"
+aria-label="Toggle navigation" >
+<span class="navbar-toggler-icon" > </span >
+</button >
+
+<div class="collapse navbar-collapse" id="mainNavbar" >
+<!-- MENU -->
+<ul class="navbar-nav mx-auto pro-menu" >
+<li class="nav-item" >
+<a class="nav-link @(isHome ? "active" : "")" href="/" > @L["Menu_Home"]</a >
+</li >
+
+<li class="nav-item" >
+<a class="nav-link @(isAbout ? "active" : "")" href="/Pages/About" > @L["Menu_About"]</a >
+</li >
+
+<li class="nav-item" >
+<a class="nav-link @(isPrices ? "active" : "")" href="/Pages/Prices" > @L["Menu_Prices"]</a >
+</li >
+
+<li class="nav-item" >
+<a class="nav-link @(isTransfer ? "active" : "")" href="/Transfer/Create" > @L["Menu_BookTransfer"]</a >
+</li >
+
+<li class="nav-item" >
+<a class="nav-link @(isContacts ? "active" : "")" href="/Pages/Contacts" > @L["Menu_Contacts"]</a >
+</li >
+<!-- ADMIN MENU – САМО В /Admin -->
+@if (isAdminArea && User.Identity?.IsAuthenticated == true && User.IsInRole("Admin")) {
+    <li class="nav-item"><a class="nav-link" href="/Admin/Inquiries">Запитвания</a></li> <li class="nav-item"><a class="nav-link" href="/Admin/Reservations">Резервации</a></li> <li class="nav-item"><a class="nav-link" href="/Admin/Prices">Цени</a></li>
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+</ul >
+<!-- RIGHT SIDE -->
+<div class="d-flex align-items-center gap-2" >
+<!-- LANGUAGE -->
+<div class="pro-lang dropdown" >
+<button class="btn btn-outline-light btn-sm dropdown-toggle"
+type="button"
+data-bs-toggle="dropdown"
+aria-expanded="false" >
+@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.ToUpper()
+</button >
+
+<ul class="dropdown-menu dropdown-menu-end" >
+<li >
+<a class="dropdown-item"
+asp-controller="Localization"
+asp-action="SetLanguage"
+asp-route-culture="bg"
+asp-route-returnUrl="@returnUrl" > Български</a >
+</li >
+<li >
+<a class="dropdown-item"
+asp-controller="Localization"
+asp-action="SetLanguage"
+asp-route-culture="en"
+asp-route-returnUrl="@returnUrl" > English</a >
+</li >
+<li >
+<a class="dropdown-item"
+asp-controller="Localization"
+asp-action="SetLanguage"
+asp-route-culture="ru"
+asp-route-returnUrl="@returnUrl" > Русский</a >
+</li >
+<li >
+<a class="dropdown-item"
+asp-controller="Localization"
+asp-action="SetLanguage"
+asp-route-culture="fr"
+asp-route-returnUrl="@returnUrl" > Français</a >
+</li >
+</ul >
+</div >
+<!-- LOGOUT (само за логнати) -->
+@if (User.Identity?.IsAuthenticated == true) {
+    <form asp-controller="Account" asp-action="Logout" method="post" class="m-0"> @Html.AntiForgeryToken() <button type="submit" class="btn btn-outline-light btn-sm"> Изход </button> </form>
 }
 
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
+</div >
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
+</div >
+</div >
+</nav >
+</header >
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
-}
+<main role="main" >
+@RenderBody()
+</main >
+<!-- CTA STRIP -->
+<section class="pro-cta-strip" >
+<div class="container text-center" >
+<p class="pro-cta-text" > @L["Footer_CTA_Text"]</p >
+
+<div class="pro-cta-phones" >
+<a href="tel:+359878989847" > +359 878 989 847</a >
+<span > |</span >
+<a href="tel:+359898212070" > +359 898 212 070</a >
+<span > |</span >
+<a href="tel:+359878676251" > +359 878 676 251</a >
+</div >
+</div >
+</section >
+
+<footer class="border-top footer text-muted" >
+<div class="container py-3 text-center" >
+<small > &copy; @DateTime.Now.Year - @L["Site_Title"]</small >
+</div >
+</footer >
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true" > </script >
+@RenderSection("Scripts", required: false)
+</body >
+</html >

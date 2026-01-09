@@ -12,13 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Email service
+// Email
 builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
 
 // Localization
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
-// MVC + localization
 builder.Services
     .AddControllersWithViews()
     .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
@@ -36,7 +35,14 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Cultures
+// Seed prices
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    DbSeeder.SeedPriceItems(db);
+}
+
+// Localization
 var supportedCultures = new[]
 {
     new CultureInfo("bg"),
@@ -52,7 +58,6 @@ var localizationOptions = new RequestLocalizationOptions
     SupportedUICultures = supportedCultures
 };
 
-// Първо query string (ако има), после cookie (ако няма query)
 localizationOptions.RequestCultureProviders.Insert(0, new QueryStringRequestCultureProvider());
 localizationOptions.RequestCultureProviders.Insert(1, new CookieRequestCultureProvider());
 
@@ -72,9 +77,12 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// 🔴 ЗАДЪЛЖИТЕЛНО за Admin/[Route] контролери
+app.MapControllers();
+
+// Default MVC routing
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-

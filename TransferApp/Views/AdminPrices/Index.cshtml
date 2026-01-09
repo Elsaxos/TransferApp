@@ -1,22 +1,29 @@
-﻿@using Microsoft.Extensions.Localization
-@using TransferApp.Models
-@inject IStringLocalizer<TransferApp.SharedResources> L
+﻿@model IEnumerable<TransferApp.Models.PriceItem>
 
-@model List<PriceItem>
+@{
+    ViewData["Title"] = "Цени (Админ)";
+}
 
 <div class="container py-4">
-    <h1 class="mb-4">Цени (Админ)</h1>
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h2 class="mb-0">Цени</h2>
 
-    @if (Model == null || Model.Count == 0)
+        <!-- IMPORTANT: link to AdminPricesController.Create -->
+        <a class="btn btn-warning fw-bold"
+           asp-controller="AdminPrices"
+           asp-action="Create">
+            + Нова цена
+        </a>
+    </div>
+
+    @if (Model == null || !Model.Any())
     {
-        <div class="alert alert-secondary">
-            @L["Prices_Empty"]
-        </div>
+        <div class="alert alert-secondary">Няма въведени цени.</div>
     }
     else
     {
         <div class="table-responsive">
-            <table class="table table-dark table-striped align-middle">
+            <table class="table table-striped align-middle">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -24,17 +31,27 @@
                         <th>Еднопосочно (€)</th>
                         <th>Отиване/връщане (€)</th>
                         <th>Активна</th>
+                        <th class="text-end"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var x in Model)
+                    @foreach (var p in Model.OrderBy(x => x.SortOrder).ThenBy(x => x.Id))
                     {
                         <tr>
-                            <td>@x.SortOrder</td>
-                            <td>@x.RouteBg</td>
-                            <td>@x.OneWayPrice</td>
-                            <td>@x.RoundTripPrice</td>
-                            <td>@(x.IsActive ? "Да" : "Не")</td>
+                            <td>@p.SortOrder</td>
+                            <td>@p.RouteBg</td>
+                            <td>@p.OneWayPrice.ToString("0.00")</td>
+                            <td>@p.RoundTripPrice.ToString("0.00")</td>
+                            <td>@(p.IsActive ? "Да" : "Не")</td>
+                            <td class="text-end">
+                                <!-- IMPORTANT: link to AdminPricesController.Edit -->
+                                <a class="btn btn-sm btn-outline-dark"
+                                   asp-controller="AdminPrices"
+                                   asp-action="Edit"
+                                   asp-route-id="@p.Id">
+                                    Редакция
+                                </a>
+                            </td>
                         </tr>
                     }
                 </tbody>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<TransferApp.Models.TransferRequest>
+
+@{
+    ViewData["Title"] = "Резервации (Админ)";
+}
+
+<div class="container py-4">
+    <h2>Резервации</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-secondary">Няма резервации.</div>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Име</th>
+                    <th>Телефон</th>
+                    <th>Имейл</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model)
+                {
+                    <tr>
+                        <td>@r.Id</td>
+                        <td>@r.CustomerName</td>
+                        <td>@r.Phone</td>
+                        <td>@r.Email</td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-dark" href="/Admin/Requests/@r.Id">Отвори</a>
+                            <a class="btn btn-sm btn-outline-danger ms-2" href="/Admin/Requests/Delete/@r.Id">Изтрий</a>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+

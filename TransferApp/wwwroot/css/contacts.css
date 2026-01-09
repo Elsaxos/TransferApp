@@ -1,0 +1,49 @@
+﻿/* Contacts page */
+.contacts-hero {
+    background: linear-gradient(0deg, rgba(0,0,0,.55), rgba(0,0,0,.55)), url('/img/hero-airport.jpg');
+    background-size: cover;
+    background-position: center;
+    border-radius: 18px;
+    padding: 56px 22px;
+    color: #fff;
+    margin: 18px 0 26px;
+}
+
+    .contacts-hero h1 {
+        font-weight: 800;
+        letter-spacing: .5px;
+    }
+
+    .contacts-hero p {
+        opacity: .92;
+        max-width: 720px;
+    }
+
+.info-card {
+    border: 0;
+    border-radius: 16px;
+    box-shadow: 0 8px 22px rgba(0,0,0,.08);
+}
+
+    .info-card .icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255,193,7,.18);
+    }
+
+.form-card {
+    border: 0;
+    border-radius: 16px;
+    box-shadow: 0 8px 22px rgba(0,0,0,.08);
+}
+
+.map-card iframe {
+    width: 100%;
+    height: 320px;
+    border: 0;
+    border-radius: 16px;
+}

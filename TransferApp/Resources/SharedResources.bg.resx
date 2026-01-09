@@ -235,6 +235,68 @@
   <value>За нас</value>
 </data>
 
+	<data name="Transfer_Create_Title" xml:space="preserve"><value>Резервирай трансфер</value></data>
+	<data name="Transfer_Create_Heading" xml:space="preserve"><value>Резервация</value></data>
+
+	<data name="Transfer_Label_Name" xml:space="preserve"><value>Име</value></data>
+	<data name="Transfer_Label_Phone" xml:space="preserve"><value>Телефон</value></data>
+	<data name="Transfer_Label_From" xml:space="preserve"><value>От (адрес/място)</value></data>
+	<data name="Transfer_Label_To" xml:space="preserve"><value>До (адрес/място)</value></data>
+	<data name="Transfer_Label_DateTime" xml:space="preserve"><value>Дата и час</value></data>
+	<data name="Transfer_Label_Passengers" xml:space="preserve"><value>Пътници</value></data>
+
+	<data name="Transfer_Label_Route" xml:space="preserve"><value>Маршрут (ориентировъчна цена)</value></data>
+	<data name="Transfer_Route_Placeholder" xml:space="preserve"><value>Избери маршрут…</value></data>
+
+	<data name="Transfer_Label_TripType" xml:space="preserve"><value>Тип</value></data>
+	<data name="Transfer_Trip_OneWay" xml:space="preserve"><value>Еднопосочно</value></data>
+	<data name="Transfer_Trip_RoundTrip" xml:space="preserve"><value>Отиване/връщане</value></data>
+
+	<data name="Transfer_Price_Label" xml:space="preserve"><value>Цена</value></data>
+
+	<data name="Transfer_Label_Notes" xml:space="preserve"><value>Бележки</value></data>
+	<data name="Transfer_Notes_Placeholder" xml:space="preserve"><value>Допълнителни изисквания (багаж, спирки, полет и др.)</value></data>
+
+	<data name="Transfer_Submit_Button" xml:space="preserve"><value>Изпрати заявка</value></data>
+	<data name="Transfer_Cancel_Button" xml:space="preserve"><value>Отказ</value></data>
+
+	<data name="Transfer_Label_Email" xml:space="preserve">
+  <value>Имейл</value>
+</data>
+
+	<data name="Transfer_Submit_Inquiry" xml:space="preserve">
+  <value>Изпрати запитване</value>
+</data>
+
+	<data name="Transfer_Submit_Reserve" xml:space="preserve">
+  <value>Резервирай</value>
+</data>
+
+	<data name="Contacts_Title" xml:space="preserve"><value>Контакти</value></data>
+	<data name="Contacts_Subtitle" xml:space="preserve"><value>Свържете се с нас за запитване или резервация. Отговаряме бързо и работим 24/7.</value></data>
+
+	<data name="Contacts_Phone_Title" xml:space="preserve"><value>Телефони</value></data>
+	<data name="Contacts_Phone_Note" xml:space="preserve"><value>Обадете се по всяко време.</value></data>
+
+	<data name="Contacts_Email_Title" xml:space="preserve"><value>Имейл</value></data>
+	<data name="Contacts_Email_Note" xml:space="preserve"><value>Пишете ни и ще върнем отговор възможно най-бързо.</value></data>
+
+	<data name="Contacts_City_Title" xml:space="preserve"><value>Град</value></data>
+	<data name="Contacts_City_Note" xml:space="preserve"><value>Работим в цялата страна и международно по заявка.</value></data>
+
+	<data name="Contacts_Form_Title" xml:space="preserve"><value>Форма за контакт</value></data>
+	<data name="Contacts_Form_Name" xml:space="preserve"><value>Име</value></data>
+	<data name="Contacts_Form_Phone" xml:space="preserve"><value>Телефон</value></data>
+	<data name="Contacts_Form_Message_Label" xml:space="preserve"><value>Съобщение</value></data>
+	<data name="Contacts_Form_Message_Placeholder" xml:space="preserve"><value>Напишете откъде/докъде пътувате, дата/час и допълнителни детайли…</value></data>
+	<data name="Contacts_Form_Submit" xml:space="preserve"><value>Изпрати</value></data>
+	<data name="Contacts_Form_Hint" xml:space="preserve"><value>След изпращане ще се свържем с вас за потвърждение.</value></data>
+
+	<data name="Contacts_Map_Title" xml:space="preserve"><value>Карта</value></data>
+
+	<data name="Contacts_Success_Message" xml:space="preserve"><value>Съобщението беше изпратено успешно.</value></data>
+
+
 
 
 

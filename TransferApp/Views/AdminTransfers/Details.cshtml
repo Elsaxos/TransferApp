@@ -1,0 +1,50 @@
+﻿@model TransferApp.Models.TransferRequest
+
+@{
+    ViewData["Title"] = "Детайли";
+}
+
+<div class="container py-4" style="max-width: 820px;">
+    <h2 class="mb-3">Детайли</h2>
+
+    <div class="card">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-4">ID</dt>
+                <dd class="col-sm-8">@Model.Id</dd>
+
+                <dt class="col-sm-4">Статус</dt>
+                <dd class="col-sm-8">@Model.Status</dd>
+
+                <dt class="col-sm-4">Име</dt>
+                <dd class="col-sm-8">@Model.CustomerName</dd>
+
+                <dt class="col-sm-4">Телефон</dt>
+                <dd class="col-sm-8">@Model.Phone</dd>
+
+                <dt class="col-sm-4">Имейл</dt>
+                <dd class="col-sm-8">@Model.Email</dd>
+
+                <dt class="col-sm-4">От</dt>
+                <dd class="col-sm-8">@Model.PickupAddress</dd>
+
+                <dt class="col-sm-4">До</dt>
+                <dd class="col-sm-8">@Model.DropoffAddress</dd>
+
+                <dt class="col-sm-4">Дата/час</dt>
+                <dd class="col-sm-8">@Model.PickupDateTime.ToString("dd.MM.yyyy HH:mm")</dd>
+
+                <dt class="col-sm-4">Пътници</dt>
+                <dd class="col-sm-8">@Model.Passengers</dd>
+
+                <dt class="col-sm-4">Бележки</dt>
+                <dd class="col-sm-8">@Model.Notes</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-3 d-flex gap-2">
+        <a class="btn btn-outline-secondary" href="@(Model.Status == "Резервация" ? "/Admin/Reservations" : "/Admin/Inquiries")">Назад</a>
+        <a class="btn btn-outline-danger" href="/Admin/Requests/Delete/@Model.Id">Изтрий</a>
+    </div>
+</div>

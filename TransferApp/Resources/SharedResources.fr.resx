@@ -217,17 +217,7 @@
 	<data name="Prices_Important_Text">
 		<value>Les prix sont indicatifs et peuvent varier selon l’heure, les bagages, les arrêts et le type de véhicule.</value>
 	</data>
-	<data name="Services_Title" xml:space="preserve"><value>Nos services</value></data>
-	<data name="Services_Subtitle" xml:space="preserve"><value>Des transferts professionnels pour chaque besoin</value></data>
 
-	<data name="Service_1_Title" xml:space="preserve"><value>Transferts aéroport</value></data>
-	<data name="Service_1_Text" xml:space="preserve"><value>Transferts ponctuels et confortables vers tous les aéroports.</value></data>
-
-	<data name="Service_2_Title" xml:space="preserve"><value>Trajets interurbains</value></data>
-	<data name="Service_2_Text" xml:space="preserve"><value>Voyage rapide et sûr en Bulgarie et à l’étranger.</value></data>
-
-	<data name="Service_3_Title" xml:space="preserve"><value>Service VIP</value></data>
-	<data name="Service_3_Text" xml:space="preserve"><value>Véhicules premium et discrétion.</value></data>
 	<data name="About_Title" xml:space="preserve"><value>À propos</value></data>
 	<data name="About_Hero_Title" xml:space="preserve"><value>À propos de nous</value></data>
 	<data name="About_Hero_Subtitle" xml:space="preserve"><value>Des transferts professionnels axés sur la sécurité, la ponctualité et un trajet serein — tous les jours, à tout moment.</value></data>
@@ -257,6 +247,59 @@
 	<data name="Menu_About" xml:space="preserve">
   <value>À propos</value>
 </data>
+
+	<data name="Transfer_Create_Title" xml:space="preserve"><value>Réserver un transfert</value></data>
+	<data name="Transfer_Create_Heading" xml:space="preserve"><value>Réservation de transfert</value></data>
+
+	<data name="Transfer_Label_Name" xml:space="preserve"><value>Nom</value></data>
+	<data name="Transfer_Label_Phone" xml:space="preserve"><value>Téléphone</value></data>
+	<data name="Transfer_Label_From" xml:space="preserve"><value>Adresse de départ</value></data>
+	<data name="Transfer_Label_To" xml:space="preserve"><value>Adresse d’arrivée</value></data>
+	<data name="Transfer_Label_DateTime" xml:space="preserve"><value>Date et heure</value></data>
+	<data name="Transfer_Label_Passengers" xml:space="preserve"><value>Passagers</value></data>
+
+	<data name="Transfer_Label_Route" xml:space="preserve"><value>Itinéraire (prix estimé)</value></data>
+	<data name="Transfer_Route_Placeholder" xml:space="preserve"><value>Sélectionnez un itinéraire…</value></data>
+
+	<data name="Transfer_Label_TripType" xml:space="preserve"><value>Type de trajet</value></data>
+	<data name="Transfer_Trip_OneWay" xml:space="preserve"><value>Aller simple</value></data>
+	<data name="Transfer_Trip_RoundTrip" xml:space="preserve"><value>Aller-retour</value></data>
+
+	<data name="Transfer_Price_Label" xml:space="preserve"><value>Prix</value></data>
+
+	<data name="Transfer_Label_Notes" xml:space="preserve"><value>Notes</value></data>
+	<data name="Transfer_Notes_Placeholder" xml:space="preserve">
+  <value>Demandes supplémentaires (bagages, arrêts, vol, etc.)</value>
+</data>
+
+	<data name="Transfer_Submit_Button" xml:space="preserve"><value>Envoyer la demande</value></data>
+	<data name="Transfer_Cancel_Button" xml:space="preserve"><value>Annuler</value></data>
+
+	<data name="Transfer_Label_Email" xml:space="preserve"><value>E-mail</value></data>
+	<data name="Transfer_Submit_Inquiry" xml:space="preserve"><value>Envoyer une demande</value></data>
+	<data name="Transfer_Submit_Reserve" xml:space="preserve"><value>Réserver</value></data>
+
+	<data name="Contacts_Title" xml:space="preserve"><value>Contact</value></data>
+	<data name="Contacts_Subtitle" xml:space="preserve"><value>Contactez-nous pour une demande ou une réservation. Nous répondons rapidement et sommes disponibles 24/7.</value></data>
+
+	<data name="Contacts_Phone_Title" xml:space="preserve"><value>Téléphones</value></data>
+	<data name="Contacts_Phone_Note" xml:space="preserve"><value>Appelez-nous à tout moment.</value></data>
+
+	<data name="Contacts_Email_Title" xml:space="preserve"><value>E-mail</value></data>
+	<data name="Contacts_Email_Note" xml:space="preserve"><value>Envoyez-nous un message et nous vous répondrons rapidement.</value></data>
+
+	<data name="Contacts_City_Title" xml:space="preserve"><value>Ville</value></data>
+	<data name="Contacts_City_Note" xml:space="preserve"><value>Nous opérons dans tout le pays et à l’international sur demande.</value></data>
+
+	<data name="Contacts_Form_Title" xml:space="preserve"><value>Formulaire de contact</value></data>
+	<data name="Contacts_Form_Name" xml:space="preserve"><value>Nom</value></data>
+	<data name="Contacts_Form_Phone" xml:space="preserve"><value>Téléphone</value></data>
+	<data name="Contacts_Form_Message_Label" xml:space="preserve"><value>Message</value></data>
+	<data name="Contacts_Form_Message_Placeholder" xml:space="preserve"><value>Indiquez l’itinéraire, la date/heure et les détails supplémentaires…</value></data>
+	<data name="Contacts_Form_Submit" xml:space="preserve"><value>Envoyer</value></data>
+	<data name="Contacts_Form_Hint" xml:space="preserve"><value>Après l’envoi, nous vous contacterons pour confirmation.</value></data>
+
+	<data name="Contacts_Map_Title" xml:space="preserve"><value>Carte</value></data>
 
 
 </root>

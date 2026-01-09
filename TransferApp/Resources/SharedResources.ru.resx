@@ -217,17 +217,7 @@
 	<data name="Prices_Important_Text">
 		<value>Цены ориентировочные и могут изменяться в зависимости от времени, багажа, остановок и типа автомобиля.</value>
 	</data>
-	<data name="Services_Title" xml:space="preserve"><value>Наши услуги</value></data>
-	<data name="Services_Subtitle" xml:space="preserve"><value>Профессиональные трансферы для любых нужд</value></data>
-
-	<data name="Service_1_Title" xml:space="preserve"><value>Трансферы в аэропорт</value></data>
-	<data name="Service_1_Text" xml:space="preserve"><value>Пунктуальные и комфортные трансферы во все аэропорты.</value></data>
-
-	<data name="Service_2_Title" xml:space="preserve"><value>Междугородние поездки</value></data>
-	<data name="Service_2_Text" xml:space="preserve"><value>Быстро и безопасно по Болгарии и за рубежом.</value></data>
-
-	<data name="Service_3_Title" xml:space="preserve"><value>VIP обслуживание</value></data>
-	<data name="Service_3_Text" xml:space="preserve"><value>Премиум авто и конфиденциальность.</value></data>
+	
 	<data name="About_Title" xml:space="preserve"><value>О нас</value></data>
 	<data name="About_Hero_Title" xml:space="preserve"><value>О нас</value></data>
 	<data name="About_Hero_Subtitle" xml:space="preserve"><value>Профессиональные трансферы с акцентом на безопасность, пунктуальность и спокойную поездку — каждый день, в любое время.</value></data>
@@ -257,6 +247,59 @@
 	<data name="Menu_About" xml:space="preserve">
   <value>О нас</value>
 </data>
+
+	<data name="Transfer_Create_Title" xml:space="preserve"><value>Заказать трансфер</value></data>
+	<data name="Transfer_Create_Heading" xml:space="preserve"><value>Бронирование трансфера</value></data>
+
+	<data name="Transfer_Label_Name" xml:space="preserve"><value>Имя</value></data>
+	<data name="Transfer_Label_Phone" xml:space="preserve"><value>Телефон</value></data>
+	<data name="Transfer_Label_From" xml:space="preserve"><value>Адрес отправления</value></data>
+	<data name="Transfer_Label_To" xml:space="preserve"><value>Адрес назначения</value></data>
+	<data name="Transfer_Label_DateTime" xml:space="preserve"><value>Дата и время</value></data>
+	<data name="Transfer_Label_Passengers" xml:space="preserve"><value>Пассажиры</value></data>
+
+	<data name="Transfer_Label_Route" xml:space="preserve"><value>Маршрут (ориентировочная цена)</value></data>
+	<data name="Transfer_Route_Placeholder" xml:space="preserve"><value>Выберите маршрут…</value></data>
+
+	<data name="Transfer_Label_TripType" xml:space="preserve"><value>Тип поездки</value></data>
+	<data name="Transfer_Trip_OneWay" xml:space="preserve"><value>В одну сторону</value></data>
+	<data name="Transfer_Trip_RoundTrip" xml:space="preserve"><value>Туда и обратно</value></data>
+
+	<data name="Transfer_Price_Label" xml:space="preserve"><value>Цена</value></data>
+
+	<data name="Transfer_Label_Notes" xml:space="preserve"><value>Примечания</value></data>
+	<data name="Transfer_Notes_Placeholder" xml:space="preserve">
+  <value>Дополнительные пожелания (багаж, остановки, рейс и т.д.)</value>
+</data>
+
+	<data name="Transfer_Submit_Button" xml:space="preserve"><value>Отправить заявку</value></data>
+	<data name="Transfer_Cancel_Button" xml:space="preserve"><value>Отмена</value></data>
+
+	<data name="Transfer_Label_Email" xml:space="preserve"><value>Email</value></data>
+	<data name="Transfer_Submit_Inquiry" xml:space="preserve"><value>Отправить запрос</value></data>
+	<data name="Transfer_Submit_Reserve" xml:space="preserve"><value>Забронировать</value></data>
+
+	<data name="Contacts_Title" xml:space="preserve"><value>Контакты</value></data>
+	<data name="Contacts_Subtitle" xml:space="preserve"><value>Свяжитесь с нами для запроса или бронирования. Мы отвечаем быстро и работаем 24/7.</value></data>
+
+	<data name="Contacts_Phone_Title" xml:space="preserve"><value>Телефоны</value></data>
+	<data name="Contacts_Phone_Note" xml:space="preserve"><value>Звоните в любое время.</value></data>
+
+	<data name="Contacts_Email_Title" xml:space="preserve"><value>Email</value></data>
+	<data name="Contacts_Email_Note" xml:space="preserve"><value>Напишите нам, и мы свяжемся с вами в ближайшее время.</value></data>
+
+	<data name="Contacts_City_Title" xml:space="preserve"><value>Город</value></data>
+	<data name="Contacts_City_Note" xml:space="preserve"><value>Работаем по всей стране и за рубежом по запросу.</value></data>
+
+	<data name="Contacts_Form_Title" xml:space="preserve"><value>Форма обратной связи</value></data>
+	<data name="Contacts_Form_Name" xml:space="preserve"><value>Имя</value></data>
+	<data name="Contacts_Form_Phone" xml:space="preserve"><value>Телефон</value></data>
+	<data name="Contacts_Form_Message_Label" xml:space="preserve"><value>Сообщение</value></data>
+	<data name="Contacts_Form_Message_Placeholder" xml:space="preserve"><value>Укажите маршрут, дату/время и дополнительные детали…</value></data>
+	<data name="Contacts_Form_Submit" xml:space="preserve"><value>Отправить</value></data>
+	<data name="Contacts_Form_Hint" xml:space="preserve"><value>После отправки мы свяжемся с вами для подтверждения.</value></data>
+
+	<data name="Contacts_Map_Title" xml:space="preserve"><value>Карта</value></data>
 
 
 </root>

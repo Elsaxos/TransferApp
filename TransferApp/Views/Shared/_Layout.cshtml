@@ -12,6 +12,9 @@
     bool isContacts = controller == "Pages" && action == "Contacts";
     bool isTransfer = controller == "Transfer" && action == "Create";
 
+    // ВАЖНО: само когато сме в /Admin
+    bool isAdminArea = Context.Request.Path.StartsWithSegments("/Admin");
+
     var returnUrl = Context.Request.Path + Context.Request.QueryString;
 }
 
@@ -34,6 +37,12 @@
     {
         <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
     }
+
+    @if (isContacts)
+    {
+        <link rel="stylesheet" href="~/css/contacts.css" asp-append-version="true" />
+    }
+
 </head>
 
 <body class="bg-light">
@@ -95,47 +104,72 @@
                                 @L["Menu_Contacts"]
                             </a>
                         </li>
+
+                        <!-- ADMIN MENU – САМО В /Admin -->
+                        @if (isAdminArea && User.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Admin/Inquiries">Запитвания</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Admin/Reservations">Резервации</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Admin/Prices">Цени</a>
+                            </li>
+                        }
                     </ul>
 
-                    <!-- LANGUAGE -->
-                    <div class="pro-lang dropdown">
-                        <button class="btn btn-outline-light btn-sm dropdown-toggle"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                            @CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.ToUpper()
-                        </button>
+                    <!-- RIGHT SIDE: LANGUAGE + LOGOUT -->
+                    <div class="d-flex align-items-center gap-2">
 
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li>
-                                <a class="dropdown-item"
-                                   asp-controller="Localization"
-                                   asp-action="SetLanguage"
-                                   asp-route-culture="bg"
-                                   asp-route-returnUrl="@returnUrl">Български</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item"
-                                   asp-controller="Localization"
-                                   asp-action="SetLanguage"
-                                   asp-route-culture="en"
-                                   asp-route-returnUrl="@returnUrl">English</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item"
-                                   asp-controller="Localization"
-                                   asp-action="SetLanguage"
-                                   asp-route-culture="ru"
-                                   asp-route-returnUrl="@returnUrl">Русский</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item"
-                                   asp-controller="Localization"
-                                   asp-action="SetLanguage"
-                                   asp-route-culture="fr"
-                                   asp-route-returnUrl="@returnUrl">Français</a>
-                            </li>
-                        </ul>
+                        <!-- LANGUAGE -->
+                        <div class="pro-lang dropdown">
+                            <button class="btn btn-outline-light btn-sm dropdown-toggle"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                @CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.ToUpper()
+                            </button>
+
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Localization"
+                                       asp-action="SetLanguage"
+                                       asp-route-culture="bg"
+                                       asp-route-returnUrl="@returnUrl">Български</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Localization"
+                                       asp-action="SetLanguage"
+                                       asp-route-culture="en"
+                                       asp-route-returnUrl="@returnUrl">English</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Localization"
+                                       asp-action="SetLanguage"
+                                       asp-route-culture="ru"
+                                       asp-route-returnUrl="@returnUrl">Русский</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Localization"
+                                       asp-action="SetLanguage"
+                                       asp-route-culture="fr"
+                                       asp-route-returnUrl="@returnUrl">Français</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- LOGOUT (само за логнати) -->
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <a class="btn btn-outline-light btn-sm" href="/Account/Logout">Logout</a>
+                        }
+
                     </div>
 
                 </div>

@@ -1,0 +1,59 @@
+﻿@model TransferApp.Models.TransferRequest
+
+@{
+    ViewData["Title"] = "Изтриване";
+}
+
+<div class="container py-4" style="max-width: 900px;">
+    <h2 class="mb-3">Изтриване</h2>
+
+    <div class="alert alert-warning">
+        Сигурен ли си, че искаш да изтриеш това?
+        <strong>Действието е необратимо.</strong>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">ID</dt>
+                <dd class="col-sm-9">@Model.Id</dd>
+
+                <dt class="col-sm-3">Статус</dt>
+                <dd class="col-sm-9">@Model.Status</dd>
+
+                <dt class="col-sm-3">Име</dt>
+                <dd class="col-sm-9">@Model.CustomerName</dd>
+
+                <dt class="col-sm-3">Телефон</dt>
+                <dd class="col-sm-9">@Model.Phone</dd>
+
+                <dt class="col-sm-3">Имейл</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+
+                <dt class="col-sm-3">Дата/час</dt>
+                <dd class="col-sm-9">@Model.PickupDateTime.ToString("dd.MM.yyyy HH:mm")</dd>
+
+                <dt class="col-sm-3">От</dt>
+                <dd class="col-sm-9">@Model.PickupAddress</dd>
+
+                <dt class="col-sm-3">До</dt>
+                <dd class="col-sm-9">@Model.DropoffAddress</dd>
+
+                @if (!string.IsNullOrWhiteSpace(Model.Notes))
+                {
+                    <dt class="col-sm-3">Бележки</dt>
+                    <dd class="col-sm-9">@Model.Notes</dd>
+                }
+            </dl>
+        </div>
+    </div>
+
+    <form method="post" action="/Admin/Requests/Delete/@Model.Id" class="mt-3 d-flex gap-2">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-danger">Да, изтрий</button>
+        <a class="btn btn-outline-secondary"
+           href="@(Model.Status == "Резервация" ? "/Admin/Reservations" : "/Admin/Inquiries")">
+            Отказ
+        </a>
+    </form>
+</div>

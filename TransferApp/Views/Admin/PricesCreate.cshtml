@@ -4,60 +4,81 @@
     ViewData["Title"] = "Нова цена";
 }
 
-<div class="container py-4" style="max-width: 900px;">
-    <h2 class="mb-3">Нова цена</h2>
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h2 class="mb-0">+ Нова цена</h2>
+        <a class="btn btn-outline-secondary" href="/Admin/Prices">Назад</a>
+    </div>
 
-    <form method="post" asp-action="PricesCreate">
+    <form method="post" action="/Admin/Prices/Create">
         @Html.AntiForgeryToken()
 
         <div class="row g-3">
-            <div class="col-12">
-                <label class="form-label">Ключ на маршрута (RouteKey)</label>
+            <div class="col-md-3">
+                <label class="form-label">Подредба</label>
+                <input class="form-control" asp-for="SortOrder" />
+                <span class="text-danger" asp-validation-for="SortOrder"></span>
+            </div>
+
+            <div class="col-md-9">
+                <label class="form-label">RouteKey (уникален ключ)</label>
                 <input class="form-control" asp-for="RouteKey" />
+                <span class="text-danger" asp-validation-for="RouteKey"></span>
             </div>
 
             <div class="col-md-6">
                 <label class="form-label">Маршрут (BG)</label>
                 <input class="form-control" asp-for="RouteBg" />
+                <span class="text-danger" asp-validation-for="RouteBg"></span>
             </div>
+
             <div class="col-md-6">
                 <label class="form-label">Маршрут (EN)</label>
                 <input class="form-control" asp-for="RouteEn" />
+                <span class="text-danger" asp-validation-for="RouteEn"></span>
             </div>
+
             <div class="col-md-6">
                 <label class="form-label">Маршрут (RU)</label>
                 <input class="form-control" asp-for="RouteRu" />
+                <span class="text-danger" asp-validation-for="RouteRu"></span>
             </div>
+
             <div class="col-md-6">
                 <label class="form-label">Маршрут (FR)</label>
                 <input class="form-control" asp-for="RouteFr" />
+                <span class="text-danger" asp-validation-for="RouteFr"></span>
             </div>
 
             <div class="col-md-6">
                 <label class="form-label">Еднопосочно (€)</label>
                 <input class="form-control" asp-for="OneWayPrice" />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Двупосочно (€)</label>
-                <input class="form-control" asp-for="RoundTripPrice" />
+                <span class="text-danger" asp-validation-for="OneWayPrice"></span>
             </div>
 
             <div class="col-md-6">
-                <label class="form-label">Подредба (SortOrder)</label>
-                <input class="form-control" asp-for="SortOrder" />
+                <label class="form-label">Отиване/връщане (€)</label>
+                <input class="form-control" asp-for="RoundTripPrice" />
+                <span class="text-danger" asp-validation-for="RoundTripPrice"></span>
             </div>
-            <div class="col-md-6 d-flex align-items-end">
+
+            <div class="col-12">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" asp-for="IsActive" />
-                    <label class="form-check-label">Активна</label>
+                    <label class="form-check-label" asp-for="IsActive">Активна</label>
                 </div>
             </div>
 
-            <div class="col-12 mt-2">
-                <button class="btn btn-warning fw-bold" type="submit">Запази</button>
-                <a class="btn btn-outline-secondary ms-2" href="/Admin/Prices">Отказ</a>
+            <div class="col-12 d-flex gap-2">
+                <button type="submit" class="btn btn-warning fw-bold">Запази</button>
+                <a class="btn btn-outline-secondary" href="/Admin/Prices">Отказ</a>
             </div>
         </div>
     </form>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
 
