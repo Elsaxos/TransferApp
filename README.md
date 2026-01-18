@@ -1,4 +1,4 @@
-﻿# TransferApp
+# TransferApp
 
 ASP.NET Core MVC application for managing car transfer inquiries and reservations, with a lightweight admin panel.
 Built as a portfolio project and a base for QA automation work (unit/integration/UI tests).
