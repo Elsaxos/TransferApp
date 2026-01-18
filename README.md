@@ -1,198 +1,175 @@
 # TransferApp
 
-ASP.NET Core MVC application for managing **car transfers**, **reservations**, and an **administrative panel**.  
-Built as a portfolio project and training ground for QA automation (unit, integration, and UI tests).
+TransferApp is an ASP.NET Core MVC web application for managing car transfer inquiries and reservations.
+The project is built as a **portfolio and learning project**, with a strong focus on clean architecture and future QA automation.
 
 ---
 
-## 🚗 Features
+## Overview
 
-- Manage a **fleet of cars** 
-- Create **transfer reservations** (pickup, dropoff, datetime, passengers)
-- Simple **pricing logic** (base example: fixed price)
-- **Admin panel** with a list of all transfer requests
-- SQL Server database via **Entity Framework Core**
-- Clean **MVC architecture**:
-  - Controllers
-  - Models
-  - Views
+The application represents a small transfer service website with:
+- a public-facing section for clients
+- inquiry and reservation forms
+- an administrative panel for managing requests
+
+The project is intentionally designed to be easy to extend, test, and improve over time.
 
 ---
 
-## 🧱 Architecture
+## Features
 
-**Main components:**
+### Public Area
+- Home page
+- Prices page
+- About page
+- Contacts page
+- Multi-language support (BG / EN / RU / FR)
+- Contact form
+- Transfer request form:
+  - inquiry or reservation
+  - route selection
+  - one-way or round-trip
 
-- `Data/ApplicationDbContext.cs` – EF Core DbContext (Cars, Drivers, TransferRequests)
-- `Models/Car.cs` – car entity (make, model, registration, seats, image URL)
-- `Models/Driver.cs` – driver entity (name, phone, notes)
-- `Models/TransferRequest.cs` – transfer booking entity (customer, phone, route, datetime, passengers, status, notes)
-- `Controllers/HomeController.cs` – landing page and navigation
-- `Controllers/TransferController.cs` – create transfer requests and “Thank you” page
-- `Controllers/AdminController.cs` – view all transfer requests (admin list)
-- `Views/*` – Razor views for Home, Transfer, Admin
+### Admin Panel
+- Admin login
+- Separate views for:
+  - Inquiries
+  - Reservations
+- Change request status
+- Delete requests
+- Logout functionality
+- Role-based access (Admin only)
 
 ---
 
-## 📂 Project Structure
+## Technologies Used
 
-```text
+- ASP.NET Core MVC (.NET 8)
+- Entity Framework Core
+- SQL Server / LocalDB
+- Razor Views
+- Bootstrap
+- Cookie-based Authentication
+- Localization with RESX resources
+
+---
+
+## Project Structure
+
 TransferApp/
-├── Data/
-│   └── ApplicationDbContext.cs
-├── Models/
-│   ├── Car.cs
-│   ├── Driver.cs
-│   └── TransferRequest.cs
-├── Services/
-│   ├── IEmailSender.cs
-│   └── SmtpEmailSender.cs      (extensible for future email notifications)
 ├── Controllers/
-│   ├── HomeController.cs
-│   ├── TransferController.cs
-│   └── AdminController.cs
+│ ├── HomeController.cs
+│ ├── PagesController.cs
+│ ├── TransferController.cs
+│ ├── AdminTransfersController.cs
+│ └── AccountController.cs
+│
+├── Data/
+│ ├── ApplicationDbContext.cs
+│ └── DbSeeder.cs
+│
+├── Models/
+│ └── TransferRequest.cs
+│
+├── ViewModels/
+│ ├── ContactFormViewModel.cs
+│ └── PricesPublicViewModel.cs
+│
+├── Services/
+│ ├── IEmailSender.cs
+│ └── SmtpEmailSender.cs
+│
 ├── Views/
-│   ├── Home/
-│   ├── Transfer/
-│   └── Admin/
+│ ├── Home/
+│ ├── Pages/
+│ ├── Transfer/
+│ ├── AdminTransfers/
+│ └── Shared/
+│
+├── Resources/
+│ └── SharedResources.*.resx
+│
 ├── wwwroot/
-│   └── (static content: CSS, JS, images)
-├── appsettings.json
+│ └── css, js, images
+│
 ├── Program.cs
+├── appsettings.json
 └── TransferApp.csproj
-```
+
+
+## Database
+
+The application uses **Entity Framework Core** with SQL Server.
+
+Main entity:
+- `TransferRequests`
+  - customer name
+  - phone
+  - email
+  - route
+  - pickup date and time
+  - passengers
+  - notes
+  - status (Inquiry / Reservation)
+
+Price routes are seeded automatically on application startup.
 
 ---
 
-## 🗄 Database
-
-The app uses **Entity Framework Core** with **SQL Server LocalDB**.
-
-Example migration flow:
-
-```
-Add-Migration InitialCreate
-Update-Database
-```
-
-This creates:
-
-- Cars table
-- Drivers table
-- TransferRequests table
-
----
-
-## ▶ Running the Application
+## Running the Application
 
 ### Prerequisites
-
-- **.NET 8 SDK**
-- **Visual Studio 2022** (or Rider / VS Code with C# extension)
-- **SQL Server LocalDB** (installed with Visual Studio)
+- .NET 8 SDK
+- Visual Studio 2022 or newer
+- SQL Server LocalDB
 
 ### Steps
-
-Clone the repository:
 
 ```bash
 git clone https://github.com/Elsaxos/TransferApp.git
 cd TransferApp
-```
 
-Open `TransferApp.sln` in Visual Studio.
+Open TransferApp.sln in Visual Studio
 
-Restore NuGet packages (VS usually does this automatically).
+Restore NuGet packages
 
-Apply EF Core migrations if needed:
+Apply migrations if needed:
 
-```powershell
 Update-Database
-```
 
-Run the app:
 
-- via IIS Express or
-- via Kestrel (`dotnet run` from the project folder)
+Run the project using IIS Express or Kestrel
 
-Navigate in the browser to the base URL (e.g. `https://localhost:xxxx/`).
+Testing (Planned)
 
----
+The project is structured to support:
 
-## 🔍 Quality & Testing (QA Focus)
+Unit tests
 
-This project is intentionally designed to be extended with **automated tests**:
+Integration tests
 
-### Planned test types
+UI tests (Selenium / Playwright)
 
-#### ✅ Unit tests
-- Validation of models (`TransferRequest`, `Car`)
-- Simple pricing logic
-- Controller actions logic (e.g. redirection, model state)
+It is actively used as a base for QA automation practice.
 
-#### ✅ Integration tests
-- EF Core in-memory / test database
-- Full flow: create transfer → verify it is saved → visible in `/Admin/Index`
+Future Improvements
 
-#### ✅ UI tests (end-to-end)
-Using Selenium / Playwright:
-- Open `/Transfer/Create`
-- Fill form
-- Submit
-- Assert “Thank you” page and presence of the request in the admin list
+Real email server integration
 
----
+Spam protection (CAPTCHA / honeypot)
 
-### Suggested test project structure
+More advanced pricing logic
 
-```
-tests/
-├── TransferApp.UnitTests/
-│   ├── Models/
-│   └── Controllers/
-└── TransferApp.IntegrationTests/
-    ├── Database/
-    └── EndToEnd/
-```
+Multiple admin accounts
 
-### Example (xUnit) unit test snippet
+REST API
 
-```csharp
-public class TransferRequestTests
-{
-    [Fact]
-    public void New_Request_Should_Have_Default_Status_New()
-    {
-        var req = new TransferRequest();
+Automated test coverage
 
-        Assert.Equal("Нова", req.Status);
-    }
-}
-```
+Production deployment
 
----
+Author
 
-## 🧪 How to run tests (planned)
+Konstantin Stefanov
+https://github.com/Elsaxos
 
-Once test projects are added:
-
-```bash
-dotnet test
-```
-
-This will run:
-- Unit tests
-- Integration tests
-- (Later) UI tests if configured
-
----
-
-## 📌 Roadmap / Future Improvements
-
-- Implement real pricing logic (distance-based, time-based, surcharges)
-- Additional validation (e.g. date in the future, phone format, required fields)
-- Authentication & Authorization for admin panel
-- Email notifications on new transfer requests (using `SmtpEmailSender`)
-- Better UI/UX with Bootstrap or Tailwind CSS
-- API endpoints (REST) for mobile or external integrations
-- Full test coverage of all critical paths
