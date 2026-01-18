@@ -90,12 +90,13 @@ TransferApp/
 │ └── SharedResources.*.resx
 │
 ├── wwwroot/
-│ └── css, js, images
+│ ├── css/
+│ ├── js/
+│ └── images/
 │
 ├── Program.cs
 ├── appsettings.json
 └── TransferApp.csproj
-
 
 ## Database
 
