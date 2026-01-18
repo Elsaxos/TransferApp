@@ -278,3 +278,14 @@ main {
     }
 }
 
+.pro-brand-logo {
+    height: 28px;
+    width: auto;
+    display: block;
+}
+
+@media (max-width: 576px) {
+    .pro-brand-logo {
+        height: 24px;
+    }
+}

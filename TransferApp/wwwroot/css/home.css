@@ -9,12 +9,14 @@
 }
 
 /* фон */
+/* фон */
 .pro-hero-bg {
     position: absolute;
     inset: 0;
-    background: url("/img/hero-bg.jpg") center / cover no-repeat;
+    background: url("/images/hero-bg.jpg") center / cover no-repeat;
     transform: scale(1.03);
 }
+
 
 /* overlay */
 .pro-hero-overlay {

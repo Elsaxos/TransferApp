@@ -25,6 +25,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>@L["Site_Title"]</title>
+    <!-- FAVICONS -->
+    <link rel="icon" type="image/x-icon" href="~/images/favicon.ico" asp-append-version="true" />
+    <link rel="icon" type="image/png" sizes="32x32" href="~/images/favicon-32x32.png" asp-append-version="true" />
+    <link rel="icon" type="image/png" sizes="16x16" href="~/images/favicon-16x16.png" asp-append-version="true" />
+    <link rel="apple-touch-icon" sizes="180x180" href="~/images/apple-touch-icon.png" asp-append-version="true" />
+
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -51,15 +57,19 @@
             <div class="container">
 
                 <!-- LOGO -->
-                <a class="navbar-brand pro-brand" href="/">
-                    <span class="pro-brand-icon">
-                        <i class="bi bi-car-front-fill"></i>
-                    </span>
+                <a class="navbar-brand pro-brand d-flex align-items-center gap-2" href="/">
+                    <img src="~/images/logo-mark.png"
+                         asp-append-version="true"
+                         alt="ProTransfer"
+                         style="height:28px;width:auto;display:block;" />
+
                     <span class="pro-brand-text">
                         <span class="pro-brand-title">PROTRANSFER</span>
                         <span class="pro-brand-subtitle">@L["Site_Slogan"]</span>
                     </span>
                 </a>
+
+
 
                 <button class="navbar-toggler"
                         type="button"
