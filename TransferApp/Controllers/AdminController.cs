@@ -19,7 +19,7 @@ namespace TransferApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            // нормализираме Status: null -> "", trim
+            
             var inquiries = await _db.TransferRequests
                 .Where(r => ((r.Status ?? "").Trim()) == "Запитване")
                 .OrderByDescending(r => r.Id)
@@ -47,7 +47,7 @@ namespace TransferApp.Controllers
                 .ThenBy(p => p.Id)
                 .ToListAsync();
 
-            return View(items); // <-- ще търси Views/Admin/Prices.cshtml
+            return View(items); 
         }
 
     }

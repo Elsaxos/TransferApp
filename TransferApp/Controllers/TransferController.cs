@@ -32,7 +32,7 @@ namespace TransferApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TransferCreateViewModel vm, string submitType)
         {
-            // зареждаме пак ActivePrices при грешка
+            
             vm.ActivePrices = await _db.PriceItems
                 .Where(p => p.IsActive)
                 .OrderBy(p => p.SortOrder).ThenBy(p => p.Id)

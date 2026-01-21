@@ -17,18 +17,18 @@ body {
     flex-direction: column;
 }
 
-/* Focus стил */
+
 .btn:focus, .btn:active:focus,
 .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem #fff, 0 0 0 0.25rem rgba(255,193,7,.35);
 }
 
-/* main да бута footer-a надолу */
+
 main {
     flex: 1;
 }
 
-/* ================= NAVBAR ================= */
+
 .pro-navbar {
     background: #0f1012 !important;
     padding: 16px 0;
@@ -54,7 +54,7 @@ main {
             color: #ffc107 !important;
         }
 
-/* ================= PRICES + CONTACTS HERO ================= */
+
 .prices-hero,
 .contacts-hero {
     background: rgba(0,0,0,.55);
@@ -66,7 +66,7 @@ main {
     font-weight: 900;
 }
 
-/* ================= CONTACTS ================= */
+
 .contact-card,
 .contact-map-card {
     background: #111;
@@ -83,7 +83,7 @@ main {
     border: 1px solid rgba(0,0,0,.08);
 }
 
-/* ================= PRICES MOBILE ================= */
+
 @media (max-width: 768px) {
     .prices-table th, .prices-table td {
         font-size: 13px;
@@ -95,7 +95,7 @@ main {
     }
 }
 
-/* ================= FOOTER ================= */
+
 .footer {
     background: #f8f9fa;
     padding: 14px 0;
@@ -103,7 +103,7 @@ main {
     font-size: 13px;
 }
 
-/* ===== FOOTER CALL STRIP ===== */
+
 .pro-cta-strip {
     background: #ffc107;
     padding: 48px 16px;
@@ -131,7 +131,7 @@ main {
         color: #111;
     }
 
-/* Mobile */
+
 @media (max-width: 768px) {
     .pro-cta-phones {
         font-size: 1.6rem;
@@ -147,10 +147,7 @@ main {
         }
 }
 
-/* ========== NAVBAR TWEAKS: logo left + menu spacing ========== */
 
-/* 1) Дърпаме цялата навигация по-наляво (намаляваме bootstrap padding-а) */
-/* по-балансирано позициониране */
 .pro-navbar .container {
     max-width: 1320px; /* bootstrap xl */
     padding-left: 24px;
@@ -158,7 +155,7 @@ main {
 }
 
 
-/* 2) Бутаме логото съвсем вляво */
+
 .pro-brand {
     margin-left: 0;
     padding-left: 0;
@@ -167,7 +164,7 @@ main {
     gap: 10px;
 }
 
-/* иконата на логото */
+
 .pro-brand-icon {
     display: inline-flex;
     align-items: center;
@@ -177,13 +174,13 @@ main {
     line-height: 1;
 }
 
-/* 3) Повече разстояние между menu item-ите */
+
 .pro-menu .nav-link {
     padding-left: 22px !important;
     padding-right: 22px !important;
 }
 
-/* Ако на някои екрани менюто става прекалено широко – леко намаляме spacing */
+
 @media (max-width: 1200px) {
     .pro-menu .nav-link {
         padding-left: 16px !important;
@@ -191,7 +188,7 @@ main {
     }
 }
 
-/* Mobile: да не се раздува, защото в collapsed режим няма нужда от голям spacing */
+
 @media (max-width: 991.98px) {
     .pro-menu .nav-link {
         padding-left: 10px !important;
@@ -201,7 +198,7 @@ main {
     }
 }
 
-/* ========== ABOUT PAGE ========== */
+
 .about-hero {
     background: #0f1012;
     color: #fff;
@@ -267,14 +264,14 @@ main {
     background: rgba(255,193,7,0.08);
 }
 
-/* === LOGO POSITION TWEAK === */
+
 .pro-brand {
-    margin-left: -12px; /* леко наляво, не докрай */
+    margin-left: -12px; 
 }
 
 @media (max-width: 991px) {
     .pro-brand {
-        margin-left: 0; /* на мобилни да е центрирано */
+        margin-left: 0; 
     }
 }
 

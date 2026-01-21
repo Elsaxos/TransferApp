@@ -6,7 +6,7 @@ namespace TransferApp.Data
     {
         public static void SeedPriceItems(ApplicationDbContext db)
         {
-            // ако има поне 1 запис - нищо не правим
+            
             if (db.PriceItems.Any())
                 return;
 

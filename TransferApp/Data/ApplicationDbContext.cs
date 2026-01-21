@@ -19,7 +19,7 @@ namespace TransferApp.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // ✅ важни precision-и за пари (за да няма предупреждения/рязане)
+            
             modelBuilder.Entity<PriceItem>(e =>
             {
                 e.Property(x => x.OneWayPrice).HasPrecision(18, 2);

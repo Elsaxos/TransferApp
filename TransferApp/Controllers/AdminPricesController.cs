@@ -17,7 +17,7 @@ namespace TransferApp.Controllers
             _db = db;
         }
 
-        // GET: /Admin/Prices
+        
         [HttpGet("")]
         public async Task<IActionResult> Index()
         {
@@ -26,17 +26,17 @@ namespace TransferApp.Controllers
                 .ThenBy(p => p.Id)
                 .ToListAsync();
 
-            return View(prices); // Views/AdminPrices/Index.cshtml
+            return View(prices); 
         }
 
-        // GET: /Admin/Prices/Create
+        
         [HttpGet("Create")]
         public IActionResult Create()
         {
             return View("~/Views/Admin/PricesCreate.cshtml");
         }
 
-        // POST: /Admin/Prices/Create
+        
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PriceItem model)
@@ -54,7 +54,7 @@ namespace TransferApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: /Admin/Prices/Edit/5
+        
         [HttpGet("Edit/{id}")]
         public async Task<IActionResult> Edit(int id)
         {
@@ -67,7 +67,7 @@ namespace TransferApp.Controllers
             return View("~/Views/Admin/PricesEdit.cshtml", item);
         }
 
-        // POST: /Admin/Prices/Edit/5
+        
         [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, PriceItem model)

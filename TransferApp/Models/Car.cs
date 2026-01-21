@@ -12,7 +12,7 @@
 
         public int Seats { get; set; }
 
-        // ВАЖНО: правим го nullable, за да НЕ е required от MVC
+        
         public string? ImageUrl { get; set; }
     }
 }

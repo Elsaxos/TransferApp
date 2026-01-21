@@ -16,7 +16,7 @@ namespace TransferApp.Controllers
             _db = db;
         }
 
-        // GET /Admin/Requests/5
+      
         [HttpGet("Requests/{id:int}")]
         public async Task<IActionResult> Details(int id)
         {
@@ -27,7 +27,7 @@ namespace TransferApp.Controllers
         }
 
 
-        // GET /Admin/Inquiries
+        
         [HttpGet("Inquiries")]
         public async Task<IActionResult> Inquiries()
         {
@@ -39,7 +39,7 @@ namespace TransferApp.Controllers
             return View("~/Views/AdminTransfers/Inquiries.cshtml", items);
         }
 
-        // GET /Admin/Reservations
+        
         [HttpGet("Reservations")]
         public async Task<IActionResult> Reservations()
         {
@@ -69,12 +69,12 @@ namespace TransferApp.Controllers
             var req = await _db.TransferRequests.FirstOrDefaultAsync(x => x.Id == id);
             if (req == null) return NotFound();
 
-            var status = req.Status; // запомняме откъде да върнем
+            var status = req.Status; 
 
             _db.TransferRequests.Remove(req);
             await _db.SaveChangesAsync();
 
-            // връщаме към правилния списък
+            
             if (status == "Резервация")
                 return RedirectToAction(nameof(Reservations));
 

@@ -24,7 +24,7 @@ namespace TransferApp.Controllers
             return View();
         }
 
-        // ✅ СМЯНА НА ЕЗИКА (COOKIE)
+        
         [HttpGet]
         public IActionResult SetLanguage(string culture, string returnUrl = "/")
         {

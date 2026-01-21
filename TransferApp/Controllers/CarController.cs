@@ -14,24 +14,24 @@ namespace TransferApp.Controllers
             _db = db;
         }
 
-        // GET: /Car/Index
+        
         public async Task<IActionResult> Index()
         {
             var cars = await _db.Cars.ToListAsync();
             return View(cars);
         }
 
-        // GET: /Car/Create
+       
         public IActionResult Create()
         {
             return View(new Car());
         }
 
-        // POST: /Car/Create
+        
         [HttpPost]
         public async Task<IActionResult> Create(Car car)
         {
-            // Проверка за дублаж по регистрация (може да я оставиш или махнеш временно)
+            
             var exists = await _db.Cars
                 .AnyAsync(c => c.Registration == car.Registration);
 
@@ -41,7 +41,7 @@ namespace TransferApp.Controllers
                 return View(car);
             }
 
-            // ТУК: ако ImageUrl липсва, записваме празен стринг вместо null
+            
             if (string.IsNullOrWhiteSpace(car.ImageUrl))
                 car.ImageUrl = "";
 

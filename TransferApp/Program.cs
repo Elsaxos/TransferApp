@@ -77,12 +77,15 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// 🔴 ЗАДЪЛЖИТЕЛНО за Admin/[Route] контролери
+
 app.MapControllers();
 
-// Default MVC routing
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+public partial class Program { }
+

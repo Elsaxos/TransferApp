@@ -11,19 +11,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: "8.0.x"
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
 
-      - name: Restore
-        run: dotnet restore
+    - name: Restore
+      run: dotnet restore
 
-      - name: Build
-        run: dotnet build --no-restore -c Release
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
 
-      - name: Test
-        run: dotnet test --no-build -c Release
+    - name: Test + Coverage (Cobertura)
+      run: dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage"
+
+    - name: Install ReportGenerator
+      run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
+    - name: Generate HTML coverage report
+      run: reportgenerator "-reports:**/TestResults/**/coverage.cobertura.xml" "-targetdir:coverage-report" "-reporttypes:Html"
+
+    - name: Upload coverage report (artifact)
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: coverage-report
