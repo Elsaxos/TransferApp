@@ -10,7 +10,8 @@ public class AccountEndpointsTests
     [Test]
     public async Task Login_Page_Should_Return_200()
     {
-        await using var factory = new WebApplicationFactory<Program>();
+        await using var factory = new CustomWebApplicationFactory();
+
         using var client = factory.CreateClient();
 
         var response = await client.GetAsync("/Account/Login");

@@ -13,9 +13,10 @@ public class AdminAuthorizationTests
     [TestCase("/Admin/Prices")]
     public async Task Get_Admin_Endpoints_Anonymous_ShouldRedirectToLogin(string url)
     {
-        await using var factory = new WebApplicationFactory<Program>();
+        await using var factory = new CustomWebApplicationFactory();
 
-        
+
+
         using var client = factory.CreateClient(new WebApplicationFactoryClientOptions
         {
             BaseAddress = new Uri("https://localhost"),

@@ -1,5 +1,4 @@
 
-using Microsoft.AspNetCore.Mvc.Testing;
 using NUnit.Framework;
 using System.Net;
 
@@ -13,7 +12,7 @@ public class PagesEndpointsTests
     [TestCase("/Pages/Contacts")]
     public async Task Public_Pages_Should_Return_200(string url)
     {
-        await using var factory = new WebApplicationFactory<Program>();
+        await using var factory = new CustomWebApplicationFactory();
         using var client = factory.CreateClient();
 
         var response = await client.GetAsync(url);
@@ -24,7 +23,7 @@ public class PagesEndpointsTests
     [Test]
     public async Task Prices_Page_Should_Render_Some_Content()
     {
-        await using var factory = new WebApplicationFactory<Program>();
+        await using var factory = new CustomWebApplicationFactory();
         using var client = factory.CreateClient();
 
         var response = await client.GetAsync("/Pages/Prices");
@@ -33,7 +32,6 @@ public class PagesEndpointsTests
         var html = await response.Content.ReadAsStringAsync();
         Assert.That(string.IsNullOrWhiteSpace(html), Is.False);
 
-        
         Assert.That(html, Does.Contain("PROTRANSFER").IgnoreCase);
     }
 }
