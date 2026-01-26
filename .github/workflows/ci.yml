@@ -45,7 +45,7 @@ jobs:
             "-reporttypes:Html;XmlSummary"
 
       
-      - name: Enforce coverage threshold
+            - name: Enforce coverage threshold
         shell: pwsh
         run: |
           $summaryPath = "coverage-report/Summary.xml"
@@ -55,15 +55,40 @@ jobs:
           }
 
           [xml]$xml = Get-Content $summaryPath
-          
-          $lineCoverage = $xml.Summary.Linecoverage
 
-          if (-not $lineCoverage) {
-            Write-Error "Linecoverage not found in Summary.xml"
+          
+          $summaryNode = $xml.SelectSingleNode("//*[local-name()='Summary']")
+          if (-not $summaryNode) {
+            Write-Error "Summary node not found in Summary.xml"
+            Write-Host "---- Summary.xml ----"
+            Get-Content $summaryPath | Select-Object -First 200 | ForEach-Object { $_ }
             exit 1
           }
 
-          $lineCoverageNumber = [double]$lineCoverage
+          
+          $lineNode = $summaryNode.ChildNodes |
+            Where-Object { $_.NodeType -eq 'Element' -and $_.LocalName.ToLower() -eq 'linecoverage' } |
+            Select-Object -First 1
+
+          
+          $lineCoverageText = $null
+          if ($lineNode) {
+            $lineCoverageText = $lineNode.InnerText
+          } elseif ($summaryNode.Attributes) {
+            $attr = $summaryNode.Attributes |
+              Where-Object { $_.Name.ToLower() -eq 'linecoverage' } |
+              Select-Object -First 1
+            if ($attr) { $lineCoverageText = $attr.Value }
+          }
+
+          if (-not $lineCoverageText) {
+            Write-Error "LineCoverage not found in Summary.xml"
+            Write-Host "---- Summary.xml ----"
+            Get-Content $summaryPath | Select-Object -First 200 | ForEach-Object { $_ }
+            exit 1
+          }
+
+          $lineCoverageNumber = [double]$lineCoverageText
           $min = [double]$env:MIN_COVERAGE
 
           Write-Host ("Line coverage: {0}%" -f $lineCoverageNumber)
@@ -74,11 +99,15 @@ jobs:
             exit 1
           }
 
+
       
-      - name: Upload coverage report (artifact)
+                 - name: Upload coverage report (artifact)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: coverage-report
           if-no-files-found: error
           retention-days: 7
+
+
