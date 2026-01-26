@@ -32,6 +32,13 @@ jobs:
       - name: Test (with coverage)
         run: dotnet test ./TransferApp.sln -c Release --no-build --collect:"XPlat Code Coverage" --results-directory ./TestResults
 
+      - name: List coverage files (debug)
+        run: |
+          echo "== TestResults tree =="
+          find TestResults -maxdepth 5 -type f || true
+          echo "== cobertura files =="
+          find . -type f -name "coverage.cobertura.xml" || true
+
       - name: Install ReportGenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
@@ -41,10 +48,9 @@ jobs:
             "-reports:**/TestResults/**/coverage.cobertura.xml" \
             "-targetdir:coverage-report" \
             "-reporttypes:Html;XmlSummary" \
-            "-assemblyfilters:+TransferApp;-*Tests*" \
-            "-filefilters:-**/Migrations/*;-**/obj/*;-**/bin/*;-**/wwwroot/*;-**/*.g.cs;-**/*.Designer.cs"
+            "-assemblyfilters:+TransferApp;-*Tests*"
 
-      - name: Enforce coverage threshold
+      - name: Enforce coverage threshold (from Summary.xml)
         shell: pwsh
         run: |
           $min = [double]$env:MIN_COVERAGE
@@ -57,29 +63,24 @@ jobs:
 
           [xml]$xml = Get-Content $summaryPath
 
+          # ReportGenerator Summary.xml: <Summary ... linecoverage="34" ... />
           $summaryNode = $xml.SelectSingleNode("//*[translate(local-name(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='summary']")
           if (-not $summaryNode) {
             Write-Error "Summary node not found in Summary.xml"
             exit 1
           }
 
-          $lineCoverage = $null
+          $attr = $summaryNode.Attributes |
+            Where-Object { $_.Name.ToLower() -eq "linecoverage" } |
+            Select-Object -First 1
 
-          foreach ($name in @("LineCoverage","Linecoverage","linecoverage","lineCoverage")) {
-            if ($summaryNode.Attributes[$name]) { $lineCoverage = $summaryNode.Attributes[$name].Value; break }
-          }
-
-          if (-not $lineCoverage) {
-            $child = $summaryNode.SelectSingleNode("./*[translate(local-name(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='linecoverage']")
-            if ($child) { $lineCoverage = $child.InnerText }
-          }
-
-          if (-not $lineCoverage) {
-            Write-Error "Line coverage not found in Summary.xml"
+          if (-not $attr -or [string]::IsNullOrWhiteSpace($attr.Value)) {
+            Write-Error "Linecoverage attribute not found in Summary.xml"
             exit 1
           }
 
-          $coveragePct = [double]$lineCoverage
+          $coveragePct = [double]$attr.Value
+
           Write-Host ("Line coverage (filtered): {0}%" -f $coveragePct)
           Write-Host ("Minimum required: {0}%" -f $min)
 
@@ -95,5 +96,3 @@ jobs:
           path: coverage-report
           if-no-files-found: error
           retention-days: 7
-
-
