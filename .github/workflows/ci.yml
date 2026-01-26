@@ -33,55 +33,87 @@ jobs:
         run: dotnet test ./TransferApp.sln -c Release --no-build --collect:"XPlat Code Coverage" --results-directory ./TestResults
 
       - name: Install ReportGenerator
-        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
 
-      - name: Add dotnet tools to PATH
-        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-
-      - name: Generate coverage report (HTML + JsonSummary)
+      - name: Generate coverage report (HTML + XML + JSON)
         run: |
           reportgenerator \
             "-reports:**/TestResults/**/coverage.cobertura.xml" \
             "-targetdir:coverage-report" \
-            "-reporttypes:Html;JsonSummary" \
+            "-reporttypes:Html;XmlSummary;JsonSummary" \
             "-assemblyfilters:+TransferApp;-*Tests*" \
             "-filefilters:-**/Migrations/*;-**/obj/*;-**/bin/*;-**/wwwroot/*;-**/*.g.cs;-**/*.Designer.cs"
 
-      - name: Enforce coverage threshold (ReportGenerator JsonSummary)
+      - name: Enforce coverage threshold
         shell: pwsh
         run: |
           $min = [double]$env:MIN_COVERAGE
-          $summaryPath = "coverage-report/Summary.json"
 
-          if (!(Test-Path $summaryPath)) {
-            Write-Error "Summary.json not found at $summaryPath"
-            exit 1
+          function Find-LineCoverageInObject($obj) {
+            if (-not $obj) { return $null }
+
+            # търсим property име, което съдържа "linecoverage" (case-insensitive)
+            $props = $obj.PSObject.Properties | Where-Object { $_.Name -match 'linecoverage' }
+            if ($props -and $props.Count -gt 0) {
+              return $props[0].Value
+            }
+
+            # ако няма директно, обхождаме рекурсивно
+            foreach ($p in $obj.PSObject.Properties) {
+              $v = $p.Value
+              if ($v -is [System.Management.Automation.PSCustomObject]) {
+                $found = Find-LineCoverageInObject $v
+                if ($found) { return $found }
+              }
+            }
+
+            return $null
           }
 
-          $json = Get-Content $summaryPath -Raw | ConvertFrom-Json
+          $xmlPath = "coverage-report/Summary.xml"
+          $jsonPath = "coverage-report/Summary.json"
 
-          # ReportGenerator обикновено дава linecoverage като число (пример: 34.0)
           $coveragePct = $null
 
-          foreach ($prop in @("linecoverage","LineCoverage","Linecoverage","LINECOVERAGE")) {
-            if ($json.PSObject.Properties.Name -contains $prop) {
-              $coveragePct = [double]($json.$prop)
-              break
+          if (Test-Path $xmlPath) {
+            [xml]$xml = Get-Content $xmlPath
+            $summaryNode = $xml.SelectSingleNode("//*[translate(local-name(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='summary']")
+
+            if ($summaryNode) {
+              # case-insensitive attribute lookup
+              $attr = $summaryNode.Attributes | Where-Object { $_.Name -match 'linecoverage' } | Select-Object -First 1
+              if ($attr) { $coveragePct = [double]$attr.Value }
+              else {
+                # fallback: child node
+                $child = $summaryNode.SelectSingleNode("./*[translate(local-name(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='linecoverage']")
+                if ($child) { $coveragePct = [double]$child.InnerText }
+              }
             }
           }
 
-          if ($null -eq $coveragePct) {
-            # fallback: търсим property, което съдържа "line" и "coverage"
-            $match = $json.PSObject.Properties | Where-Object {
-              $_.Name.ToLower().Contains("line") -and $_.Name.ToLower().Contains("coverage")
-            } | Select-Object -First 1
+          if (-not $coveragePct) {
+            if (!(Test-Path $jsonPath)) {
+              Write-Error "Neither Summary.xml nor Summary.json found in coverage-report/"
+              exit 1
+            }
 
-            if ($match) { $coveragePct = [double]$match.Value }
-          }
+            $json = Get-Content $jsonPath -Raw | ConvertFrom-Json
 
-          if ($null -eq $coveragePct) {
-            Write-Error "Line coverage not found in Summary.json. Properties: $($json.PSObject.Properties.Name -join ', ')"
-            exit 1
+            # Най-често: linecoverage е вътре в summary или coverage
+            $found = $null
+            if ($json.summary)  { $found = Find-LineCoverageInObject $json.summary }
+            if (-not $found -and $json.coverage) { $found = Find-LineCoverageInObject $json.coverage }
+            if (-not $found) { $found = Find-LineCoverageInObject $json }
+
+            if (-not $found) {
+              $topProps = ($json.PSObject.Properties | Select-Object -ExpandProperty Name) -join ", "
+              Write-Error "Line coverage not found in Summary.json. Top-level properties: $topProps"
+              exit 1
+            }
+
+            $coveragePct = [double]$found
           }
 
           Write-Host ("Line coverage (filtered): {0}%" -f $coveragePct)
