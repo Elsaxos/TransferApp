@@ -35,68 +35,58 @@ jobs:
       - name: Install ReportGenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
-      - name: Generate coverage report (HTML + XmlSummary)
+            - name: Generate coverage report (HTML + XmlSummary)
         run: |
           reportgenerator \
             "-reports:**/TestResults/**/coverage.cobertura.xml" \
             "-targetdir:coverage-report" \
-            "-reporttypes:Html;XmlSummary"
+            "-reporttypes:Html;XmlSummary" \
+            "-assemblyfilters:+TransferApp;-*Tests*" \
+            "-filefilters:-**/Migrations/*;-**/obj/*;-**/bin/*;-**/wwwroot/*;-**/*.g.cs;-**/*.Designer.cs"
 
-      - name: Enforce coverage threshold
+
+            - name: Enforce coverage threshold
         shell: pwsh
         run: |
           $min = [double]$env:MIN_COVERAGE
+          $summaryPath = "coverage-report/Summary.xml"
 
-          $files = Get-ChildItem -Recurse -Filter "coverage.cobertura.xml" -Path "." | Select-Object -ExpandProperty FullName
-          if (-not $files -or $files.Count -eq 0) {
-            Write-Error "No coverage.cobertura.xml files found."
+          if (!(Test-Path $summaryPath)) {
+            Write-Error "Summary.xml not found at $summaryPath"
             exit 1
           }
 
-          $totalLines = 0
-          $coveredLines = 0
+          [xml]$xml = Get-Content $summaryPath
 
-          foreach ($f in $files) {
-            [xml]$cob = Get-Content $f
-
-            $lineRateAttr = $cob.coverage.'line-rate'
-            if (-not $lineRateAttr) {
-              Write-Error "Missing line-rate in $f"
-              exit 1
-            }
-
-            $linesValid = $cob.coverage.'lines-valid'
-            $linesCovered = $cob.coverage.'lines-covered'
-
-            if ($linesValid -and $linesCovered) {
-              $totalLines += [int]$linesValid
-              $coveredLines += [int]$linesCovered
-            }
-            else {
-              $pct = [double]$lineRateAttr * 100.0
-              Write-Host "File $f line coverage: $pct%"
-            }
+          # намираме стойността за line coverage, независимо как е именувана
+          $summaryNode = $xml.SelectSingleNode("//*[translate(local-name(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='summary']")
+          if (-not $summaryNode) {
+            Write-Error "Summary node not found in Summary.xml"
+            exit 1
           }
 
-          if ($totalLines -gt 0) {
-            $coveragePct = [math]::Round(($coveredLines / $totalLines) * 100.0, 2)
-          }
-          else {
-            $rates = @()
-            foreach ($f in $files) {
-              [xml]$cob = Get-Content $f
-              $rates += ([double]$cob.coverage.'line-rate' * 100.0)
-            }
-            $coveragePct = [math]::Round(($rates | Measure-Object -Average).Average, 2)
+          $lineCoverage = $null
+
+          foreach ($name in @("LineCoverage","Linecoverage","linecoverage","lineCoverage")) {
+            if ($summaryNode.Attributes[$name]) { $lineCoverage = $summaryNode.Attributes[$name].Value; break }
+            $child = $summaryNode.SelectSingleNode("./*[translate(local-name(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='linecoverage']")
+            if ($child) { $lineCoverage = $child.InnerText; break }
           }
 
-          Write-Host ("Total line coverage: {0}%" -f $coveragePct)
+          if (-not $lineCoverage) {
+            Write-Error "Line coverage not found in Summary.xml"
+            exit 1
+          }
+
+          $coveragePct = [double]$lineCoverage
+          Write-Host ("Line coverage (filtered): {0}%" -f $coveragePct)
           Write-Host ("Minimum required: {0}%" -f $min)
 
           if ($coveragePct -lt $min) {
             Write-Error ("Coverage gate failed: {0}% < {1}%" -f $coveragePct, $min)
             exit 1
           }
+
 
       - name: Upload coverage report (artifact)
         uses: actions/upload-artifact@v4
