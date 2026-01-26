@@ -35,7 +35,7 @@ jobs:
       - name: Install ReportGenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
-            - name: Generate coverage report (HTML + XmlSummary)
+      - name: Generate coverage report (HTML + XmlSummary)
         run: |
           reportgenerator \
             "-reports:**/TestResults/**/coverage.cobertura.xml" \
@@ -44,8 +44,7 @@ jobs:
             "-assemblyfilters:+TransferApp;-*Tests*" \
             "-filefilters:-**/Migrations/*;-**/obj/*;-**/bin/*;-**/wwwroot/*;-**/*.g.cs;-**/*.Designer.cs"
 
-
-            - name: Enforce coverage threshold
+      - name: Enforce coverage threshold
         shell: pwsh
         run: |
           $min = [double]$env:MIN_COVERAGE
@@ -58,7 +57,6 @@ jobs:
 
           [xml]$xml = Get-Content $summaryPath
 
-          # намираме стойността за line coverage, независимо как е именувана
           $summaryNode = $xml.SelectSingleNode("//*[translate(local-name(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='summary']")
           if (-not $summaryNode) {
             Write-Error "Summary node not found in Summary.xml"
@@ -69,8 +67,11 @@ jobs:
 
           foreach ($name in @("LineCoverage","Linecoverage","linecoverage","lineCoverage")) {
             if ($summaryNode.Attributes[$name]) { $lineCoverage = $summaryNode.Attributes[$name].Value; break }
+          }
+
+          if (-not $lineCoverage) {
             $child = $summaryNode.SelectSingleNode("./*[translate(local-name(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='linecoverage']")
-            if ($child) { $lineCoverage = $child.InnerText; break }
+            if ($child) { $lineCoverage = $child.InnerText }
           }
 
           if (-not $lineCoverage) {
@@ -86,7 +87,6 @@ jobs:
             Write-Error ("Coverage gate failed: {0}% < {1}%" -f $coveragePct, $min)
             exit 1
           }
-
 
       - name: Upload coverage report (artifact)
         uses: actions/upload-artifact@v4
