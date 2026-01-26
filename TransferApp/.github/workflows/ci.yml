@@ -29,14 +29,14 @@ jobs:
       - name: Build
         run: dotnet build ./TransferApp.sln -c Release --no-restore
 
-      # Етап 2.1: пускаме тестове + събираме coverage (Cobertura)
+     
       - name: Test (with coverage)
         run: dotnet test ./TransferApp.sln -c Release --no-build --collect:"XPlat Code Coverage" --results-directory ./TestResults
 
       - name: Install ReportGenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
-      # Генерираме HTML + Summary.xml (за Quality Gate)
+     
       - name: Generate coverage report (HTML + XmlSummary)
         run: |
           reportgenerator \
