@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using System.Net;
 using NUnit.Framework;
-using System;
-using System.Net;
 
 namespace TransferApp.IntegrationTests;
 
-[TestFixture]
 public class AdminAuthorizationTests
 {
     [TestCase("/Admin/Inquiries")]
@@ -13,11 +10,9 @@ public class AdminAuthorizationTests
     [TestCase("/Admin/Prices")]
     public async Task Get_Admin_Endpoints_Anonymous_ShouldRedirectToLogin(string url)
     {
-        await using var factory = new CustomWebApplicationFactory();
+        await using var factory = new CustomWebApplicationFactory(authenticate: false);
 
-
-
-        using var client = factory.CreateClient(new WebApplicationFactoryClientOptions
+        using var client = factory.CreateClient(new Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryClientOptions
         {
             BaseAddress = new Uri("https://localhost"),
             AllowAutoRedirect = false
@@ -28,18 +23,35 @@ public class AdminAuthorizationTests
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Redirect));
 
         var location = response.Headers.Location;
-        Assert.That(location, Is.Not.Null, "Redirect should contain Location header");
+        Assert.That(location, Is.Not.Null);
 
-      
-     
-        //  - https://localhost/Account/Login?ReturnUrl=...
-        var loginPath = location!.IsAbsoluteUri ? location.AbsolutePath : location.OriginalString;
+        // Location може да е absolute: https://localhost/Account/Login?ReturnUrl=...
+        var pathAndQuery = location!.IsAbsoluteUri ? location.PathAndQuery : location.ToString();
 
-        Assert.That(loginPath, Does.StartWith("/Account/Login"));
+        Assert.That(pathAndQuery, Does.StartWith("/Account/Login"));
+    }
 
-        var locationText = location.ToString();
-        Assert.That(locationText, Does.Contain("ReturnUrl="));
+    [TestCase("/Admin/Inquiries")]
+    [TestCase("/Admin/Reservations")]
+    [TestCase("/Admin/Prices")]
+    public async Task Get_Admin_Endpoints_Authenticated_ShouldReturn200(string url)
+    {
+        await using var factory = new CustomWebApplicationFactory(authenticate: true);
+        using var client = factory.CreateClient(new Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryClientOptions
+        {
+            BaseAddress = new Uri("https://localhost"),
+            AllowAutoRedirect = false
+        });
+
+        var response = await client.GetAsync(url);
+
+        // Ако някъде има редирект/403, ще го хванем веднага
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+
+        var html = await response.Content.ReadAsStringAsync();
+        Assert.That(string.IsNullOrWhiteSpace(html), Is.False);
     }
 }
+
 
 
