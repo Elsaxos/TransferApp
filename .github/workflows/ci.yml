@@ -7,20 +7,78 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-test-coverage:
     runs-on: ubuntu-latest
 
+    env:
+      DOTNET_VERSION: "8.0.x"
+      MIN_COVERAGE: "80"   
+
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Restore dependencies
-        run: dotnet restore
+      - name: Restore
+        run: dotnet restore ./TransferApp.sln
 
       - name: Build
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build ./TransferApp.sln -c Release --no-restore
+
+     
+      - name: Test (with coverage)
+        run: dotnet test ./TransferApp.sln -c Release --no-build --collect:"XPlat Code Coverage" --results-directory ./TestResults
+
+      - name: Install ReportGenerator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
+     
+      - name: Generate coverage report (HTML + XmlSummary)
+        run: |
+          reportgenerator \
+            "-reports:**/TestResults/**/coverage.cobertura.xml" \
+            "-targetdir:coverage-report" \
+            "-reporttypes:Html;XmlSummary"
+
+      
+      - name: Enforce coverage threshold
+        shell: pwsh
+        run: |
+          $summaryPath = "coverage-report/Summary.xml"
+          if (!(Test-Path $summaryPath)) {
+            Write-Error "Summary.xml not found at $summaryPath"
+            exit 1
+          }
+
+          [xml]$xml = Get-Content $summaryPath
+          
+          $lineCoverage = $xml.Summary.Linecoverage
+
+          if (-not $lineCoverage) {
+            Write-Error "Linecoverage not found in Summary.xml"
+            exit 1
+          }
+
+          $lineCoverageNumber = [double]$lineCoverage
+          $min = [double]$env:MIN_COVERAGE
+
+          Write-Host ("Line coverage: {0}%" -f $lineCoverageNumber)
+          Write-Host ("Minimum required: {0}%" -f $min)
+
+          if ($lineCoverageNumber -lt $min) {
+            Write-Error ("Coverage gate failed: {0}% < {1}%" -f $lineCoverageNumber, $min)
+            exit 1
+          }
+
+      
+      - name: Upload coverage report (artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-report
+          if-no-files-found: error
+          retention-days: 7
