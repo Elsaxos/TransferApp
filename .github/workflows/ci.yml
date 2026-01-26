@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build-test-coverage:
@@ -42,12 +42,11 @@ jobs:
             "-targetdir:coverage-report" \
             "-reporttypes:Html;XmlSummary"
 
-           - name: Enforce coverage threshold
+      - name: Enforce coverage threshold
         shell: pwsh
         run: |
           $min = [double]$env:MIN_COVERAGE
 
-          
           $files = Get-ChildItem -Recurse -Filter "coverage.cobertura.xml" -Path "." | Select-Object -ExpandProperty FullName
           if (-not $files -or $files.Count -eq 0) {
             Write-Error "No coverage.cobertura.xml files found."
@@ -60,7 +59,6 @@ jobs:
           foreach ($f in $files) {
             [xml]$cob = Get-Content $f
 
-            # Cobertura: root node <coverage line-rate="0.83" ...>
             $lineRateAttr = $cob.coverage.'line-rate'
             if (-not $lineRateAttr) {
               Write-Error "Missing line-rate in $f"
@@ -84,8 +82,6 @@ jobs:
             $coveragePct = [math]::Round(($coveredLines / $totalLines) * 100.0, 2)
           }
           else {
-            
-        
             $rates = @()
             foreach ($f in $files) {
               [xml]$cob = Get-Content $f
@@ -101,7 +97,6 @@ jobs:
             Write-Error ("Coverage gate failed: {0}% < {1}%" -f $coveragePct, $min)
             exit 1
           }
-
 
       - name: Upload coverage report (artifact)
         uses: actions/upload-artifact@v4
