@@ -35,59 +35,56 @@ jobs:
       - name: Install ReportGenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
-      - name: Generate coverage report (HTML + XmlSummary)
+      - name: Add dotnet tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Generate coverage report (HTML + JsonSummary)
         run: |
           reportgenerator \
             "-reports:**/TestResults/**/coverage.cobertura.xml" \
             "-targetdir:coverage-report" \
-            "-reporttypes:Html;XmlSummary" \
+            "-reporttypes:Html;JsonSummary" \
             "-assemblyfilters:+TransferApp;-*Tests*" \
             "-filefilters:-**/Migrations/*;-**/obj/*;-**/bin/*;-**/wwwroot/*;-**/*.g.cs;-**/*.Designer.cs"
 
-      - name: Enforce coverage threshold (Cobertura)
+      - name: Enforce coverage threshold (ReportGenerator JsonSummary)
         shell: pwsh
         run: |
           $min = [double]$env:MIN_COVERAGE
+          $summaryPath = "coverage-report/Summary.json"
 
-          $files = Get-ChildItem -Recurse -Filter "coverage.cobertura.xml" -Path "." | Select-Object -ExpandProperty FullName
-          if (-not $files -or $files.Count -eq 0) {
-            Write-Error "No coverage.cobertura.xml files found."
+          if (!(Test-Path $summaryPath)) {
+            Write-Error "Summary.json not found at $summaryPath"
             exit 1
           }
 
-          $totalLines = 0
-          $coveredLines = 0
-          $rates = @()
+          $json = Get-Content $summaryPath -Raw | ConvertFrom-Json
 
-          foreach ($f in $files) {
-            [xml]$cob = Get-Content $f
+          # ReportGenerator обикновено дава linecoverage като число (пример: 34.0)
+          $coveragePct = $null
 
-            # Cobertura: root node <coverage line-rate="0.83" lines-valid="..." lines-covered="...">
-            $lineRateAttr = $cob.coverage.'line-rate'
-            if ($lineRateAttr) {
-              $rates += ([double]$lineRateAttr * 100.0)
-            }
-
-            $linesValid = $cob.coverage.'lines-valid'
-            $linesCovered = $cob.coverage.'lines-covered'
-
-            if ($linesValid -and $linesCovered) {
-              $totalLines += [int]$linesValid
-              $coveredLines += [int]$linesCovered
+          foreach ($prop in @("linecoverage","LineCoverage","Linecoverage","LINECOVERAGE")) {
+            if ($json.PSObject.Properties.Name -contains $prop) {
+              $coveragePct = [double]($json.$prop)
+              break
             }
           }
 
-          if ($totalLines -gt 0) {
-            $coveragePct = [math]::Round(($coveredLines / $totalLines) * 100.0, 2)
-          } else {
-            if (-not $rates -or $rates.Count -eq 0) {
-              Write-Error "Could not calculate coverage from Cobertura."
-              exit 1
-            }
-            $coveragePct = [math]::Round(($rates | Measure-Object -Average).Average, 2)
+          if ($null -eq $coveragePct) {
+            # fallback: търсим property, което съдържа "line" и "coverage"
+            $match = $json.PSObject.Properties | Where-Object {
+              $_.Name.ToLower().Contains("line") -and $_.Name.ToLower().Contains("coverage")
+            } | Select-Object -First 1
+
+            if ($match) { $coveragePct = [double]$match.Value }
           }
 
-          Write-Host ("Total line coverage (filtered): {0}%" -f $coveragePct)
+          if ($null -eq $coveragePct) {
+            Write-Error "Line coverage not found in Summary.json. Properties: $($json.PSObject.Properties.Name -join ', ')"
+            exit 1
+          }
+
+          Write-Host ("Line coverage (filtered): {0}%" -f $coveragePct)
           Write-Host ("Minimum required: {0}%" -f $min)
 
           if ($coveragePct -lt $min) {
