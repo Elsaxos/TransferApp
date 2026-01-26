@@ -12,7 +12,7 @@ jobs:
 
     env:
       DOTNET_VERSION: "8.0.x"
-      MIN_COVERAGE: "80"   
+      MIN_COVERAGE: "80"
 
     steps:
       - name: Checkout
@@ -29,14 +29,12 @@ jobs:
       - name: Build
         run: dotnet build ./TransferApp.sln -c Release --no-restore
 
-     
       - name: Test (with coverage)
         run: dotnet test ./TransferApp.sln -c Release --no-build --collect:"XPlat Code Coverage" --results-directory ./TestResults
 
       - name: Install ReportGenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
-     
       - name: Generate coverage report (HTML + XmlSummary)
         run: |
           reportgenerator \
@@ -44,8 +42,7 @@ jobs:
             "-targetdir:coverage-report" \
             "-reporttypes:Html;XmlSummary"
 
-      
-            - name: Enforce coverage threshold
+      - name: Enforce coverage threshold
         shell: pwsh
         run: |
           $summaryPath = "coverage-report/Summary.xml"
@@ -56,39 +53,28 @@ jobs:
 
           [xml]$xml = Get-Content $summaryPath
 
-          
-          $summaryNode = $xml.SelectSingleNode("//*[local-name()='Summary']")
-          if (-not $summaryNode) {
-            Write-Error "Summary node not found in Summary.xml"
-            Write-Host "---- Summary.xml ----"
-            Get-Content $summaryPath | Select-Object -First 200 | ForEach-Object { $_ }
+          # Поддържаме двата най-чести формата на ReportGenerator
+          $lineCoverage = $null
+
+          if ($xml.Summary -and $xml.Summary.LineCoverage) {
+            $lineCoverage = $xml.Summary.LineCoverage
+          }
+          elseif ($xml.Summary -and $xml.Summary.Linecoverage) {
+            $lineCoverage = $xml.Summary.Linecoverage
+          }
+          elseif ($xml.Summary -and $xml.Summary.Attributes["Linecoverage"]) {
+            $lineCoverage = $xml.Summary.Attributes["Linecoverage"].Value
+          }
+          elseif ($xml.Summary -and $xml.Summary.Attributes["LineCoverage"]) {
+            $lineCoverage = $xml.Summary.Attributes["LineCoverage"].Value
+          }
+
+          if (-not $lineCoverage) {
+            Write-Error "Line coverage not found in Summary.xml"
             exit 1
           }
 
-          
-          $lineNode = $summaryNode.ChildNodes |
-            Where-Object { $_.NodeType -eq 'Element' -and $_.LocalName.ToLower() -eq 'linecoverage' } |
-            Select-Object -First 1
-
-          
-          $lineCoverageText = $null
-          if ($lineNode) {
-            $lineCoverageText = $lineNode.InnerText
-          } elseif ($summaryNode.Attributes) {
-            $attr = $summaryNode.Attributes |
-              Where-Object { $_.Name.ToLower() -eq 'linecoverage' } |
-              Select-Object -First 1
-            if ($attr) { $lineCoverageText = $attr.Value }
-          }
-
-          if (-not $lineCoverageText) {
-            Write-Error "LineCoverage not found in Summary.xml"
-            Write-Host "---- Summary.xml ----"
-            Get-Content $summaryPath | Select-Object -First 200 | ForEach-Object { $_ }
-            exit 1
-          }
-
-          $lineCoverageNumber = [double]$lineCoverageText
+          $lineCoverageNumber = [double]$lineCoverage
           $min = [double]$env:MIN_COVERAGE
 
           Write-Host ("Line coverage: {0}%" -f $lineCoverageNumber)
@@ -99,10 +85,7 @@ jobs:
             exit 1
           }
 
-
-      
-                 - name: Upload coverage report (artifact)
-        if: always()
+      - name: Upload coverage report (artifact)
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
