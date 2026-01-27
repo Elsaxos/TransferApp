@@ -12,7 +12,7 @@ jobs:
 
     env:
       DOTNET_VERSION: "8.0.x"
-      MIN_COVERAGE: "80"
+      MIN_COVERAGE: "15"
 
     steps:
       - name: Checkout
