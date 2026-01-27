@@ -44,7 +44,7 @@ jobs:
             "-assemblyfilters:+TransferApp;-*Tests*" \
             "-filefilters:-**/Migrations/*;-**/obj/*;-**/bin/*;-**/wwwroot/*;-**/*.g.cs;-**/*.Designer.cs"
 
-            - name: Enforce coverage threshold (Cobertura, exclude Tests)
+      - name: Enforce coverage threshold (Cobertura, exclude Tests)
         shell: pwsh
         run: |
           $min = [double]$env:MIN_COVERAGE
@@ -53,7 +53,7 @@ jobs:
                    Select-Object -ExpandProperty FullName
 
           if (-not $files -or $files.Count -eq 0) {
-            Write-Error "No coverage.cobertura.xml files found under TestResults."
+            Write-Error "No coverage.cobertura.xml files found. Check dotnet test results directory."
             exit 1
           }
 
@@ -92,7 +92,7 @@ jobs:
           }
 
           if ($totalLines -le 0) {
-            Write-Error "Filtered total lines is 0. This means all files were filtered out. Print a sample filename to debug."
+            Write-Error "Filtered total lines is 0. All files were filtered out. Print a sample 'filename' from cobertura to adjust filters."
             exit 1
           }
 
@@ -105,5 +105,13 @@ jobs:
             Write-Error ("Coverage gate failed: {0}% < {1}%" -f $coveragePct, $min)
             exit 1
           }
+
+      - name: Upload coverage report (artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-report
+          if-no-files-found: error
+          retention-days: 7
 
 
