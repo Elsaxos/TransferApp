@@ -44,7 +44,7 @@ jobs:
             "-assemblyfilters:+TransferApp;-*Tests*" \
             "-filefilters:-**/Migrations/*;-**/obj/*;-**/bin/*;-**/wwwroot/*;-**/*.g.cs;-**/*.Designer.cs"
 
-      - name: Enforce coverage threshold (Cobertura filtered to TransferApp)
+            - name: Enforce coverage threshold (Cobertura, exclude Tests)
         shell: pwsh
         run: |
           $min = [double]$env:MIN_COVERAGE
@@ -63,7 +63,6 @@ jobs:
           foreach ($f in $files) {
             [xml]$cob = Get-Content $f
 
-            # Cobertura <class filename="..."><lines><line hits=".."/></lines></class>
             $classes = $cob.SelectNodes("//class")
             foreach ($cls in $classes) {
               $fn = $cls.GetAttribute("filename")
@@ -71,8 +70,9 @@ jobs:
 
               $fnNorm = $fn.Replace("\", "/")
 
-              # Only files inside TransferApp project
-              if ($fnNorm -notmatch '^TransferApp/' -and $fnNorm -notmatch '/TransferApp/') { continue }
+              # Exclude test projects/files
+              if ($fnNorm -match 'Tests?/' -or $fnNorm -match '\bTests?\b') { continue }
+              if ($fnNorm -match '/TransferApp\.UnitTests/' -or $fnNorm -match '/TransferApp\.IntegrationTests/') { continue }
 
               # Exclude noise
               if ($fnNorm -match '/(obj|bin)/') { continue }
@@ -92,13 +92,13 @@ jobs:
           }
 
           if ($totalLines -le 0) {
-            Write-Error "Filtered total lines is 0. Check that Cobertura filenames contain 'TransferApp/'."
+            Write-Error "Filtered total lines is 0. This means all files were filtered out. Print a sample filename to debug."
             exit 1
           }
 
           $coveragePct = [math]::Round(($coveredLines / $totalLines) * 100.0, 2)
 
-          Write-Host ("Total line coverage (filtered to TransferApp): {0}%" -f $coveragePct)
+          Write-Host ("Total line coverage (filtered): {0}%" -f $coveragePct)
           Write-Host ("Minimum required: {0}%" -f $min)
 
           if ($coveragePct -lt $min) {
@@ -106,11 +106,4 @@ jobs:
             exit 1
           }
 
-      - name: Upload coverage report (artifact)
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: coverage-report
-          if-no-files-found: error
-          retention-days: 7
 
