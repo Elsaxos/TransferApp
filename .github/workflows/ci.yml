@@ -29,47 +29,71 @@ jobs:
       - name: Build
         run: dotnet build ./TransferApp.sln -c Release --no-restore
 
+      # ВАЖНО:
+      # ExcludeByFile/ExcludeByAttribute режат генериран/нерелевантен код.
+      # Ако имаш Views/ Razor, това е OK. Migrations/obj/bin режем.
       - name: Test (with coverage)
-        run: dotnet test ./TransferApp.sln -c Release --no-build --collect:"XPlat Code Coverage" --results-directory ./TestResults
+        run: >
+          dotnet test ./TransferApp.sln -c Release --no-build
+          --collect:"XPlat Code Coverage"
+          --results-directory ./TestResults
+          --
+          DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.ExcludeByFile="**/*Migrations*;**/obj/**;**/bin/**;**/wwwroot/**;**/*.g.cs;**/*.Designer.cs"
+          DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.ExcludeByAttribute="GeneratedCodeAttribute;CompilerGeneratedAttribute"
 
       - name: Install ReportGenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
-      - name: Generate coverage report (HTML + XmlSummary + JsonSummary)
+      - name: Generate coverage report (HTML)
         run: |
           reportgenerator \
             "-reports:**/TestResults/**/coverage.cobertura.xml" \
             "-targetdir:coverage-report" \
-            "-reporttypes:Html;XmlSummary;JsonSummary" \
-            "-assemblyfilters:+TransferApp;-*Tests*" \
-            "-filefilters:-**/Migrations/*;-**/obj/*;-**/bin/*;-**/wwwroot/*;-**/*.g.cs;-**/*.Designer.cs"
+            "-reporttypes:Html" \
+            "-assemblyfilters:+TransferApp*;-*Test*"
 
-      - name: Enforce coverage threshold (from cobertura xml)
+      # ✅ ТУК е “гейта” — смятаме от cobertura XML (без Summary.*)
+      - name: Enforce coverage threshold (Cobertura)
         shell: pwsh
         run: |
           $min = [double]$env:MIN_COVERAGE
 
-          $files = Get-ChildItem -Recurse -Filter "coverage.cobertura.xml" -Path "." | Select-Object -ExpandProperty FullName
+          $files = Get-ChildItem -Recurse -Filter "coverage.cobertura.xml" -Path "." |
+                   Select-Object -ExpandProperty FullName
+
           if (-not $files -or $files.Count -eq 0) {
-            Write-Error "No coverage.cobertura.xml files found."
+            Write-Error "No coverage.cobertura.xml files found under TestResults."
             exit 1
           }
 
-          # Вземаме средно аритметично на line-rate (за всеки test run), в проценти
-          $rates = @()
+          $totalLines = 0
+          $coveredLines = 0
+
           foreach ($f in $files) {
             [xml]$cob = Get-Content $f
-            $lr = $cob.coverage.'line-rate'
-            if (-not $lr) {
-              Write-Error "Missing line-rate in $f"
+
+            # Cobertura root attributes: lines-valid / lines-covered
+            $lv = $cob.coverage.'lines-valid'
+            $lc = $cob.coverage.'lines-covered'
+
+            if ($lv -and $lc) {
+              $totalLines += [int]$lv
+              $coveredLines += [int]$lc
+            }
+            else {
+              Write-Error "Cobertura missing lines-valid/lines-covered in: $f"
               exit 1
             }
-            $rates += ([double]$lr * 100.0)
           }
 
-          $coveragePct = [math]::Round(($rates | Measure-Object -Average).Average, 2)
+          if ($totalLines -le 0) {
+            Write-Error "Total lines-valid is 0. Something is wrong with coverage collection."
+            exit 1
+          }
 
-          Write-Host ("Total line coverage (filtered): {0}%" -f $coveragePct)
+          $coveragePct = [math]::Round(($coveredLines / $totalLines) * 100.0, 2)
+
+          Write-Host ("Total line coverage: {0}%" -f $coveragePct)
           Write-Host ("Minimum required: {0}%" -f $min)
 
           if ($coveragePct -lt $min) {
@@ -84,4 +108,5 @@ jobs:
           path: coverage-report
           if-no-files-found: error
           retention-days: 7
+
 
