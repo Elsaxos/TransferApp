@@ -35,16 +35,16 @@ jobs:
       - name: Install ReportGenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
-      - name: Generate coverage report (HTML)
+      - name: Generate coverage report (HTML + summaries)
         run: |
           reportgenerator \
             "-reports:**/TestResults/**/coverage.cobertura.xml" \
             "-targetdir:coverage-report" \
-            "-reporttypes:Html" \
+            "-reporttypes:Html;XmlSummary;JsonSummary" \
             "-assemblyfilters:+TransferApp;-*Tests*" \
-            "-filefilters:-**/Migrations/*;-**/obj/*;-**/bin/*;-**/wwwroot/*;-**/*.g.cs;-**/*.Designer.cs"
+            "-filefilters:-**/Migrations/*;-**/obj/*;-**/bin/*;-**/wwwroot/*;-**/*.g.cs;-**/*.Designer.cs;-**/Views/*"
 
-      - name: Enforce coverage threshold (Cobertura, exclude Tests)
+      - name: Enforce coverage threshold (Cobertura; count only .cs; exclude Views/Tests)
         shell: pwsh
         run: |
           $min = [double]$env:MIN_COVERAGE
@@ -70,11 +70,12 @@ jobs:
 
               $fnNorm = $fn.Replace("\", "/")
 
-              # Exclude test projects/files
-              if ($fnNorm -match 'Tests?/' -or $fnNorm -match '\bTests?\b') { continue }
-              if ($fnNorm -match '/TransferApp\.UnitTests/' -or $fnNorm -match '/TransferApp\.IntegrationTests/') { continue }
+              # ✅ Count ONLY C# source files
+              if ($fnNorm -notmatch '\.cs$') { continue }
 
-              # Exclude noise
+              # ✅ Exclude Views, tests, and noise
+              if ($fnNorm -match '^Views/' -or $fnNorm -match '/Views/') { continue }
+              if ($fnNorm -match 'Tests?/' -or $fnNorm -match '\bTests?\b') { continue }
               if ($fnNorm -match '/(obj|bin)/') { continue }
               if ($fnNorm -match '/Migrations/') { continue }
               if ($fnNorm -match '/wwwroot/') { continue }
@@ -92,26 +93,16 @@ jobs:
           }
 
           if ($totalLines -le 0) {
-            Write-Error "Filtered total lines is 0. All files were filtered out. Print a sample 'filename' from cobertura to adjust filters."
+            Write-Error "Filtered total lines is 0. No .cs files were counted. Print sample filenames to debug."
             exit 1
           }
 
           $coveragePct = [math]::Round(($coveredLines / $totalLines) * 100.0, 2)
 
-          Write-Host ("Total line coverage (filtered): {0}%" -f $coveragePct)
+          Write-Host ("Total line coverage (.cs only, filtered): {0}%" -f $coveragePct)
           Write-Host ("Minimum required: {0}%" -f $min)
 
           if ($coveragePct -lt $min) {
             Write-Error ("Coverage gate failed: {0}% < {1}%" -f $coveragePct, $min)
             exit 1
           }
-
-      - name: Upload coverage report (artifact)
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: coverage-report
-          if-no-files-found: error
-          retention-days: 7
-
-

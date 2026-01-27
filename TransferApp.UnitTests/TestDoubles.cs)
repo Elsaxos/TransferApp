@@ -1,0 +1,26 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using TransferApp.Services;
+
+public sealed class FakeEmailSender : IEmailSender
+{
+    public int Calls { get; private set; }
+    public string? To { get; private set; }
+    public string? Subject { get; private set; }
+    public string? Body { get; private set; }
+
+    public Task SendEmailAsync(string to, string subject, string htmlBody)
+    {
+        Calls++;
+        To = to;
+        Subject = subject;
+        Body = htmlBody;
+        return Task.CompletedTask;
+    }
+}
+
+public sealed class DummyTempDataProvider : ITempDataProvider
+{
+    public IDictionary<string, object> LoadTempData(HttpContext context) => new Dictionary<string, object>();
+    public void SaveTempData(HttpContext context, IDictionary<string, object> values) { }
+}
