@@ -12,30 +12,44 @@
     bool isContacts = controller == "Pages" && action == "Contacts";
     bool isTransfer = controller == "Transfer" && action == "Create";
 
-    // ВАЖНО: само когато сме в /Admin
     bool isAdminArea = Context.Request.Path.StartsWithSegments("/Admin");
 
     var returnUrl = Context.Request.Path + Context.Request.QueryString;
+
+    var canonical = $"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}".TrimEnd('/');
+
+    // Public SEO description (EN - OK; ако решиш по-късно, можем да го локализираме)
+    var seoDescription = "Airport transfers and private transport in Bulgaria. Fast booking, transparent prices and reliable service.";
+
+    // Admin винаги да е "bg" за UX консистентност
+    var htmlLang = isAdminArea ? "bg" : CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 }
 
 <!DOCTYPE html>
-<html lang="bg">
+<html lang="@htmlLang">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>@L["Site_Title"]</title>
-    <!-- FAVICONS -->
+
+    <meta name="description" content="@seoDescription" />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="@canonical" />
+
+    <meta property="og:title" content="@L["Site_Title"]" />
+    <meta property="og:description" content="@seoDescription" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@canonical" />
+
     <link rel="icon" type="image/x-icon" href="~/images/favicon.ico" asp-append-version="true" />
     <link rel="icon" type="image/png" sizes="32x32" href="~/images/favicon-32x32.png" asp-append-version="true" />
     <link rel="icon" type="image/png" sizes="16x16" href="~/images/favicon-16x16.png" asp-append-version="true" />
     <link rel="apple-touch-icon" sizes="180x180" href="~/images/apple-touch-icon.png" asp-append-version="true" />
 
-
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
 
@@ -48,15 +62,17 @@
     {
         <link rel="stylesheet" href="~/css/contacts.css" asp-append-version="true" />
     }
-
 </head>
 
 <body class="bg-light">
+
+    @* Cookie banner: EN only (както искаш) *@
+    <partial name="_CookieConsentPartial" />
+
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark pro-navbar @(isHome ? "pro-navbar-overlay" : "")">
             <div class="container">
 
-                <!-- LOGO -->
                 <a class="navbar-brand pro-brand d-flex align-items-center gap-2" href="/">
                     <img src="~/images/logo-mark.png"
                          asp-append-version="true"
@@ -68,8 +84,6 @@
                         <span class="pro-brand-subtitle">@L["Site_Slogan"]</span>
                     </span>
                 </a>
-
-
 
                 <button class="navbar-toggler"
                         type="button"
@@ -83,39 +97,28 @@
 
                 <div class="collapse navbar-collapse" id="mainNavbar">
 
-                    <!-- MENU -->
                     <ul class="navbar-nav mx-auto pro-menu">
                         <li class="nav-item">
-                            <a class="nav-link @(isHome ? "active" : "")" href="/">
-                                @L["Menu_Home"]
-                            </a>
+                            <a class="nav-link @(isHome ? "active" : "")" href="/">@L["Menu_Home"]</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link @(isAbout ? "active" : "")" href="/Pages/About">
-                                @L["Menu_About"]
-                            </a>
+                            <a class="nav-link @(isAbout ? "active" : "")" href="/Pages/About">@L["Menu_About"]</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link @(isPrices ? "active" : "")" href="/Pages/Prices">
-                                @L["Menu_Prices"]
-                            </a>
+                            <a class="nav-link @(isPrices ? "active" : "")" href="/Pages/Prices">@L["Menu_Prices"]</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link @(isTransfer ? "active" : "")" href="/Transfer/Create">
-                                @L["Menu_BookTransfer"]
-                            </a>
+                            <a class="nav-link @(isTransfer ? "active" : "")" href="/Transfer/Create">@L["Menu_BookTransfer"]</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link @(isContacts ? "active" : "")" href="/Pages/Contacts">
-                                @L["Menu_Contacts"]
-                            </a>
+                            <a class="nav-link @(isContacts ? "active" : "")" href="/Pages/Contacts">@L["Menu_Contacts"]</a>
                         </li>
 
-                        <!-- ADMIN MENU – САМО В /Admin -->
+                        @* ADMIN MENU – само в /Admin и само за Admin роля (винаги на BG) *@
                         @if (isAdminArea && User.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
@@ -130,54 +133,58 @@
                         }
                     </ul>
 
-                    <!-- RIGHT SIDE: LANGUAGE + LOGOUT -->
                     <div class="d-flex align-items-center gap-2">
 
-                        <!-- LANGUAGE -->
-                        <div class="pro-lang dropdown">
-                            <button class="btn btn-outline-light btn-sm dropdown-toggle"
-                                    type="button"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                @CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.ToUpper()
-                            </button>
+                        @* Language dropdown само за public (не го показваме в Admin) *@
+                        @if (!isAdminArea)
+                        {
+                            <div class="pro-lang dropdown">
+                                <button class="btn btn-outline-light btn-sm dropdown-toggle"
+                                        type="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                    @CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.ToUpper()
+                                </button>
 
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <a class="dropdown-item"
-                                       asp-controller="Localization"
-                                       asp-action="SetLanguage"
-                                       asp-route-culture="bg"
-                                       asp-route-returnUrl="@returnUrl">Български</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item"
-                                       asp-controller="Localization"
-                                       asp-action="SetLanguage"
-                                       asp-route-culture="en"
-                                       asp-route-returnUrl="@returnUrl">English</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item"
-                                       asp-controller="Localization"
-                                       asp-action="SetLanguage"
-                                       asp-route-culture="ru"
-                                       asp-route-returnUrl="@returnUrl">Русский</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item"
-                                       asp-controller="Localization"
-                                       asp-action="SetLanguage"
-                                       asp-route-culture="fr"
-                                       asp-route-returnUrl="@returnUrl">Français</a>
-                                </li>
-                            </ul>
-                        </div>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-controller="Localization"
+                                           asp-action="SetLanguage"
+                                           asp-route-culture="bg"
+                                           asp-route-returnUrl="@returnUrl">Български</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-controller="Localization"
+                                           asp-action="SetLanguage"
+                                           asp-route-culture="en"
+                                           asp-route-returnUrl="@returnUrl">English</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-controller="Localization"
+                                           asp-action="SetLanguage"
+                                           asp-route-culture="ru"
+                                           asp-route-returnUrl="@returnUrl">Русский</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-controller="Localization"
+                                           asp-action="SetLanguage"
+                                           asp-route-culture="fr"
+                                           asp-route-returnUrl="@returnUrl">Français</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
 
-                        <!-- LOGOUT (само за логнати) -->
                         @if (User.Identity?.IsAuthenticated == true)
                         {
-                            <a class="btn btn-outline-light btn-sm" href="/Account/Logout">Logout</a>
+                            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+                            </form>
                         }
 
                     </div>
@@ -191,7 +198,6 @@
         @RenderBody()
     </main>
 
-    <!-- CTA STRIP -->
     <section class="pro-cta-strip">
         <div class="container text-center">
             <p class="pro-cta-text">@L["Footer_CTA_Text"]</p>
@@ -206,8 +212,14 @@
         </div>
     </section>
 
+    @* Footer links: EN only (както поиска) *@
     <footer class="border-top footer text-muted">
         <div class="container py-3 text-center">
+            <div class="mb-2">
+                <a class="text-decoration-none me-3" href="/Pages/Privacy">Privacy Policy</a>
+                <a class="text-decoration-none" href="/Pages/Cookies">Cookies Policy</a>
+            </div>
+
             <small>&copy; @DateTime.Now.Year - @L["Site_Title"]</small>
         </div>
     </footer>

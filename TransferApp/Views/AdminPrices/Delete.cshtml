@@ -1,0 +1,25 @@
+﻿@model TransferApp.Models.PriceItem
+
+@{
+    ViewData["Title"] = "Изтриване на цена";
+}
+
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h2 class="mb-0 text-danger">Изтриване</h2>
+        <a class="btn btn-outline-secondary" href="/Admin/Prices">Назад</a>
+    </div>
+
+    <div class="alert alert-warning">
+        Сигурен ли си, че искаш да изтриеш този маршрут?
+        <br />
+        <strong>@Model.RouteBg</strong> / <strong>@Model.RouteEn</strong>
+    </div>
+
+    <form method="post" action="/Admin/Prices/Delete/@Model.Id">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-danger fw-bold">Да, изтрий</button>
+        <a class="btn btn-outline-secondary" href="/Admin/Prices">Отказ</a>
+    </form>
+</div>
+

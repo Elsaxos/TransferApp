@@ -6,6 +6,7 @@ using TransferApp.Data;
 namespace TransferApp.Controllers
 {
     [Authorize(Roles = "Admin")]
+    [AutoValidateAntiforgeryToken]
     [Route("Admin")]
     public class AdminTransfersController : Controller
     {
@@ -16,18 +17,7 @@ namespace TransferApp.Controllers
             _db = db;
         }
 
-      
-        [HttpGet("Requests/{id:int}")]
-        public async Task<IActionResult> Details(int id)
-        {
-            var req = await _db.TransferRequests.FirstOrDefaultAsync(x => x.Id == id);
-            if (req == null) return NotFound();
-
-            return View("~/Views/AdminTransfers/Details.cshtml", req);
-        }
-
-
-        
+        // GET: /Admin/Inquiries
         [HttpGet("Inquiries")]
         public async Task<IActionResult> Inquiries()
         {
@@ -39,7 +29,7 @@ namespace TransferApp.Controllers
             return View("~/Views/AdminTransfers/Inquiries.cshtml", items);
         }
 
-        
+        // GET: /Admin/Reservations
         [HttpGet("Reservations")]
         public async Task<IActionResult> Reservations()
         {
@@ -51,7 +41,17 @@ namespace TransferApp.Controllers
             return View("~/Views/AdminTransfers/Reservations.cshtml", items);
         }
 
-        
+        // GET: /Admin/Requests/{id}
+        [HttpGet("Requests/{id:int}")]
+        public async Task<IActionResult> Details(int id)
+        {
+            var req = await _db.TransferRequests.FirstOrDefaultAsync(x => x.Id == id);
+            if (req == null) return NotFound();
+
+            return View("~/Views/AdminTransfers/Details.cshtml", req);
+        }
+
+        // GET: /Admin/Requests/Delete/{id}
         [HttpGet("Requests/Delete/{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -61,7 +61,7 @@ namespace TransferApp.Controllers
             return View("~/Views/AdminTransfers/Delete.cshtml", req);
         }
 
-        
+        // POST: /Admin/Requests/Delete/{id}
         [HttpPost("Requests/Delete/{id:int}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -69,12 +69,11 @@ namespace TransferApp.Controllers
             var req = await _db.TransferRequests.FirstOrDefaultAsync(x => x.Id == id);
             if (req == null) return NotFound();
 
-            var status = req.Status; 
+            var status = req.Status;
 
             _db.TransferRequests.Remove(req);
             await _db.SaveChangesAsync();
 
-            
             if (status == "Резервация")
                 return RedirectToAction(nameof(Reservations));
 

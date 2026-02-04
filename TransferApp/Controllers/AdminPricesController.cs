@@ -7,6 +7,7 @@ using TransferApp.Models;
 namespace TransferApp.Controllers
 {
     [Authorize(Roles = "Admin")]
+    [AutoValidateAntiforgeryToken]
     [Route("Admin/Prices")]
     public class AdminPricesController : Controller
     {
@@ -17,7 +18,7 @@ namespace TransferApp.Controllers
             _db = db;
         }
 
-        
+        // GET /Admin/Prices
         [HttpGet("")]
         public async Task<IActionResult> Index()
         {
@@ -26,25 +27,23 @@ namespace TransferApp.Controllers
                 .ThenBy(p => p.Id)
                 .ToListAsync();
 
-            return View(prices); 
+            return View(prices); // Views/AdminPrices/Index.cshtml
         }
 
-        
+        // GET /Admin/Prices/Create
         [HttpGet("Create")]
         public IActionResult Create()
         {
-            return View("~/Views/Admin/PricesCreate.cshtml");
+            return View(); // Views/AdminPrices/Create.cshtml
         }
 
-        
+        // POST /Admin/Prices/Create
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PriceItem model)
         {
             if (!ModelState.IsValid)
-            {
-                return View("~/Views/Admin/PricesCreate.cshtml", model);
-            }
+                return View(model);
 
             model.IsActive = true;
 
@@ -54,41 +53,55 @@ namespace TransferApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
-        [HttpGet("Edit/{id}")]
+        // GET /Admin/Prices/Edit/5
+        [HttpGet("Edit/{id:int}")]
         public async Task<IActionResult> Edit(int id)
         {
             var item = await _db.PriceItems.FindAsync(id);
-            if (item == null)
-            {
-                return NotFound();
-            }
+            if (item == null) return NotFound();
 
-            return View("~/Views/Admin/PricesEdit.cshtml", item);
+            return View(item); // Views/AdminPrices/Edit.cshtml
         }
 
-        
-        [HttpPost("Edit/{id}")]
+        // POST /Admin/Prices/Edit/5
+        [HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, PriceItem model)
         {
-            if (id != model.Id)
-            {
-                return BadRequest();
-            }
+            if (id != model.Id) return BadRequest();
 
             if (!ModelState.IsValid)
-            {
-                return View("~/Views/Admin/PricesEdit.cshtml", model);
-            }
+                return View(model);
 
             _db.PriceItems.Update(model);
             await _db.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
+
+        // GET /Admin/Prices/Delete/5
+        [HttpGet("Delete/{id:int}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var item = await _db.PriceItems.FindAsync(id);
+            if (item == null) return NotFound();
+
+            return View(item); // Views/AdminPrices/Delete.cshtml
+        }
+
+        // POST /Admin/Prices/Delete/5
+        [HttpPost("Delete/{id:int}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var item = await _db.PriceItems.FindAsync(id);
+            if (item == null) return NotFound();
+
+            _db.PriceItems.Remove(item);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
-
-
 

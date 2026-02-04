@@ -1,78 +1,171 @@
-﻿@using Microsoft.Extensions.Localization
-@inject IStringLocalizer<TransferApp.SharedResources> L
+﻿@using System.Globalization
 @model TransferApp.ViewModels.PricesPublicViewModel
 
 @{
-    ViewData["Title"] = L["Prices_Title"];
+    ViewData["Title"] = "Prices";
+
+    string lang = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+
+    string T(string bg, string en, string ru, string fr)
+        => lang switch
+        {
+            "bg" => bg,
+            "ru" => ru,
+            "fr" => fr,
+            _ => en
+        };
+
+    string RouteText(TransferApp.Models.PriceItem p)
+        => lang switch
+        {
+            "bg" => p.RouteBg,
+            "ru" => p.RouteRu,
+            "fr" => p.RouteFr,
+            _ => p.RouteEn
+        };
+
+    string Money(decimal v) => v.ToString("0.00", CultureInfo.InvariantCulture) + " €";
+
+    var list = Model?.Prices ?? new List<TransferApp.Models.PriceItem>();
+    var active = list.Where(x => x.IsActive).OrderBy(x => x.SortOrder).ThenBy(x => x.Id).ToList();
+    var inactive = list.Where(x => !x.IsActive).OrderBy(x => x.SortOrder).ThenBy(x => x.Id).ToList();
 }
 
-<section class="prices-hero py-5">
-    <div class="container">
-        <h1 class="prices-title mb-2">@L["Prices_Hero_Title"]</h1>
-        <p class="opacity-75 mb-0">@L["Prices_Hero_Subtitle"]</p>
+<div class="container py-5">
+    <div class="d-flex flex-column flex-md-row align-items-md-end justify-content-between gap-3 mb-4">
+        <div>
+            <h1 class="mb-2">@T("Цени", "Prices", "Цены", "Tarifs")</h1>
+            <p class="text-muted mb-0">
+                @T(
+                "Прозрачни цени за най-често използваните маршрути. Ако не намираш своя — изпрати запитване.",
+                                "Transparent prices for popular routes. If you don’t see your route — send an inquiry.",
+                                "Прозрачные цены на популярные маршруты. Если вашего маршрута нет — отправьте запрос.",
+                                "Tarifs transparents pour les itinéraires populaires. Si vous ne voyez pas votre itinéraire — envoyez une demande."
+                                )
+            </p>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a class="btn btn-primary fw-bold" href="/Transfer/Create">
+                @T("Направи запитване", "Book / Inquiry", "Запрос / Бронь", "Réserver / Demande")
+            </a>
+            <a class="btn btn-outline-secondary" href="/Pages/Contacts">
+                @T("Контакти", "Contacts", "Контакты", "Contacts")
+            </a>
+        </div>
     </div>
-</section>
 
-<section class="py-5">
-    <div class="container">
-
-        @if (Model?.Items == null || !Model.Items.Any())
-        {
-            <div class="alert alert-secondary">
-                @L["Prices_Empty"]
+    @if (list.Count == 0 || active.Count == 0)
+    {
+        <div class="alert alert-light border">
+            <div class="d-flex align-items-start gap-3">
+                <div style="font-size:24px;">💡</div>
+                <div class="flex-grow-1">
+                    <div class="fw-semibold mb-1">
+                        @T("Все още няма публикувани цени.", "No prices published yet.", "Пока нет опубликованных цен.", "Aucun tarif publié pour le moment.")
+                    </div>
+                    <div class="text-muted mb-3">
+                        @T(
+                        "Натисни „Направи запитване“ и ще ти върнем оферта.",
+                                        "Click “Book / Inquiry” and we’ll get back with an offer.",
+                                        "Нажмите «Запрос / Бронь», и мы ответим с предложением.",
+                                        "Cliquez sur «Réserver / Demande» et nous vous répondrons avec une offre."
+                                        )
+                </div>
+                <a class="btn btn-primary" href="/Transfer/Create">
+                    @T("Направи запитване", "Book / Inquiry", "Запрос / Бронь", "Réserver / Demande")
+                </a>
             </div>
+        </div>
+    </div>
         }
-        else
-        {
-            <div class="table-responsive">
-                <table class="table table-striped align-middle prices-table">
-                    <thead>
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th style="min-width:280px;">@T("Маршрут", "Route", "Маршрут", "Itinéraire")</th>
+                        <th class="text-center" style="width:160px;">@T("Еднопосочно", "One-way", "В одну сторону", "Aller simple")</th>
+                        <th class="text-center" style="width:180px;">@T("Отиване/връщане", "Round-trip", "Туда/обратно", "Aller-retour")</th>
+                        <th class="text-end" style="width:210px;">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in active)
+                    {
                         <tr>
-                            <th>@L["Prices_Table_Col_Route"]</th>
-                            <th class="text-nowrap">@L["Prices_Table_Col_OneWay"]</th>
-                            <th class="text-nowrap">@L["Prices_Table_Col_RoundTrip"]</th>
-                            <th class="text-nowrap">@L["Prices_Table_Col_Request"]</th>
+                            <td>
+                                <div class="fw-semibold">@RouteText(p)</div>
+                                <div class="small text-muted">@T("Цени в EUR", "Prices in EUR", "Цены в EUR", "Tarifs en EUR")</div>
+                            </td>
+                            <td class="text-center"><span class="fw-semibold">@Money(p.OneWayPrice)</span></td>
+                            <td class="text-center"><span class="fw-semibold">@Money(p.RoundTripPrice)</span></td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-primary" href="/Transfer/Create">
+                                    @T("Резервирай", "Book", "Бронировать", "Réserver")
+                                </a>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Items)
-                        {
-                            <tr>
-                                <td>
-                                    @{
-                                        // Показваме Route според текущия език.
-                                        var lang = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-                                        var routeText = lang switch
-                                        {
-                                            "bg" => item.RouteBg,
-                                            "ru" => item.RouteRu,
-                                            "fr" => item.RouteFr,
-                                            _ => item.RouteEn
-                                        };
-                                    }
-                                    @routeText
-                                </td>
+                    }
 
-                                <td class="text-nowrap fw-bold">€@item.OneWayPrice.ToString("0.00")</td>
-                                <td class="text-nowrap fw-bold">€@item.RoundTripPrice.ToString("0.00")</td>
-                                <td class="text-nowrap">
-                                    <a class="btn btn-sm btn-warning fw-bold" href="/Transfer/Create">
-                                        @L["Prices_Order_Button"]
+                    @* Ако НЕ искаш да показваме неактивните публично -> изтрий целия блок по-долу *@
+                    @if (inactive.Count > 0)
+                    {
+                        <tr>
+                            <td colspan="4" class="pt-4">
+                                <div class="small text-muted">
+                                    @T(
+                                    "Някои маршрути временно не се предлагат.",
+                                                        "Some routes are temporarily unavailable.",
+                                                        "Некоторые маршруты временно недоступны.",
+                                                        "Certains itinéraires sont temporairement indisponibles."
+                                                        )
+                        </div>
+                    </td>
+                </tr>
+
+                @foreach (var p in inactive)
+                        {
+                            <tr class="text-muted">
+                                <td>
+                                    <div class="fw-semibold">@RouteText(p)</div>
+                                    <div class="small">@T("Временно неактивно", "Temporarily inactive", "Временно неактивно", "Temporairement indisponible")</div>
+                                </td>
+                                <td class="text-center">—</td>
+                                <td class="text-center">—</td>
+                                <td class="text-end">
+                                    <a class="btn btn-sm btn-outline-secondary" href="/Transfer/Create">
+                                        @T("Запитване", "Inquiry", "Запрос", "Demande")
                                     </a>
                                 </td>
                             </tr>
                         }
-                    </tbody>
-                </table>
-            </div>
+                    }
+                </tbody>
+            </table>
+        </div>
 
-            <div class="alert alert-dark mt-4">
-                <div class="fw-bold mb-1">@L["Prices_Important_Title"]</div>
-                <div class="opacity-75">@L["Prices_Important_Text"]</div>
+        <div class="mt-4 p-4 border rounded-3 bg-light">
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+                <div>
+                    <div class="fw-semibold mb-1">
+                        @T("Нямаш твоя маршрут?", "Don’t see your route?", "Не видите свой маршрут?", "Vous ne voyez pas votre itinéraire ?")
+                    </div>
+                    <div class="text-muted">
+                        @T(
+                        "Прати запитване и ще ти дадем точна цена.",
+                                        "Send an inquiry and we’ll quote an exact price.",
+                                        "Отправьте запрос, и мы рассчитаем точную цену.",
+                                        "Envoyez une demande et nous vous donnerons un tarif exact."
+                                        )
+                </div>
             </div>
-        }
+            <a class="btn btn-primary fw-bold" href="/Transfer/Create">
+                @T("Направи запитване", "Book / Inquiry", "Запрос / Бронь", "Réserver / Demande")
+            </a>
+        </div>
     </div>
-</section>
-
-
+        }
+</div>
 

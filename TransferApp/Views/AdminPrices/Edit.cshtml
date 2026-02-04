@@ -10,62 +10,68 @@
         <a class="btn btn-outline-secondary" href="/Admin/Prices">Назад</a>
     </div>
 
-    <form method="post" action="/Admin/Prices/Edit/@Model.Id">
+    <form method="post"
+          asp-controller="AdminPrices"
+          asp-action="Edit"
+          asp-route-id="@Model.Id">
+
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="Id" />
 
+        <div class="text-danger mb-2" asp-validation-summary="ModelOnly"></div>
+
         <div class="row g-3">
             <div class="col-md-3">
-                <label class="form-label">Подредба</label>
+                <label class="form-label" asp-for="SortOrder">Подредба</label>
                 <input class="form-control" asp-for="SortOrder" />
                 <span class="text-danger" asp-validation-for="SortOrder"></span>
             </div>
 
             <div class="col-md-9">
-                <label class="form-label">RouteKey</label>
+                <label class="form-label" asp-for="RouteKey">RouteKey</label>
                 <input class="form-control" asp-for="RouteKey" />
                 <span class="text-danger" asp-validation-for="RouteKey"></span>
             </div>
 
             <div class="col-md-6">
-                <label class="form-label">Маршрут (BG)</label>
+                <label class="form-label" asp-for="RouteBg">Маршрут (BG)</label>
                 <input class="form-control" asp-for="RouteBg" />
                 <span class="text-danger" asp-validation-for="RouteBg"></span>
             </div>
 
             <div class="col-md-6">
-                <label class="form-label">Маршрут (EN)</label>
+                <label class="form-label" asp-for="RouteEn">Маршрут (EN)</label>
                 <input class="form-control" asp-for="RouteEn" />
                 <span class="text-danger" asp-validation-for="RouteEn"></span>
             </div>
 
             <div class="col-md-6">
-                <label class="form-label">Маршрут (RU)</label>
+                <label class="form-label" asp-for="RouteRu">Маршрут (RU)</label>
                 <input class="form-control" asp-for="RouteRu" />
                 <span class="text-danger" asp-validation-for="RouteRu"></span>
             </div>
 
             <div class="col-md-6">
-                <label class="form-label">Маршрут (FR)</label>
+                <label class="form-label" asp-for="RouteFr">Маршрут (FR)</label>
                 <input class="form-control" asp-for="RouteFr" />
                 <span class="text-danger" asp-validation-for="RouteFr"></span>
             </div>
 
             <div class="col-md-6">
-                <label class="form-label">Еднопосочно (€)</label>
-                <input class="form-control" asp-for="OneWayPrice" />
+                <label class="form-label" asp-for="OneWayPrice">Еднопосочно (€)</label>
+                <input class="form-control" asp-for="OneWayPrice" type="number" step="0.01" min="0" />
                 <span class="text-danger" asp-validation-for="OneWayPrice"></span>
             </div>
 
             <div class="col-md-6">
-                <label class="form-label">Отиване/връщане (€)</label>
-                <input class="form-control" asp-for="RoundTripPrice" />
+                <label class="form-label" asp-for="RoundTripPrice">Отиване/връщане (€)</label>
+                <input class="form-control" asp-for="RoundTripPrice" type="number" step="0.01" min="0" />
                 <span class="text-danger" asp-validation-for="RoundTripPrice"></span>
             </div>
 
             <div class="col-12">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" asp-for="IsActive" />
+                    <input class="form-check-input" asp-for="IsActive" />
                     <label class="form-check-label" asp-for="IsActive">Активна</label>
                 </div>
             </div>

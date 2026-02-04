@@ -1,61 +1,62 @@
-﻿@model IEnumerable<TransferApp.Models.PriceItem>
+﻿@model List<TransferApp.Models.PriceItem>
 
 @{
     ViewData["Title"] = "Цени (Админ)";
 }
 
 <div class="container py-4">
-    <div class="d-flex align-items-center justify-content-between mb-3">
-        <h2 class="mb-0">Цени</h2>
-
-        <!-- IMPORTANT: link to AdminPricesController.Create -->
-        <a class="btn btn-warning fw-bold"
-           asp-controller="AdminPrices"
-           asp-action="Create">
-            + Нова цена
-        </a>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="m-0">Цени (EUR)</h2>
+        <a class="btn btn-warning fw-bold" href="/Admin/Prices/Create">+ Нова цена</a>
     </div>
 
-    @if (Model == null || !Model.Any())
-    {
-        <div class="alert alert-secondary">Няма въведени цени.</div>
-    }
-    else
-    {
-        <div class="table-responsive">
-            <table class="table table-striped align-middle">
-                <thead>
+    <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Маршрут (BG)</th>
+                    <th class="text-center">Еднопосочно (€)</th>
+                    <th class="text-center">Двупосочно (€)</th>
+                    <th class="text-center">Ред</th>
+                    <th class="text-center">Активно</th>
+                    <th class="text-end">Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null || Model.Count == 0)
+                {
                     <tr>
-                        <th>#</th>
-                        <th>Маршрут (BG)</th>
-                        <th>Еднопосочно (€)</th>
-                        <th>Отиване/връщане (€)</th>
-                        <th>Активна</th>
-                        <th class="text-end"></th>
+                        <td colspan="7" class="text-center text-muted py-4">
+                            Няма въведени цени.
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var p in Model.OrderBy(x => x.SortOrder).ThenBy(x => x.Id))
+                }
+                else
+                {
+                    foreach (var x in Model)
                     {
                         <tr>
-                            <td>@p.SortOrder</td>
-                            <td>@p.RouteBg</td>
-                            <td>@p.OneWayPrice.ToString("0.00")</td>
-                            <td>@p.RoundTripPrice.ToString("0.00")</td>
-                            <td>@(p.IsActive ? "Да" : "Не")</td>
+                            <td>@x.Id</td>
+                            <td>@x.RouteBg</td>
+                            <td class="text-center">@x.OneWayPrice.ToString("0.00")</td>
+                            <td class="text-center">@x.RoundTripPrice.ToString("0.00")</td>
+                            <td class="text-center">@x.SortOrder</td>
+                            <td class="text-center">@(x.IsActive ? "✅" : "—")</td>
                             <td class="text-end">
-                                <!-- IMPORTANT: link to AdminPricesController.Edit -->
-                                <a class="btn btn-sm btn-outline-dark"
-                                   asp-controller="AdminPrices"
-                                   asp-action="Edit"
-                                   asp-route-id="@p.Id">
-                                    Редакция
+                                <a class="btn btn-sm btn-outline-warning me-1" href="/Admin/Prices/Edit/@x.Id">Редакция</a>
+
+                                <a class="btn btn-sm btn-outline-danger"
+                                   href="/Admin/Prices/Delete/@x.Id"
+                                   onclick="return confirm('Сигурен ли си, че искаш да изтриеш тази цена?');">
+                                    Изтрий
                                 </a>
                             </td>
                         </tr>
                     }
-                </tbody>
-            </table>
-        </div>
-    }
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
+

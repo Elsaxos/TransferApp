@@ -5,7 +5,7 @@ namespace TransferApp.ViewModels
 {
     public class PricesPublicViewModel
     {
-        public List<PriceItem> Items { get; set; } = new();
+        public List<PriceItem> Prices { get; set; } = new();
     }
 }
 

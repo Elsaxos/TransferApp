@@ -364,3 +364,8 @@ FodyWeavers.xsd
 # coverage output
 coverage-report/
 
+# secrets
+appsettings.Production.json
+appsettings.Development.json
+
+

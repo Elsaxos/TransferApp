@@ -7,6 +7,7 @@ using TransferApp.Models;
 namespace TransferApp.Controllers
 {
     [Authorize(Roles = "Admin")]
+    [AutoValidateAntiforgeryToken]
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -15,11 +16,12 @@ namespace TransferApp.Controllers
         {
             _db = db;
         }
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            
             var inquiries = await _db.TransferRequests
                 .Where(r => ((r.Status ?? "").Trim()) == "Запитване")
                 .OrderByDescending(r => r.Id)
@@ -39,20 +41,15 @@ namespace TransferApp.Controllers
             return View(viewModel);
         }
 
+        
         [HttpGet]
-        public async Task<IActionResult> Prices()
+        public IActionResult Prices()
         {
-            var items = await _db.PriceItems
-                .OrderBy(p => p.SortOrder)
-                .ThenBy(p => p.Id)
-                .ToListAsync();
-
-            return View(items); 
+            return RedirectToAction("Index", "AdminPrices");
         }
+
+        
 
     }
 }
-
-
-
 

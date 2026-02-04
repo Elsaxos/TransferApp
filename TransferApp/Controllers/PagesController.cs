@@ -20,12 +20,18 @@ namespace TransferApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Prices()
         {
-            var items = await _db.PriceItems
+            var prices = await _db.PriceItems
                 .Where(x => x.IsActive)
                 .OrderBy(x => x.SortOrder)
+                .ThenBy(x => x.Id)
                 .ToListAsync();
 
-            return View(new PricesPublicViewModel { Items = items });
+            var vm = new PricesPublicViewModel
+            {
+                Prices = prices
+            };
+
+            return View(vm);
         }
 
         [HttpGet]
@@ -65,6 +71,17 @@ namespace TransferApp.Controllers
         {
             return View();
         }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult Cookies()
+        {
+            return View();
+        }
+
     }
 }
 
