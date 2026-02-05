@@ -1,5 +1,6 @@
 ```md
 # TransferApp
+This is a real personal client project – the application is built for actual planned usage by me, not as a demo or tutorial.
 
 TransferApp is an ASP.NET Core MVC application for managing car transfer inquiries and reservations.  
 The project is built as a **portfolio project** and also serves as a **base for QA automation work** (unit, integration and UI tests).
