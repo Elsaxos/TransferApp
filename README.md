@@ -1,81 +1,96 @@
+```md
 # TransferApp
 
-ASP.NET Core MVC application for managing car transfer inquiries and reservations, with a lightweight admin panel.
-Built as a portfolio project and a base for QA automation work (unit/integration/UI tests).
+TransferApp is an ASP.NET Core MVC application for managing car transfer inquiries and reservations.  
+The project is built as a **portfolio project** and also serves as a **base for QA automation work** (unit, integration and UI tests).
+
+The application includes a public website and a lightweight admin panel for managing transfer requests.
+
+---
 
 ## Features
 
 ### Public site
 - Home page with business-style layout
-- Pages: **Prices**, **About**, **Contacts**
-- Multilingual UI (bg/en/ru/fr) via **.resx** localization
-- Transfer request form with:
+- Pages:
+  - Prices
+  - About
+  - Contacts
+- Multilingual UI:
+  - Bulgarian (bg)
+  - English (en)
+  - Russian (ru)
+  - French (fr)
+- Transfer request form:
   - Inquiry vs Reservation (status-based)
   - Email field (required)
-  - Route-based pricing (price loaded automatically from predefined routes)
+  - Route-based pricing (price is loaded automatically)
+  - Thank-you page after submission
+
+---
 
 ### Admin panel (role: Admin)
-- Separate lists:
-  - **Inquiries** (Status = "Запитване")
-  - **Reservations** (Status = "Резервация")
-- Open details per item (view)
-- Change status (Inquiry ⇄ Reservation)
-- Delete inquiries/reservations
-- Admin navigation shown only inside `/Admin`
-- Login/Logout with cookie authentication
+- Separate admin area under `/Admin`
+- Login / Logout with cookie authentication
+- Lists:
+  - Inquiries (`Status = "Запитване"`)
+  - Reservations (`Status = "Резервация"`)
+- Admin actions:
+  - View details
+  - Change status (Inquiry ⇄ Reservation)
+  - Delete requests
+- Admin navigation visible only inside admin area
 
-### Data & infrastructure
-- SQL Server + Entity Framework Core
-- Seed data for price routes (`DbSeeder.SeedPriceItems`)
-- Services layer (email sender interface + SMTP implementation ready for real mailbox)
+---
+
+## Data & Infrastructure
+- SQL Server with Entity Framework Core
+- Code-first migrations
+- Seed data for transfer price routes
+- Simple SMTP email service (ready for real mailbox)
+- Localization using `.resx` files
+
+---
 
 ## Tech Stack
-- .NET 8, ASP.NET Core MVC
+- .NET 8
+- ASP.NET Core MVC
 - Entity Framework Core (SQL Server)
 - Razor Views + Bootstrap
-- Localization: `IStringLocalizer` + `Resources/SharedResources.*.resx`
-- Cookie authentication + role-based authorization
+- Cookie authentication
+- Role-based authorization
+- Localization with `IStringLocalizer`
+
+---
 
 ## Project Structure
 
 ```text
 TransferApp/
 └── TransferApp/
-    ├── Controllers/
-    │   ├── HomeController.cs
-    │   ├── PagesController.cs
-    │   ├── TransferController.cs
-    │   ├── AdminTransfersController.cs
-    │   └── AccountController.cs
-    ├── Data/
-    │   ├── ApplicationDbContext.cs
-    │   └── DbSeeder.cs
-    ├── Models/
-    │   └── TransferRequest.cs
-    ├── ViewModels/
-    │   ├── ContactFormViewModel.cs
-    │   └── PricesPublicViewModel.cs
-    ├── Services/
-    │   ├── IEmailSender.cs
-    │   └── SmtpEmailSender.cs
-    ├── Resources/
-    │   └── SharedResources.*.resx
-    ├── Views/
-    │   ├── Home/
-    │   ├── Pages/
-    │   ├── Transfer/
-    │   ├── AdminTransfers/
-    │   └── Shared/
-    ├── wwwroot/
-    │   └── css, js, images
     ├── Program.cs
+    ├── TransferApp.csproj
     ├── appsettings.json
     ├── appsettings.Development.json
-    ├── README.md
-    └── CHANGELOG.md
-Note: The TransferApp/TransferApp nesting is intentional (solution root + project folder).
+    ├── appsettings.Production.json
+    ├── CHANGELOG.md
+    ├── admin-hashes.txt
+    │
+    ├── Controllers/
+    ├── Data/
+    ├── Infrastructure/
+    ├── Migrations/
+    ├── Models/
+    ├── Options/
+    ├── Services/
+    ├── Tools/
+    ├── ViewModels/
+    ├── Views/
+    └── wwwroot/
+Note: The TransferApp/TransferApp nesting is intentional
+(solution root + actual web project).
 
-Running the app
+Running the application
 Prerequisites
 .NET 8 SDK
 
@@ -86,11 +101,9 @@ Visual Studio 2022 / Rider / VS Code
 Steps
 Clone the repository
 
-Update appsettings.json connection string if needed
+Update the connection string in appsettings.json if needed
 
-Apply migrations (if not already applied):
-
-Using CLI:
+Apply migrations:
 
 dotnet tool restore
 dotnet tool run dotnet-ef database update
@@ -100,38 +113,49 @@ Visual Studio: IIS Express / Kestrel
 
 CLI:
 
+
 dotnet run
 Admin access
-The admin area is under /Admin.
+Admin area: /Admin
 
-Login: /Account/Login
+Login page: /Account/Login
 
-Authorization: Admin role (cookie auth)
+Authentication: Cookie-based, Admin role
 
-Credentials are currently kept simple for local development.
+Admin credentials are kept simple for local development and will be changed after deployment.
 
-QA / Testing direction (planned)
-This project is designed to be extended with automated tests:
+Testing direction (planned)
+This project is intended to be extended with automated tests:
 
 Unit tests:
 
-Model validation and basic logic
+Controllers
+
+ViewModels
 
 Integration tests:
 
-Database flows (create → save → list in admin)
+Database flows
 
-UI tests (E2E):
+Admin flows
 
-Transfer form flows, admin flows (open/change/delete)
+UI / E2E tests:
+
+Transfer request flow
+
+Admin workflows
 
 Roadmap
-Real mailbox for domain and working SMTP
+Real SMTP mailbox configuration
 
-Anti-spam protection for contact form (honeypot/reCAPTCHA)
+Anti-spam protection for contact form
 
-FAQ block on Contacts page
+Admin filters and search
 
-Better admin details view + filters/search
+Minor UI improvements
 
-Deploy-ready configuratio
+Deployment-ready configuration
+
+Version
+v1.0.0
+Initial public release with core functionality.
