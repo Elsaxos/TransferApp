@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.CookiePolicy;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System.Globalization;
-using System.Text;
 using TransferApp.Data;
-using TransferApp.Security; 
+using TransferApp.Options;
 using TransferApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -70,12 +68,18 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddAuthorization();
 
-builder.Services.Configure<TransferApp.Options.AdminUsersOptions>(
-    builder.Configuration.GetSection("AdminUsersOptions"));
 
 
 var app = builder.Build();
 
+// Forwarded headers (behind reverse proxy)
+var forwardedHeadersOptions = new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+};
+forwardedHeadersOptions.KnownNetworks.Clear();
+forwardedHeadersOptions.KnownProxies.Clear();
+app.UseForwardedHeaders(forwardedHeadersOptions);
 
 // Error handling + security headers
 if (!app.Environment.IsDevelopment())
@@ -83,6 +87,14 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+
+app.Use(async (context, next) =>
+{
+    context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+    context.Response.Headers["X-Frame-Options"] = "SAMEORIGIN";
+    context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+    await next();
+});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

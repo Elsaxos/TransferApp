@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using TransferApp.Models;
+using TransferApp.Options;
 
 namespace TransferApp.Tools
 {
@@ -7,8 +7,8 @@ namespace TransferApp.Tools
     {
         public static string Hash(string username, string password)
         {
-            var hasher = new PasswordHasher<AdminUserConfig>();
-            var user = new AdminUserConfig { Username = username };
+            var hasher = new PasswordHasher<AdminUser>();
+            var user = new AdminUser { Username = username };
             return hasher.HashPassword(user, password);
         }
     }

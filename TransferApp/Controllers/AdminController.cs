@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TransferApp.Data;
-using TransferApp.Models;
+using TransferApp.ViewModels;
 
 namespace TransferApp.Controllers
 {

@@ -1,25 +1,25 @@
-п»ї@model TransferApp.Models.AdminDashboardViewModel
+@model TransferApp.ViewModels.AdminDashboardViewModel
 
 @{
-    ViewData["Title"] = "РђРґРјРёРЅ РїР°РЅРµР»";
+    ViewData["Title"] = "Админ панел";
 }
 
 <div class="container py-4">
-    <h2 class="mb-3">РђРґРјРёРЅ РїР°РЅРµР»</h2>
+    <h2 class="mb-3">Админ панел</h2>
 
     <div class="d-flex gap-2 mb-4">
-        <a class="btn btn-outline-light" href="/Admin/Inquiries">Р—Р°РїРёС‚РІР°РЅРёСЏ</a>
-        <a class="btn btn-outline-light" href="/Admin/Reservations">Р РµР·РµСЂРІР°С†РёРё</a>
-        <a class="btn btn-warning fw-bold" href="/Admin/Prices">Р¦РµРЅРё</a>
+        <a class="btn btn-outline-light" href="/Admin/Inquiries">Запитвания</a>
+        <a class="btn btn-outline-light" href="/Admin/Reservations">Резервации</a>
+        <a class="btn btn-warning fw-bold" href="/Admin/Prices">Цени</a>
     </div>
 
     <div class="row g-3">
         <div class="col-md-6">
             <div class="card bg-dark text-white">
                 <div class="card-body">
-                    <h5 class="card-title">Р—Р°РїРёС‚РІР°РЅРёСЏ</h5>
-                    <p class="card-text">РћР±С‰Рѕ: <strong>@(Model?.Inquiries?.Count ?? 0)</strong></p>
-                    <a class="btn btn-sm btn-outline-light" href="/Admin/Inquiries">РћС‚РІРѕСЂРё</a>
+                    <h5 class="card-title">Запитвания</h5>
+                    <p class="card-text">Общо: <strong>@(Model?.Inquiries?.Count ?? 0)</strong></p>
+                    <a class="btn btn-sm btn-outline-light" href="/Admin/Inquiries">Отвори</a>
                 </div>
             </div>
         </div>
@@ -27,12 +27,13 @@
         <div class="col-md-6">
             <div class="card bg-dark text-white">
                 <div class="card-body">
-                    <h5 class="card-title">Р РµР·РµСЂРІР°С†РёРё</h5>
-                    <p class="card-text">РћР±С‰Рѕ: <strong>@(Model?.Reservations?.Count ?? 0)</strong></p>
-                    <a class="btn btn-sm btn-outline-light" href="/Admin/Reservations">РћС‚РІРѕСЂРё</a>
+                    <h5 class="card-title">Резервации</h5>
+                    <p class="card-text">Общо: <strong>@(Model?.Reservations?.Count ?? 0)</strong></p>
+                    <a class="btn btn-sm btn-outline-light" href="/Admin/Reservations">Отвори</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 

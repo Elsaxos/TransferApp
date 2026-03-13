@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using TransferApp.Data;
 using TransferApp.Services;
 using TransferApp.ViewModels;
@@ -10,11 +11,13 @@ namespace TransferApp.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly IEmailSender _email;
+        private readonly IConfiguration _config;
 
-        public PagesController(ApplicationDbContext db, IEmailSender email)
+        public PagesController(ApplicationDbContext db, IEmailSender email, IConfiguration config)
         {
             _db = db;
             _email = email;
+            _config = config;
         }
 
         [HttpGet]
@@ -56,11 +59,12 @@ namespace TransferApp.Controllers
                 <p><strong>Съобщение:</strong><br/>{vm.Message}</p>
             ";
 
-            await _email.SendEmailAsync(
-                "Konstantin_stfnv@yahoo.com",
-                subject,
-                body
-            );
+            var to =
+                _config["Smtp:AdminEmail"]
+                ?? _config["AdminEmail"]
+                ?? "info@protransfer.bg";
+
+            await _email.SendEmailAsync(to, subject, body);
 
             TempData["Success"] = "OK";
             return RedirectToAction(nameof(Contacts));
