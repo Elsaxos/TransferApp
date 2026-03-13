@@ -84,4 +84,136 @@ public class AdminPricesControllerTests
 
         Assert.That(result, Is.InstanceOf<BadRequestResult>());
     }
+
+    [Test]
+    public async Task Edit_Get_Returns_View_When_Found()
+    {
+        using var db = TestDb.CreateContext(nameof(Edit_Get_Returns_View_When_Found));
+        var item = new PriceItem
+        {
+            RouteKey = "k",
+            RouteBg = "bg",
+            RouteEn = "en",
+            RouteRu = "ru",
+            RouteFr = "fr",
+            OneWayPrice = 1,
+            RoundTripPrice = 2,
+            SortOrder = 1,
+            IsActive = true
+        };
+        db.PriceItems.Add(item);
+        db.SaveChanges();
+
+        var c = new AdminPricesController(db);
+        var result = await c.Edit(item.Id);
+
+        Assert.That(result, Is.InstanceOf<ViewResult>());
+    }
+
+    [Test]
+    public async Task Edit_Post_Invalid_Model_Returns_View()
+    {
+        using var db = TestDb.CreateContext(nameof(Edit_Post_Invalid_Model_Returns_View));
+        var item = new PriceItem
+        {
+            RouteKey = "k",
+            RouteBg = "bg",
+            RouteEn = "en",
+            RouteRu = "ru",
+            RouteFr = "fr",
+            OneWayPrice = 1,
+            RoundTripPrice = 2,
+            SortOrder = 1,
+            IsActive = true
+        };
+        db.PriceItems.Add(item);
+        db.SaveChanges();
+
+        var c = new AdminPricesController(db);
+        c.ModelState.AddModelError("x", "err");
+
+        item.RouteBg = "changed";
+        var result = await c.Edit(item.Id, item);
+
+        Assert.That(result, Is.InstanceOf<ViewResult>());
+    }
+
+    [Test]
+    public async Task Edit_Post_Valid_Updates_And_Redirects()
+    {
+        using var db = TestDb.CreateContext(nameof(Edit_Post_Valid_Updates_And_Redirects));
+        var item = new PriceItem
+        {
+            RouteKey = "k",
+            RouteBg = "bg",
+            RouteEn = "en",
+            RouteRu = "ru",
+            RouteFr = "fr",
+            OneWayPrice = 1,
+            RoundTripPrice = 2,
+            SortOrder = 1,
+            IsActive = true
+        };
+        db.PriceItems.Add(item);
+        db.SaveChanges();
+
+        var c = new AdminPricesController(db);
+        item.RouteBg = "bg-updated";
+
+        var result = await c.Edit(item.Id, item);
+
+        Assert.That(result, Is.InstanceOf<RedirectToActionResult>());
+        Assert.That(db.PriceItems.First().RouteBg, Is.EqualTo("bg-updated"));
+    }
+
+    [Test]
+    public async Task Delete_Get_Returns_View_When_Found()
+    {
+        using var db = TestDb.CreateContext(nameof(Delete_Get_Returns_View_When_Found));
+        var item = new PriceItem
+        {
+            RouteKey = "k",
+            RouteBg = "bg",
+            RouteEn = "en",
+            RouteRu = "ru",
+            RouteFr = "fr",
+            OneWayPrice = 1,
+            RoundTripPrice = 2,
+            SortOrder = 1,
+            IsActive = true
+        };
+        db.PriceItems.Add(item);
+        db.SaveChanges();
+
+        var c = new AdminPricesController(db);
+        var result = await c.Delete(item.Id);
+
+        Assert.That(result, Is.InstanceOf<ViewResult>());
+    }
+
+    [Test]
+    public async Task DeleteConfirmed_Removes_Item_And_Redirects()
+    {
+        using var db = TestDb.CreateContext(nameof(DeleteConfirmed_Removes_Item_And_Redirects));
+        var item = new PriceItem
+        {
+            RouteKey = "k",
+            RouteBg = "bg",
+            RouteEn = "en",
+            RouteRu = "ru",
+            RouteFr = "fr",
+            OneWayPrice = 1,
+            RoundTripPrice = 2,
+            SortOrder = 1,
+            IsActive = true
+        };
+        db.PriceItems.Add(item);
+        db.SaveChanges();
+
+        var c = new AdminPricesController(db);
+        var result = await c.DeleteConfirmed(item.Id);
+
+        Assert.That(result, Is.InstanceOf<RedirectToActionResult>());
+        Assert.That(db.PriceItems.Count(), Is.EqualTo(0));
+    }
 }

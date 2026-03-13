@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Configuration;
 using TransferApp.Controllers;
 using TransferApp.UnitTests.TestHelpers;
 using TransferApp.ViewModels;
@@ -15,7 +16,10 @@ public class PagesControllerTests
     {
         using var db = TestDb.CreateContext(nameof(Contacts_Post_Invalid_Model_Returns_View));
         var email = new FakeEmailSender();
-        var c = new PagesController(db, email);
+        var config = new ConfigurationBuilder()
+            .AddInMemoryCollection(new Dictionary<string, string?> { ["AdminEmail"] = "admin@example.com" })
+            .Build();
+        var c = new PagesController(db, email, config);
 
         // важно: TempData да не е null (за всеки случай)
         AttachTempData(c);
@@ -34,7 +38,10 @@ public class PagesControllerTests
     {
         using var db = TestDb.CreateContext(nameof(Contacts_Post_Valid_Sends_Email_And_Redirects));
         var email = new FakeEmailSender();
-        var c = new PagesController(db, email);
+        var config = new ConfigurationBuilder()
+            .AddInMemoryCollection(new Dictionary<string, string?> { ["AdminEmail"] = "admin@example.com" })
+            .Build();
+        var c = new PagesController(db, email, config);
 
         AttachTempData(c);
 

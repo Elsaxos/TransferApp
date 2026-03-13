@@ -83,4 +83,54 @@ public class AdminTransfersControllerTests
         var r = (RedirectToActionResult)result;
         Assert.That(r.ActionName, Is.EqualTo("Reservations"));
     }
+
+    [Test]
+    public async Task Details_Returns_View_When_Exists()
+    {
+        using var db = TestDb.CreateContext(nameof(Details_Returns_View_When_Exists));
+        var req = new TransferRequest
+        {
+            CustomerName = "B",
+            Phone = "2",
+            Email = "b@b.com",
+            PickupAddress = "x",
+            DropoffAddress = "y",
+            PickupDateTime = DateTime.UtcNow,
+            Passengers = 2,
+            Price = 20,
+            Status = "Резервация"
+        };
+        db.TransferRequests.Add(req);
+        db.SaveChanges();
+
+        var c = new AdminTransfersController(db);
+        var result = await c.Details(req.Id);
+
+        Assert.That(result, Is.InstanceOf<ViewResult>());
+    }
+
+    [Test]
+    public async Task Delete_Get_Returns_View_When_Exists()
+    {
+        using var db = TestDb.CreateContext(nameof(Delete_Get_Returns_View_When_Exists));
+        var req = new TransferRequest
+        {
+            CustomerName = "B",
+            Phone = "2",
+            Email = "b@b.com",
+            PickupAddress = "x",
+            DropoffAddress = "y",
+            PickupDateTime = DateTime.UtcNow,
+            Passengers = 2,
+            Price = 20,
+            Status = "Запитване"
+        };
+        db.TransferRequests.Add(req);
+        db.SaveChanges();
+
+        var c = new AdminTransfersController(db);
+        var result = await c.Delete(req.Id);
+
+        Assert.That(result, Is.InstanceOf<ViewResult>());
+    }
 }
