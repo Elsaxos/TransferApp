@@ -1,6 +1,8 @@
-Ôªøusing System.Security.Claims;
+using System.Security.Claims;
+using System.IO;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
@@ -26,6 +28,12 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.ConfigureLogging(logging =>
+        {
+            logging.ClearProviders();
+            logging.AddDebug();
+        });
+
         builder.ConfigureServices(services =>
         {
            
@@ -39,6 +47,11 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             {
                 options.UseSqlite(_connection);
             });
+
+            services
+                .AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(Path.GetTempPath(), "TransferApp-Keys")))
+                .SetApplicationName("TransferApp.Tests");
 
             
             if (_authenticate)
@@ -72,10 +85,10 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                 new PriceItem
                 {
                     RouteKey = "sofia-plovdiv",
-                    RouteBg = "–°–æ—Ñ–∏—è ‚Üí –ü–ª–æ–≤–¥–∏–≤",
-                    RouteEn = "Sofia ‚Üí Plovdiv",
-                    RouteRu = "–°–æ—Ñ–∏—è ‚Üí –ü–ª–æ–≤–¥–∏–≤",
-                    RouteFr = "Sofia ‚Üí Plovdiv",
+                    RouteBg = "—ÓÙËˇ > œÎÓ‚‰Ë‚",
+                    RouteEn = "Sofia > Plovdiv",
+                    RouteRu = "—ÓÙËˇ > œÎÓ‚‰Ë‚",
+                    RouteFr = "Sofia > Plovdiv",
                     OneWayPrice = 100m,
                     RoundTripPrice = 180m,
                     IsActive = true,
@@ -84,10 +97,10 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                 new PriceItem
                 {
                     RouteKey = "sofia-varna",
-                    RouteBg = "–°–æ—Ñ–∏—è ‚Üí –í–∞—Ä–Ω–∞",
-                    RouteEn = "Sofia ‚Üí Varna",
-                    RouteRu = "–°–æ—Ñ–∏—è ‚Üí –í–∞—Ä–Ω–∞",
-                    RouteFr = "Sofia ‚Üí Varna",
+                    RouteBg = "—ÓÙËˇ > ¬‡Ì‡",
+                    RouteEn = "Sofia > Varna",
+                    RouteRu = "—ÓÙËˇ > ¬‡Ì‡",
+                    RouteFr = "Sofia > Varna",
                     OneWayPrice = 220m,
                     RoundTripPrice = 400m,
                     IsActive = true,
@@ -112,7 +125,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                     PickupDateTime = DateTime.UtcNow.AddDays(2),
                     Passengers = 2,
                     Price = 100m,
-                    Status = "–ó–∞–ø–∏—Ç–≤–∞–Ω–µ",
+                    Status = "«‡ÔËÚ‚‡ÌÂ",
                     Notes = "Test seed 1"
                 },
                 new TransferRequest
@@ -125,7 +138,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                     PickupDateTime = DateTime.UtcNow.AddDays(5),
                     Passengers = 3,
                     Price = 220m,
-                    Status = "–†–µ–∑–µ—Ä–≤–∞—Ü–∏—è",
+                    Status = "–ÂÁÂ‚‡ˆËˇ",
                     Notes = "Test seed 2"
                 }
             );

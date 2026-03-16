@@ -33,4 +33,23 @@ public class SmtpEmailSenderTests
         Assert.That(async () => await sender.SendEmailAsync("a@a.com", "s", "b"),
             Throws.InstanceOf<FormatException>());
     }
+
+    [Test]
+    public void SendEmailAsync_With_Config_Attempts_Send_And_Throws()
+    {
+        var dict = new Dictionary<string, string?>
+        {
+            ["Smtp:Host"] = "localhost",
+            ["Smtp:Port"] = "2525",
+            ["Smtp:User"] = "user",
+            ["Smtp:Pass"] = "pass",
+            ["Smtp:FromEmail"] = "from@example.com",
+            ["Smtp:FromName"] = "Test"
+        };
+        var config = new ConfigurationBuilder().AddInMemoryCollection(dict!).Build();
+        var sender = new SmtpEmailSender(config);
+
+        Assert.That(async () => await sender.SendEmailAsync("a@a.com", "s", "b"),
+            Throws.Exception);
+    }
 }
